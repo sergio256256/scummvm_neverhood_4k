@@ -27,6 +27,8 @@
 #include "common/hashmap.h"
 #include "neverhood/neverhood.h"
 #include "neverhood/blbarchive.h"
+#include "image/png.h"
+#include "graphics/surface.h"
 
 namespace Neverhood {
 
@@ -60,10 +62,15 @@ public:
 	uint32 size() const { return isValid() ? _resourceFileEntry->archiveEntry->size : 0; };
 	const byte *extData() const { return _extData; };
 	uint32 fileHash() const { return isValid() ? _resourceFileEntry->archiveEntry->fileHash : 0; };
-protected:
+
+	const byte *upscaledData() const { return _upscaledData ? (byte *)_upscaledData->getSurface()->getPixels() : 0; }
+	//const byte *upscaledData() const { return _upscaledData ? (byte *)_upscaledData->getSurface()->convertTo(Graphics::PixelFormat::createFormatCLUT8()) : 0; }
 	ResourceFileEntry *_resourceFileEntry;
 	const byte *_extData;
 	const byte *_data;
+	//Graphics::Surface *_upscaledData;
+
+	Image::PNGDecoder *_upscaledData;
 };
 
 class ResourceMan {

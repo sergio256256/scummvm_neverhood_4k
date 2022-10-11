@@ -26,6 +26,7 @@
 #include "common/list.h"
 #include "common/util.h"
 #include "common/rect.h"
+#include "neverhood.h"
 
 namespace Neverhood {
 
@@ -33,7 +34,7 @@ typedef uint32 BoundingBox;
 
 const BoundingBox FullBoundingBox  = 0x00001F1F;
 const BoundingBox EmptyBoundingBox = 0x00000000;
-const int TileSize = 32;
+const int TileSize = RESCALE_X(32);
 
 typedef Common::List<Common::Rect> RectangleList;
 

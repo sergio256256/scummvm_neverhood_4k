@@ -53,9 +53,22 @@ bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeBitmap) {
 		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
+
 		const byte *spriteData = _resourceHandle.data();
 		NPoint *position = doLoadPosition ? &_position : nullptr;
 		parseBitmapResource(spriteData, &_rle, &_dimensions, position, nullptr, &_pixels);
+	
+		if (_resourceHandle.upscaledData()) {
+			_pixels = _resourceHandle.upscaledData();
+			_rle = false;
+			_dimensions.width = RESCALE_X(_dimensions.width);
+			_dimensions.height = RESCALE_Y(_dimensions.height);
+
+			if (position) {
+				position->x = RESCALE_X(position->x);
+				position->y = RESCALE_Y(position->y);
+			}
+		}
 	}
 	return _pixels != nullptr;
 }

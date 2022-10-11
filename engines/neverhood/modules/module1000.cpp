@@ -137,40 +137,40 @@ Scene1001::Scene1001(NeverhoodEngine *vm, Module *parentModule, int which)
 	if (which < 0) {
 		// Restoring game
 		setRectList(0x004B49F0);
-		insertKlaymen<KmScene1001>(200, 433);
+		insertKlaymen<KmScene1001>(RESCALE(200, 433));
 		setMessageList(0x004B4888);
 	} else if (which == 1) {
 		// Klaymen entering from the right
 		setRectList(0x004B49F0);
-		insertKlaymen<KmScene1001>(640, 433);
+		insertKlaymen<KmScene1001>(RESCALE(640, 433));
 		setMessageList(0x004B4898);
 	} else if (which == 2) {
 		// Klaymen returning from looking through the window
 		setRectList(0x004B49F0);
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X)) {
-			insertKlaymen<KmScene1001>(390, 433);
+			insertKlaymen<KmScene1001>(RESCALE(390, 433));
 			_klaymen->setDoDeltaX(1);
 		} else {
-			insertKlaymen<KmScene1001>(300, 433);
+			insertKlaymen<KmScene1001>(RESCALE(300, 433));
 		}
 		setMessageList(0x004B4970);
 	} else {
 		// Klaymen sleeping
 		setRectList(0x004B4A00);
-		insertKlaymen<KmScene1001>(200, 433);
+		insertKlaymen<KmScene1001>(RESCALE(200, 433)); // (200, 433);//
 		setMessageList(0x004B4890);
 	}
 
 	tempSprite = insertStaticSprite(0x2080A3A8, 1300);
 
-	_klaymen->setClipRect(0, 0, tempSprite->getDrawRect().x2(), 480);
+	_klaymen->setClipRect(0, 0, RESCALE(tempSprite->getDrawRect().x2(), 480));
 
 	if (!getGlobalVar(V_DOOR_BUSTED)) {
 		_asDoor = insertSprite<AsScene1001Door>();
-		_asDoor->setClipRect(0, 0, tempSprite->getDrawRect().x2(), 480);
+		_asDoor->setClipRect(0, 0, RESCALE(tempSprite->getDrawRect().x2(), 480));
 	}
 
-	_asLever = insertSprite<AsScene1001Lever>(this, 150, 433, 1);
+	_asLever = insertSprite<AsScene1001Lever>(this, RESCALE(150, 433), 1);
 
 	insertStaticSprite(0x809861A6, 950);
 	insertStaticSprite(0x89C03848, 1100);
@@ -512,7 +512,7 @@ Scene1004::Scene1004(NeverhoodEngine *vm, Module *parentModule, int which)
 	insertStaticSprite(0x3060222E, 1300);
 	tempSprite = insertStaticSprite(0x0E002004, 1300);
 
-	_klaymen->setClipRect(0, tempSprite->getDrawRect().y, 640, 480);
+	_klaymen->setClipRect(0, tempSprite->getDrawRect().y, RESCALE(640, 480));
 	_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 
 	_asTrashCan = insertSprite<AsScene1004TrashCan>();

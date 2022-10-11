@@ -20,14 +20,17 @@
  */
 
 #include "neverhood/resourceman.h"
+#include "image/png.h"
+#include "common/str.h"
 
 namespace Neverhood {
 
 ResourceHandle::ResourceHandle()
-	: _resourceFileEntry(nullptr), _data(nullptr) {
+	: _resourceFileEntry(nullptr), _data(nullptr), _upscaledData(nullptr) {
 }
 
 ResourceHandle::~ResourceHandle() {
+	delete _upscaledData;
 }
 
 ResourceMan::ResourceMan() {
@@ -153,6 +156,47 @@ void ResourceMan::loadResource(ResourceHandle &resourceHandle, bool applyResourc
 			resourceData->dataRefCount = 1;
 		}
 		resourceHandle._data = resourceData->data;
+
+
+
+
+
+		char buf[256];
+		itoa(fileHash, buf, 16);
+		Common::String fname = ""; //"assets\\";
+		fname += buf;
+		fname += ".png";
+
+		Common::File f;
+
+		if (f.exists(fname)) {
+			if (!f.open(fname)) {
+				warning("Couldn't open ");
+				return;
+			}
+
+			resourceHandle._upscaledData = new Image::PNGDecoder();
+			if (!resourceHandle._upscaledData->loadStream(f)) {
+				warning("Couldn't decode ");
+				delete resourceHandle._upscaledData;
+				return;
+			}
+
+			// 		if (resourceHandle._upscaledData->getPalette()) {
+			// 			warning("Indexed colors PNG images are not supported");
+			// 			return false;
+			// 		}
+
+			//resourceHandle._upscaledData = pngDecoder.getSurface()->convertTo(Gfx::Driver::getRGBAPixelFormat());
+		}
+
+		// 	if (StarkSettings->shouldPreMultiplyReplacementPNGs()) {
+		// 		// We can do alpha pre-multiplication when loading for
+		// 		// convenience when testing modded graphics.
+		// 		_surface = multiplyColorWithAlpha(pngDecoder.getSurface());
+		// 	} else {
+		// 		_surface = pngDecoder.getSurface()->convertTo(Gfx::Driver::getRGBAPixelFormat());
+		// 	resourceHandle._upscaledData =
 	}
 }
 

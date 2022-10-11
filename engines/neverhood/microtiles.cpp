@@ -20,6 +20,7 @@
  */
 
 #include "neverhood/microtiles.h"
+#include "neverhood.h"
 
 namespace Neverhood {
 
@@ -40,7 +41,7 @@ void MicroTileArray::addRect(Common::Rect r) {
 	int tx0, ty0, tx1, ty1;
 	int ix0, iy0, ix1, iy1;
 
-	r.clip(Common::Rect(0, 0, 639, 479));
+	r.clip(Common::Rect(0, 0, RESCALE_X(640) - 1, RESCALE_Y(480) - 1));
 
 	ux0 = r.left / TileSize;
 	uy0 = r.top / TileSize;

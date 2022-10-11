@@ -97,18 +97,18 @@ void StaticData::load(const char *filename) {
 		uint32 itemCount = fd.readUint32LE();
 		for (uint32 itemIndex = 0; itemIndex < itemCount; itemIndex++) {
 			RectItem rectItem;
-			rectItem.rect.x1 = fd.readUint16LE();
-			rectItem.rect.y1 = fd.readUint16LE();
-			rectItem.rect.x2 = fd.readUint16LE();
-			rectItem.rect.y2 = fd.readUint16LE();
+			rectItem.rect.x1 = RESCALE_X(fd.readUint16LE());
+			rectItem.rect.y1 = RESCALE_Y(fd.readUint16LE());
+			rectItem.rect.x2 = RESCALE_X(fd.readUint16LE() + 1) - 1;
+			rectItem.rect.y2 = RESCALE_Y(fd.readUint16LE() + 1) - 1;
 			uint32 subItemCount = fd.readUint32LE();
 			rectItem.subRects.reserve(subItemCount);
 			for (uint32 subItemIndex = 0; subItemIndex < subItemCount; subItemIndex++) {
 				SubRectItem subRectItem;
-				subRectItem.rect.x1 = fd.readUint16LE();
-				subRectItem.rect.y1 = fd.readUint16LE();
-				subRectItem.rect.x2 = fd.readUint16LE();
-				subRectItem.rect.y2 = fd.readUint16LE();
+				subRectItem.rect.x1 = RESCALE_X(fd.readUint16LE());
+				subRectItem.rect.y1 = RESCALE_Y(fd.readUint16LE());
+				subRectItem.rect.x2 = RESCALE_X(fd.readUint16LE() + 1) - 1;
+				subRectItem.rect.y2 = RESCALE_Y(fd.readUint16LE() + 1) - 1;
 				subRectItem.messageListId = fd.readUint32LE();
 				rectItem.subRects.push_back(subRectItem);
 			}
@@ -132,10 +132,10 @@ void StaticData::load(const char *filename) {
 		uint32 itemCount = fd.readUint32LE();
 		for (uint32 itemIndex = 0; itemIndex < itemCount; itemIndex++) {
 			HitRect hitRect;
-			hitRect.rect.x1 = fd.readUint16LE();
-			hitRect.rect.y1 = fd.readUint16LE();
-			hitRect.rect.x2 = fd.readUint16LE();
-			hitRect.rect.y2 = fd.readUint16LE();
+			hitRect.rect.x1 = RESCALE_X(fd.readUint16LE());
+			hitRect.rect.y1 = RESCALE_Y(fd.readUint16LE());
+			hitRect.rect.x2 = RESCALE_X(fd.readUint16LE() + 1) - 1;
+			hitRect.rect.y2 = RESCALE_Y(fd.readUint16LE() + 1) - 1;
 			hitRect.type = fd.readUint16LE();
 			hitRectList->push_back(hitRect);
 		}

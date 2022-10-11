@@ -39,8 +39,8 @@ BaseSurface::BaseSurface(NeverhoodEngine *vm, int priority, int16 width, int16 h
 	_sysRect.height = height;
 	_clipRect.x1 = 0;
 	_clipRect.y1 = 0;
-	_clipRect.x2 = 640;
-	_clipRect.y2 = 480;
+	_clipRect.x2 = RESCALE_X(640);
+	_clipRect.y2 = RESCALE_Y(480);
 	_surface = new Graphics::Surface();
 	_surface->create(_sysRect.width, _sysRect.height, Graphics::PixelFormat::createFormatCLUT8());
 }
@@ -245,6 +245,11 @@ void parseBitmapResource(const byte *sprite, bool *rle, NDimensions *dimensions,
 		dimensions->height = 1;
 	}
 
+// 	if (dimensions) {
+// 		dimensions->width = RESCALE_X(dimensions->width);
+// 		dimensions->height = RESCALE_Y(dimensions->height);
+// 	}
+
 	if (flags & BF_HAS_POSITION) {
 		if (position) {
 			position->x = READ_LE_UINT16(sprite);
@@ -255,6 +260,11 @@ void parseBitmapResource(const byte *sprite, bool *rle, NDimensions *dimensions,
 		position->x = 0;
 		position->y = 0;
 	}
+
+// 	if (position) {
+// 		position->x = RESCALE_X(position->x);
+// 		position->y = RESCALE_Y(position->y);
+// 	}
 
 	if (flags & BF_HAS_PALETTE) {
 		if (palette)
@@ -268,6 +278,9 @@ void parseBitmapResource(const byte *sprite, bool *rle, NDimensions *dimensions,
 			*pixels = sprite;
 	} else if (pixels)
 		*pixels = nullptr;
+
+
+
 
 }
 
