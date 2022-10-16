@@ -334,6 +334,32 @@ void unpackSpriteRle(const byte *source, int width, int height, byte *dest, int 
 
 }
 
+void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY) {
+
+	const int sourcePitch = width;
+
+	if (flipY) {
+		dest += destPitch * (height - 1);
+		destPitch = -destPitch;
+	}
+
+	if (!flipX) {
+		while (height-- > 0) {
+			memcpy(dest, source, width);
+			source += sourcePitch;
+			dest += destPitch;
+		}
+	} else {
+		while (height-- > 0) {
+			dest += width - 1;
+			for (int xc = 0; xc < width; xc++)
+				*dest-- = source[xc];
+			source += sourcePitch;
+			dest += destPitch;
+		}
+	}
+}
+
 void unpackSpriteNormal(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY) {
 
 	const int sourcePitch = (width + 3) & 0xFFFC;

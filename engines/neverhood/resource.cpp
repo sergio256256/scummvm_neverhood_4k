@@ -40,7 +40,9 @@ void SpriteResource::draw(Graphics::Surface *destSurface, bool flipX, bool flipY
 	if (_pixels) {
 		byte *dest = (byte*)destSurface->getPixels();
 		const int destPitch = destSurface->pitch;
-		if (_rle)
+		if (_resourceHandle.upscaledData(0))
+			unpackSpriteUpscaled(_pixels, _dimensions.width, _dimensions.height, dest, destPitch, flipX, flipY);
+		else if (_rle)
 			unpackSpriteRle(_pixels, _dimensions.width, _dimensions.height, dest, destPitch, flipX, flipY);
 		else
 			unpackSpriteNormal(_pixels, _dimensions.width, _dimensions.height, dest, destPitch, flipX, flipY);
@@ -53,13 +55,14 @@ bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeBitmap) {
 		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
+		_vm->_res->loadUpscaledResource(_resourceHandle);
 
 		const byte *spriteData = _resourceHandle.data();
 		NPoint *position = doLoadPosition ? &_position : nullptr;
 		parseBitmapResource(spriteData, &_rle, &_dimensions, position, nullptr, &_pixels);
 	
-		if (_resourceHandle.upscaledData()) {
-			_pixels = _resourceHandle.upscaledData();
+		if (_resourceHandle.upscaledData(0)) {
+			_pixels = _resourceHandle.upscaledData(0);
 			_rle = false;
 			_dimensions.width = RESCALE_X(_dimensions.width);
 			_dimensions.height = RESCALE_Y(_dimensions.height);
@@ -128,12 +131,15 @@ AnimResource::~AnimResource() {
 
 void AnimResource::draw(uint frameIndex, Graphics::Surface *destSurface, bool flipX, bool flipY) {
 	const AnimFrameInfo frameInfo = _frames[frameIndex];
-	byte *dest = (byte*)destSurface->getPixels();
+	byte *dest = (byte *)destSurface->getPixels();
 	const int destPitch = destSurface->pitch;
 	_currSpriteData = _spriteData + frameInfo.spriteDataOffs;
 	_width = frameInfo.drawOffset.width;
 	_height = frameInfo.drawOffset.height;
-	if (_replEnabled && _replOldColor != _replNewColor)
+
+	if (_resourceHandle.upscaledData(0))
+		unpackSpriteUpscaled(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY);
+	else if (_replEnabled && _replOldColor != _replNewColor)
 		unpackSpriteRle(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY, _replOldColor, _replNewColor);
 	else
 		unpackSpriteRle(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY);
@@ -157,6 +163,7 @@ bool AnimResource::load(uint32 fileHash) {
 	uint32 spriteDataOfs, paletteDataOfs;
 
 	_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
+	_vm->_res->loadUpscaledResource(_resourceHandle, true);
 	resourceData = _resourceHandle.data();
 
 	animListCount = READ_LE_UINT16(resourceData);
@@ -213,6 +220,21 @@ bool AnimResource::load(uint32 fileHash) {
 			frameInfo.collisionBoundsOffset.x, frameInfo.collisionBoundsOffset.y, frameInfo.collisionBoundsOffset.width, frameInfo.collisionBoundsOffset.height,
 			frameInfo.spriteDataOffs);
 		frameList += 32;
+
+		if (_resourceHandle.upscaledData(0)) {
+			frameInfo.drawOffset.x = RESCALE_X(frameInfo.drawOffset.x);
+			frameInfo.drawOffset.y = RESCALE_Y(frameInfo.drawOffset.y);
+			frameInfo.drawOffset.width = _resourceHandle.upscaledDataWidth(frameIndex);
+			frameInfo.drawOffset.height = _resourceHandle.upscaledDataHeight(frameIndex);
+			frameInfo.deltaX = RESCALE_X(frameInfo.deltaX);
+			frameInfo.deltaY = RESCALE_Y(frameInfo.deltaY);
+			frameInfo.collisionBoundsOffset.x = RESCALE_X(frameInfo.collisionBoundsOffset.x);
+			frameInfo.collisionBoundsOffset.y = RESCALE_Y(frameInfo.collisionBoundsOffset.y);
+			frameInfo.collisionBoundsOffset.width = RESCALE_X(frameInfo.collisionBoundsOffset.width);
+			frameInfo.collisionBoundsOffset.height = RESCALE_Y(frameInfo.collisionBoundsOffset.height);
+			frameInfo.spriteDataOffs = _resourceHandle.upscaledData(frameIndex) - _spriteData; // TODO: 64 bit @@SB
+		}
+
 		_frames.push_back(frameInfo);
 	}
 

@@ -26,11 +26,10 @@
 namespace Neverhood {
 
 ResourceHandle::ResourceHandle()
-	: _resourceFileEntry(nullptr), _data(nullptr), _upscaledData(nullptr) {
+	: _resourceFileEntry(nullptr), _data(nullptr), _extData(nullptr) {
 }
 
 ResourceHandle::~ResourceHandle() {
-	delete _upscaledData;
 }
 
 ResourceMan::ResourceMan() {
@@ -156,48 +155,65 @@ void ResourceMan::loadResource(ResourceHandle &resourceHandle, bool applyResourc
 			resourceData->dataRefCount = 1;
 		}
 		resourceHandle._data = resourceData->data;
-
-
-
-
-
-		char buf[256];
-		itoa(fileHash, buf, 16);
-		Common::String fname = ""; //"assets\\";
-		fname += buf;
-		fname += ".png";
-
-		Common::File f;
-
-		if (f.exists(fname)) {
-			if (!f.open(fname)) {
-				warning("Couldn't open ");
-				return;
-			}
-
-			resourceHandle._upscaledData = new Image::PNGDecoder();
-			if (!resourceHandle._upscaledData->loadStream(f)) {
-				warning("Couldn't decode ");
-				delete resourceHandle._upscaledData;
-				return;
-			}
-
-			// 		if (resourceHandle._upscaledData->getPalette()) {
-			// 			warning("Indexed colors PNG images are not supported");
-			// 			return false;
-			// 		}
-
-			//resourceHandle._upscaledData = pngDecoder.getSurface()->convertTo(Gfx::Driver::getRGBAPixelFormat());
-		}
-
-		// 	if (StarkSettings->shouldPreMultiplyReplacementPNGs()) {
-		// 		// We can do alpha pre-multiplication when loading for
-		// 		// convenience when testing modded graphics.
-		// 		_surface = multiplyColorWithAlpha(pngDecoder.getSurface());
-		// 	} else {
-		// 		_surface = pngDecoder.getSurface()->convertTo(Gfx::Driver::getRGBAPixelFormat());
-		// 	resourceHandle._upscaledData =
 	}
+}
+
+
+void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, bool isAnimation) {
+	unloadUpscaledResource(resourceHandle);
+
+	Common::Array<Common::String> fnames;
+
+	char buf[256];
+	itoa(resourceHandle.fileHash(), buf, 16);
+	Common::String fname = buf;
+
+	if (!isAnimation) {
+		Common::File file;
+
+		fname += ".png";
+		if (file.exists(fname)) {
+			fnames.push_back(fname);
+		}
+	} else {
+		Common::File file;
+
+		int index = 0;
+		while (true) 
+		{
+			Common::String index_fname = Common::String::format("%s-%03d.png", fname.c_str(), index);
+			index++;
+
+			if (file.exists(index_fname)) {
+				fnames.push_back(index_fname);
+			} else {
+				break;
+			}
+		}
+	}
+
+
+	for (Common::String cur_fname : fnames) {
+		Common::File file;
+		file.open(cur_fname);
+
+		Image::PNGDecoder *decoder = new Image::PNGDecoder();
+		if (decoder->loadStream(file)) {
+			resourceHandle._upscaledData.push_back(decoder);
+		}
+		else {
+			warning("Couldn't decode ");
+			delete decoder;
+			continue;
+		}
+	}
+}
+
+void ResourceMan::unloadUpscaledResource(ResourceHandle &resourceHandle) {
+	for (Image::PNGDecoder *d : resourceHandle._upscaledData) {
+		delete d;
+	}
+	resourceHandle._upscaledData.clear();
 }
 
 void ResourceMan::unloadResource(ResourceHandle &resourceHandle) {
@@ -207,6 +223,7 @@ void ResourceMan::unloadResource(ResourceHandle &resourceHandle) {
 			--resourceData->dataRefCount;
 		resourceHandle._resourceFileEntry = nullptr;
 		resourceHandle._data = nullptr;
+		unloadUpscaledResource(resourceHandle);
 	}
 }
 

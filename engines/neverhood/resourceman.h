@@ -63,14 +63,17 @@ public:
 	const byte *extData() const { return _extData; };
 	uint32 fileHash() const { return isValid() ? _resourceFileEntry->archiveEntry->fileHash : 0; };
 
-	const byte *upscaledData() const { return _upscaledData ? (byte *)_upscaledData->getSurface()->getPixels() : 0; }
+	const byte *upscaledData(unsigned int index) const { return _upscaledData.size() > index ? (byte *)_upscaledData[index]->getSurface()->getPixels() : 0; }
+	int upscaledDataWidth(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->getSurface()->w : 0; }
+	int upscaledDataHeight(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->getSurface()->h : 0; }
+
 	//const byte *upscaledData() const { return _upscaledData ? (byte *)_upscaledData->getSurface()->convertTo(Graphics::PixelFormat::createFormatCLUT8()) : 0; }
 	ResourceFileEntry *_resourceFileEntry;
 	const byte *_extData;
 	const byte *_data;
 	//Graphics::Surface *_upscaledData;
 
-	Image::PNGDecoder *_upscaledData;
+	Common::Array<Image::PNGDecoder*> _upscaledData;
 };
 
 class ResourceMan {
@@ -85,9 +88,13 @@ public:
 	uint getEntryCount() { return _entries.size(); }
 	void queryResource(uint32 fileHash, ResourceHandle &resourceHandle);
 	void loadResource(ResourceHandle &resourceHandle, bool applyResourceFixes);
+	void loadUpscaledResource(ResourceHandle &resourceHandle, bool isAnimation = false);
 	void unloadResource(ResourceHandle &resourceHandle);
+
 	void purgeResources();
 protected:
+	void unloadUpscaledResource(ResourceHandle &resourceHandle);
+
 	typedef Common::HashMap<uint32, ResourceFileEntry> EntriesMap;
 	Common::Array<BlbArchive*> _archives;
 	EntriesMap _entries;

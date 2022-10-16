@@ -155,6 +155,7 @@ protected:
 void parseBitmapResource(const byte *sprite, bool *rle, NDimensions *dimensions, NPoint *position, const byte **palette, const byte **pixels);
 void unpackSpriteRle(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY, byte oldColor = 0, byte newColor = 0);
 void unpackSpriteNormal(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY);
+void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY);
 int calcDistance(int16 x1, int16 y1, int16 x2, int16 y2);
 
 } // End of namespace Neverhood
