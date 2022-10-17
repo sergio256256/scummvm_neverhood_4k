@@ -159,14 +159,11 @@ void ResourceMan::loadResource(ResourceHandle &resourceHandle, bool applyResourc
 }
 
 
-void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, bool isAnimation) {
+void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fileHash, bool isAnimation) {
 	unloadUpscaledResource(resourceHandle);
 
 	Common::Array<Common::String> fnames;
-
-	char buf[256];
-	itoa(resourceHandle.fileHash(), buf, 16);
-	Common::String fname = buf;
+	Common::String fname = Common::String::format("%08X", fileHash);
 
 	if (!isAnimation) {
 		Common::File file;

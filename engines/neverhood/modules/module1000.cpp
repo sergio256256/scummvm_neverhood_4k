@@ -163,11 +163,11 @@ Scene1001::Scene1001(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	tempSprite = insertStaticSprite(0x2080A3A8, 1300);
 
-	_klaymen->setClipRect(0, 0, RESCALE(tempSprite->getDrawRect().x2(), 480));
+	_klaymen->setClipRect(0, 0, tempSprite->getDrawRect().x2(), RESCALE_Y(480));
 
 	if (!getGlobalVar(V_DOOR_BUSTED)) {
 		_asDoor = insertSprite<AsScene1001Door>();
-		_asDoor->setClipRect(0, 0, RESCALE(tempSprite->getDrawRect().x2(), 480));
+		_asDoor->setClipRect(0, 0, tempSprite->getDrawRect().x2(), RESCALE_Y(480));
 	}
 
 	_asLever = insertSprite<AsScene1001Lever>(this, RESCALE(150, 433), 1);

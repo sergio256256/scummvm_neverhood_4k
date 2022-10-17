@@ -55,7 +55,7 @@ bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeBitmap) {
 		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
-		_vm->_res->loadUpscaledResource(_resourceHandle);
+		_vm->_res->loadUpscaledResource(_resourceHandle, fileHash);
 
 		const byte *spriteData = _resourceHandle.data();
 		NPoint *position = doLoadPosition ? &_position : nullptr;
@@ -63,7 +63,6 @@ bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 	
 		if (_resourceHandle.upscaledData(0)) {
 			_pixels = _resourceHandle.upscaledData(0);
-			_rle = false;
 			_dimensions.width = RESCALE_X(_dimensions.width);
 			_dimensions.height = RESCALE_Y(_dimensions.height);
 
@@ -163,7 +162,7 @@ bool AnimResource::load(uint32 fileHash) {
 	uint32 spriteDataOfs, paletteDataOfs;
 
 	_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
-	_vm->_res->loadUpscaledResource(_resourceHandle, true);
+	_vm->_res->loadUpscaledResource(_resourceHandle, fileHash, true);
 	resourceData = _resourceHandle.data();
 
 	animListCount = READ_LE_UINT16(resourceData);
@@ -279,6 +278,12 @@ NDimensions AnimResource::loadSpriteDimensions(uint32 fileHash) {
 	if (resDimensions) {
 		dimensions.width = READ_LE_UINT16(resDimensions + 0);
 		dimensions.height = READ_LE_UINT16(resDimensions + 2);
+
+		if (resourceHandle.upscaledData(0)) {
+			dimensions.width = resourceHandle.upscaledDataWidth(0);
+			dimensions.height = resourceHandle.upscaledDataHeight(0);
+		}
+
 	} else {
 		dimensions.width = 0;
 		dimensions.height = 0;
@@ -291,14 +296,14 @@ NDimensions AnimResource::loadSpriteDimensions(uint32 fileHash) {
 MouseCursorResource::MouseCursorResource(NeverhoodEngine *vm)
 	: _cursorSprite(vm), _cursorNum(4), _currFileHash(0) {
 
-	_rect.width = 32;
-	_rect.height = 32;
+	_rect.width = RESCALE_X(32);
+	_rect.height = RESCALE_Y(32);
 }
 
 void MouseCursorResource::load(uint32 fileHash) {
 	if (_currFileHash != fileHash) {
 		if (_cursorSprite.load(fileHash) && !_cursorSprite.isRle() &&
-			_cursorSprite.getDimensions().width == 96 && _cursorSprite.getDimensions().height == 224) {
+			_cursorSprite.getDimensions().width == RESCALE_X(96) && _cursorSprite.getDimensions().height == RESCALE_Y(224)) {
 			_currFileHash = fileHash;
 		} else {
 			unload();
@@ -314,13 +319,13 @@ void MouseCursorResource::unload() {
 
 NDrawRect& MouseCursorResource::getRect() {
 	static const NPoint kCursorHotSpots[] = {
-		{-15, -5},
-		{-17, -25},
-		{-17, -30},
-		{-14, -1},
-		{-3, -7},
-		{-30, -18},
-		{-1, -18}
+		{RESCALE_X(-15), RESCALE_Y(-5)},
+		{RESCALE_X(-17), RESCALE_Y(-25)},
+		{RESCALE_X(-17), RESCALE_Y(-30)},
+		{RESCALE_X(-14), RESCALE_Y(-1)},
+		{RESCALE_X(-3), RESCALE_Y(-7)},
+		{RESCALE_X(-30), RESCALE_Y(-18)},
+		{RESCALE_X(-1), RESCALE_Y(-18)}
 	};
 	_rect.x = kCursorHotSpots[_cursorNum].x;
 	_rect.y = kCursorHotSpots[_cursorNum].y;
@@ -329,12 +334,12 @@ NDrawRect& MouseCursorResource::getRect() {
 
 void MouseCursorResource::draw(int frameNum, Graphics::Surface *destSurface) {
 	if (_cursorSprite.getPixels()) {
-		const int sourcePitch = (_cursorSprite.getDimensions().width + 3) & 0xFFFC; // 4 byte alignment
+		const int sourcePitch =  (_cursorSprite.getDimensions().width + 3) & 0xFFFC; // 4 byte alignment
 		const int destPitch = destSurface->pitch;
-		const byte *source = _cursorSprite.getPixels() + _cursorNum * (sourcePitch * 32) + frameNum * 32;
+		const byte *source = _cursorSprite.getPixels() + _cursorNum * (sourcePitch * RESCALE_Y(32)) + frameNum * RESCALE_X(32);
 		byte *dest = (byte*)destSurface->getPixels();
-		for (int16 yc = 0; yc < 32; yc++) {
-			memcpy(dest, source, 32);
+		for (int16 yc = 0; yc < RESCALE_Y(32); yc++) {
+			memcpy(dest, source, RESCALE_X(32));
 			source += sourcePitch;
 			dest += destPitch;
 		}
@@ -598,6 +603,7 @@ DataResource::DRDirectoryItem *DataResource::findDRDirectoryItem(uint32 nameHash
 	return nullptr;
 }
 
+// TODO: do something about upscaled hash @@SB
 uint32 calcHash(const char *value) {
 	uint32 hash = 0, shiftValue = 0;
 	while (*value != 0) {

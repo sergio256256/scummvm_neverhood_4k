@@ -88,7 +88,7 @@ public:
 	uint getEntryCount() { return _entries.size(); }
 	void queryResource(uint32 fileHash, ResourceHandle &resourceHandle);
 	void loadResource(ResourceHandle &resourceHandle, bool applyResourceFixes);
-	void loadUpscaledResource(ResourceHandle &resourceHandle, bool isAnimation = false);
+	void loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fileHash, bool isAnimation = false);
 	void unloadResource(ResourceHandle &resourceHandle);
 
 	void purgeResources();

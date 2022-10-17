@@ -613,14 +613,14 @@ StaticScene::StaticScene(NeverhoodEngine *vm, Module *parentModule, uint32 backg
 
 	setBackground(backgroundFileHash);
 	setPalette(backgroundFileHash);
-	insertPuzzleMouse(cursorFileHash, 20, 620);
+	insertPuzzleMouse(cursorFileHash, RESCALE_X(20), RESCALE_X(620));
 }
 
 uint32 StaticScene::handleMessage(int messageNum, const MessageParam &param, Entity *sender) {
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620)
+		if (param.asPoint().x <= RESCALE_X(20) || param.asPoint().x >= RESCALE_X(620))
 			leaveScene(0);
 		break;
 	default:

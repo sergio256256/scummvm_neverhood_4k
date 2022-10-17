@@ -70,13 +70,13 @@ void Mouse::init(uint32 fileHash) {
 	_mouseCursorResource.load(fileHash);
 	_x = _vm->getMouseX();
 	_y = _vm->getMouseY();
-	createSurface(2000, 32, 32);
+	createSurface(2000, RESCALE(32, 32));
 	SetUpdateHandler(&Mouse::update);
 	SetMessageHandler(&Mouse::handleMessage);
 	_drawOffset.x = 0;
 	_drawOffset.y = 0;
-	_drawOffset.width = 32;
-	_drawOffset.height = 32;
+	_drawOffset.width = RESCALE_X(32);
+	_drawOffset.height = RESCALE_Y(32);
 	_collisionBoundsOffset = _drawOffset;
 	updateBounds();
 	_needRefresh = true;
@@ -110,40 +110,40 @@ uint32 Mouse::handleMessage(int messageNum, const MessageParam &param, Entity *s
 		_y = param.asPoint().y;
 		switch (_type) {
 		case 1:
-			if (_x >= 320)
+			if (_x >= RESCALE_X(320))
 				messageResult = 1;
 			else
 				messageResult = 0;
 			break;
 		case 2:
 		default:
-			if (_x < 100)
+			if (_x < RESCALE_X(100))
 				messageResult = 0;
-			else if (_x > 540)
+			else if (_x > RESCALE_X(540))
 				messageResult = 1;
 			else
 				messageResult = 2;
 			break;
 		case 3:
-			if (_x < 100)
+			if (_x < RESCALE_X(100))
 				messageResult = 0;
-			else if (_x > 540)
+			else if (_x > RESCALE_X(540))
 				messageResult = 1;
 			else
 				messageResult = 4;
 			break;
 		case 4:
-			if (_x < 100)
+			if (_x < RESCALE_X(100))
 				messageResult = 0;
-			else if (_x > 540)
+			else if (_x > RESCALE_X(540))
 				messageResult = 1;
-			else if (_y >= 150)
+			else if (_y >= RESCALE_Y(150))
 				messageResult = 2;
 			else
 				messageResult = 3;
 			break;
 		case 5:
-			if (_y >= 240)
+			if (_y >= RESCALE_X(240))
 				messageResult = 4;
 			else
 				messageResult = 3;
@@ -212,38 +212,38 @@ void Mouse::updateCursorNum() {
 	case kMouseTypeNavigation:
 		switch (_type) {
 		case 1:
-			if (_x >= 320)
+			if (_x >= RESCALE_X(320))
 				_mouseCursorResource.setCursorNum(5);
 			else
 				_mouseCursorResource.setCursorNum(6);
 			break;
 		case 2:
 		default:
-			if (_x < 100)
+			if (_x < RESCALE_X(100))
 				_mouseCursorResource.setCursorNum(6);
-			else if (_x > 540)
+			else if (_x > RESCALE_X(540))
 				_mouseCursorResource.setCursorNum(5);
 			else
 				_mouseCursorResource.setCursorNum(0);
 			break;
 		case 3:
-			if (_x < 100)
+			if (_x < RESCALE_X(100))
 				_mouseCursorResource.setCursorNum(1);
-			else if (_x > 540)
+			else if (_x > RESCALE_X(540))
 				_mouseCursorResource.setCursorNum(1);
 			break;
 		case 4:
-			if (_x < 100)
+			if (_x < RESCALE_X(100))
 				_mouseCursorResource.setCursorNum(6);
-			else if (_x > 540)
+			else if (_x > RESCALE_X(540))
 				_mouseCursorResource.setCursorNum(5);
-			else if (_y >= 150)
+			else if (_y >= RESCALE_X(150))
 				_mouseCursorResource.setCursorNum(0);
 			else
 				_mouseCursorResource.setCursorNum(3);
 			break;
 		case 5:
-			if (_y >= 240)
+			if (_y >= RESCALE_Y(240))
 				_mouseCursorResource.setCursorNum(2);
 			else
 				_mouseCursorResource.setCursorNum(3);
