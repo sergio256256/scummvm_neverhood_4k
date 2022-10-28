@@ -42,14 +42,16 @@ Module1700::Module1700(NeverhoodEngine *vm, Module *parentModule, int which)
 	_vm->_soundMan->setSoundListParams(kModule1700SoundList, true, 50, 600, 5, 150);
 	_vm->_soundMan->playTwoSounds(0x04212331, 0x41861371, 0x43A2507F, 0);
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else if (which == 0)
-		createScene(0, -1);
-	else if (which == 1)
-		createScene(4, 1);
-	else
-		createScene(4, 3);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else if (which == 0)
+			createScene(0, -1);
+		else if (which == 1)
+			createScene(4, 1);
+		else
+			createScene(4, 3);
+	}
 
 }
 

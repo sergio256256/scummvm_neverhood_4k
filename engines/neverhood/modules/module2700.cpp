@@ -89,15 +89,17 @@ Module2700::Module2700(NeverhoodEngine *vm, Module *parentModule, int which)
 	_vm->_soundMan->startMusic(0x04020210, 24, 2);
 	SetMessageHandler(&Module2700::handleMessage);
 
-	if (which < 0) {
-		which = _vm->gameState().which;
-		// Scenes 0, 30 and 31 are "normal" scenes, whereas the other scenes are tracks.
-		// "gameState().which" indicates which track the car is at.
-		if (_vm->gameState().sceneNum == 0 || _vm->gameState().sceneNum == 30 || _vm->gameState().sceneNum == 31)
-			which = -1;
-		createScene(_vm->gameState().sceneNum, which);
-	} else
-		createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which < 0) {
+			which = _vm->gameState().which;
+			// Scenes 0, 30 and 31 are "normal" scenes, whereas the other scenes are tracks.
+			// "gameState().which" indicates which track the car is at.
+			if (_vm->gameState().sceneNum == 0 || _vm->gameState().sceneNum == 30 || _vm->gameState().sceneNum == 31)
+				which = -1;
+			createScene(_vm->gameState().sceneNum, which);
+		} else
+			createScene(0, 0);
+	}
 
 	loadSound(0, 0x00880CCC);
 	loadSound(1, 0x00880CC0);

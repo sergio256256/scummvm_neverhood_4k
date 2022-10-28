@@ -41,12 +41,14 @@ static const uint32 kModule1100SoundList[] = {
 Module1100::Module1100(NeverhoodEngine *vm, Module *parentModule, int which)
 	: Module(vm, parentModule) {
 
-	if (which < 0) {
-		createScene(_vm->gameState().sceneNum, -1);
-	} else if (which == 1) {
-		createScene(8, 1);
-	} else {
-		createScene(8, 3);
+	if (which != DBG_HEX) {
+		if (which < 0) {
+			createScene(_vm->gameState().sceneNum, -1);
+		} else if (which == 1) {
+			createScene(8, 1);
+		} else {
+			createScene(8, 3);
+		}
 	}
 
 	_vm->_soundMan->addSoundList(0x0002C818, kModule1100SoundList);

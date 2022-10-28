@@ -37,6 +37,8 @@ typedef Common::Array<NPoint> NPointArray;
 
 struct NDimensions {
 	int16 width, height;
+
+	NDimensions() : width(0), height(0) {}
 };
 
 struct NRect {

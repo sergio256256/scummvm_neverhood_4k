@@ -190,6 +190,11 @@ void Mouse::updateCursor() {
 
 }
 
+
+uint32 Mouse::getFileHash() const {
+	return _mouseCursorResource.getFileHash();
+}
+
 void Mouse::updateCursorNum() {
 	switch (_mouseType) {
 	case kMouseType433:

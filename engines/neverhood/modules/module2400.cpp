@@ -34,10 +34,12 @@ Module2400::Module2400(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	_vm->_soundMan->addMusic(0x202D1010, 0xB110382D);
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else
-		createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else
+			createScene(0, 0);
+	}
 
 }
 

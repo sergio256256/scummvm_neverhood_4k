@@ -35,10 +35,11 @@ Module2900::Module2900(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	_teleporterModuleResult = -1;
 
-	if (which >= 0)
-		setGlobalVar(V_TELEPORTER_WHICH, which);
-
-	createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which >= 0)
+			setGlobalVar(V_TELEPORTER_WHICH, which);
+		createScene(0, 0);
+	}
 }
 
 void Module2900::createScene(int sceneNum, int which) {

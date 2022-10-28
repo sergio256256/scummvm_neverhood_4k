@@ -29,6 +29,7 @@
 namespace Neverhood {
 
 class Module1900 : public Module {
+	friend class GameModule;
 public:
 	Module1900(NeverhoodEngine *vm, Module *parentModule, int which);
 	~Module1900() override;

@@ -40,6 +40,7 @@ Console::Console(NeverhoodEngine *vm) : GUI::Debugger(), _vm(vm) {
 	registerCmd("playsound",		WRAP_METHOD(Console, Cmd_PlaySound));
 	registerCmd("scene",			WRAP_METHOD(Console, Cmd_Scene));
 	registerCmd("surfaces",		WRAP_METHOD(Console, Cmd_Surfaces));
+	registerCmd("dump", WRAP_METHOD(Console, Cmd_Dump));
 }
 
 Console::~Console() {
@@ -95,6 +96,13 @@ bool Console::Cmd_Scene(int argc, const char **argv) {
 bool Console::Cmd_Surfaces(int argc, const char **argv) {
 	if (_vm->_gameModule->_childObject) {
 		((Scene *)((GameModule *)_vm->_gameModule->_childObject)->_childObject)->printSurfaces(this);
+	}
+	return true;
+}
+
+bool Console::Cmd_Dump(int argc, const char **argv) {
+	if (_vm->_gameModule->_childObject) {
+		((Scene *)((GameModule *)_vm->_gameModule->_childObject)->_childObject)->dumpPaletteData("_dump");
 	}
 	return true;
 }

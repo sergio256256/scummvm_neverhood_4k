@@ -34,9 +34,10 @@
 #include "neverhood/console.h"
 #include "neverhood/messages.h"
 
-#define RESCALE_X(x) ((x)*2880 / 640)
-#define RESCALE_Y(y) ((y)*2160 / 480)
+#define RESCALE_X(x) ((x))
+#define RESCALE_Y(y) ((y))
 #define RESCALE(x, y) RESCALE_X(x), RESCALE_Y(y)
+#define DBG_HEX 0xDB9
 
 struct ADGameDescription;
 

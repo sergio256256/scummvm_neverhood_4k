@@ -60,6 +60,9 @@ public:
 	int getPreviousModuleNum() { return _moduleNum; }
 
 	void createModule(int moduleNum, int which);
+
+	void iterateAllModulesAndScenes();
+
 protected:
 	int _moduleNum;
 	Entity *_prevChildObject;
@@ -74,6 +77,8 @@ protected:
 	void openMainMenu();
 	void createMenuModule();
 	void updateMenuModule();
+	
+	void createModuleWithScene(int moduleNum, int sceneNum);
 };
 
 class NonRepeatingRandomNumbers : public Common::Array<int> {

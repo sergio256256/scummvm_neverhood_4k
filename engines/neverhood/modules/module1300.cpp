@@ -52,52 +52,54 @@ Module1300::Module1300(NeverhoodEngine *vm, Module *parentModule, int which)
 	_vm->_soundMan->setSoundVolume(0x48498E46, 70);
 	_vm->_soundMan->setSoundVolume(0x50399F64, 70);
 
-	if (which < 0) {
-		if (_vm->gameState().sceneNum >= 1 && _vm->gameState().sceneNum <= 17)
-			createScene(_vm->gameState().sceneNum, -1);
-		else
-			createScene(11, 0);
-	} else {
-		switch (which) {
-		case 0:
-			createScene(11, 0);
-			break;
-		case 1:
-			createScene(13, 0);
-			break;
-		case 2:
-			createScene(14, 0);
-			break;
-		case 3:
-			createScene(15, 0);
-			break;
-		case 4:
-			createScene(7, 0);
-			break;
-		case 5:
-			createScene(5, 1);
-			break;
-		case 6:
-			createScene(5, 5);
-			break;
-		case 7:
-			createScene(3, 0);
-			break;
-		case 8:
-			createScene(1, 0);
-			break;
-		case 9:
-			createScene(2, 0);
-			break;
-		case 10:
-			createScene(6, 0);
-			break;
-		case 11:
-			createScene(4, 0);
-			break;
-		default:
-			createScene(12, 0);
-			break;
+	if (which != DBG_HEX) {
+		if (which < 0) {
+			if (_vm->gameState().sceneNum >= 1 && _vm->gameState().sceneNum <= 17)
+				createScene(_vm->gameState().sceneNum, -1);
+			else
+				createScene(11, 0);
+		} else {
+			switch (which) {
+			case 0:
+				createScene(11, 0);
+				break;
+			case 1:
+				createScene(13, 0);
+				break;
+			case 2:
+				createScene(14, 0);
+				break;
+			case 3:
+				createScene(15, 0);
+				break;
+			case 4:
+				createScene(7, 0);
+				break;
+			case 5:
+				createScene(5, 1);
+				break;
+			case 6:
+				createScene(5, 5);
+				break;
+			case 7:
+				createScene(3, 0);
+				break;
+			case 8:
+				createScene(1, 0);
+				break;
+			case 9:
+				createScene(2, 0);
+				break;
+			case 10:
+				createScene(6, 0);
+				break;
+			case 11:
+				createScene(4, 0);
+				break;
+			default:
+				createScene(12, 0);
+				break;
+			}
 		}
 	}
 

@@ -184,6 +184,10 @@ void StaticSprite::updatePosition() {
 
 }
 
+uint32 StaticSprite::getFileHash() const {
+	return _spriteResource.getFileHash();
+}
+
 // AnimatedSprite
 
 AnimatedSprite::AnimatedSprite(NeverhoodEngine *vm, int objectPriority)

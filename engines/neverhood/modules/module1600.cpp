@@ -36,18 +36,20 @@ static const uint32 kModule1600SoundList[] = {
 Module1600::Module1600(NeverhoodEngine *vm, Module *parentModule, int which)
 	: Module(vm, parentModule) {
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else if (which == 1)
-		createScene(4, 1);
-	else if (which == 2)
-		createScene(5, 0);
-	else if (which == 3)
-		createScene(6, 1);
-	else if (which == 4)
-		createScene(1, 0);
-	else
-		createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else if (which == 1)
+			createScene(4, 1);
+		else if (which == 2)
+			createScene(5, 0);
+		else if (which == 3)
+			createScene(6, 1);
+		else if (which == 4)
+			createScene(1, 0);
+		else
+			createScene(0, 0);
+	}
 
 	_vm->_soundMan->addSoundList(0x1A008D8, kModule1600SoundList);
 	_vm->_soundMan->setSoundListParams(kModule1600SoundList, true, 50, 600, 5, 150);

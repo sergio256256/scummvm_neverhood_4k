@@ -22,12 +22,13 @@
 #include "neverhood/console.h"
 #include "neverhood/scene.h"
 #include "neverhood/smackerplayer.h"
+#include "diskplayerscene.h"
 
 namespace Neverhood {
 
 Scene::Scene(NeverhoodEngine *vm, Module *parentModule)
 	: Entity(vm, 0), _parentModule(parentModule), _dataResource(vm), _hitRects(nullptr),
-	_mouseCursorWasVisible(true) {
+	_mouseCursorWasVisible(true), _palette(nullptr) {
 
 	_isKlaymenBusy = false;
 	_doConvertMessages = false;
@@ -205,6 +206,18 @@ void Scene::setPalette(uint32 fileHash) {
 	_palette->usePalette();
 }
 
+
+Common::Array<byte> Scene::getPalette() const {
+	Common::Array<byte> data;
+
+	if (_palette && _palette->data()) {
+		data.resize(256 * 4);
+		memcpy(data.data(), _palette->data(), 256 * 4);
+	}
+
+	return data;
+}
+
 void Scene::setHitRects(uint32 id) {
 	setHitRects(_vm->_staticData->getHitRectList(id));
 }
@@ -251,7 +264,6 @@ SmackerPlayer *Scene::addSmackerPlayer(SmackerPlayer *smackerPlayer) {
 }
 
 void Scene::update() {
-
 	if (_mouseClicked) {
 		if (_klaymen) {
 			if (_canAcceptInput &&
@@ -594,6 +606,106 @@ void Scene::checkCollision(Sprite *sprite, uint16 flags, int messageNum, uint32 
 		if ((sprite->getFlags() & flags) && collSprite->checkCollision(sprite->getCollisionBounds())) {
 			sprite->sendMessage(collSprite, messageNum, messageParam);
 		}
+	}
+}
+
+
+void Scene::dumpPaletteData(const Common::String &name) const {
+
+	Common::String root_path = "C:/Projects/ScummVM/Neverhood/Assets/palettes/";
+	Common::String intermediate_path = root_path + "intermediate/";
+
+	{
+		auto arr = this->getPalette();
+		Common::String path(intermediate_path + name + ".gpl");
+		Common::FSNode file(path);
+		Common::WriteStream *stream = file.createWriteStream();
+		if (!arr.empty()) {
+			stream->writeString("GIMP Palette\nName: neverhood\nColumns: 256\n#");
+		}
+		for (unsigned int i = 0; i < arr.size(); i += 4) {
+			stream->writeString(Common::String::format("\n%d %d %d   Index %d", arr[i + 0], arr[i + 1], arr[i + 2], i / 4));
+		}
+		stream->finalize();
+		delete stream;
+	}
+
+	Common::String palette;
+	{
+		auto data = _vm->_screen->getPaletteData();
+		Common::Array<byte> arr;
+		if (data) {
+			arr.resize(256 * 4);
+			memcpy(arr.data(), data, 256 * 4);
+		}
+
+		for (unsigned int i = 0; i < arr.size(); i += 4) {
+			palette += Common::String::format("%d %d %d ", arr[i + 0], arr[i + 1], arr[i + 2]);
+		}
+
+		Common::String path(intermediate_path + name + ".csv");
+		Common::FSNode file(path);
+		Common::WriteStream *stream = file.createWriteStream();
+		stream->writeString(palette);
+		stream->finalize();
+		delete stream;
+	}
+
+	int chunk_size = palette.size() / 3;
+	Common::String palette1 = palette.substr(0, chunk_size);
+	Common::String palette2 = palette.substr(chunk_size, chunk_size);
+	Common::String palette3 = palette.substr(chunk_size * 2);
+
+	{
+		auto arr = this->getPalette();
+		Common::String path(intermediate_path + name + ".txt");
+		Common::FSNode file(path);
+		Common::WriteStream *stream = file.createWriteStream();
+
+		Common::String bat_path(intermediate_path + name + ".bat");
+		Common::FSNode bat_file(bat_path);
+		Common::WriteStream *bat_stream = bat_file.createWriteStream();
+
+		Common::HashMap<uint32, uint32> hashes;
+		for (auto &e : this->_entities) {
+
+			if (Mouse *mouse = dynamic_cast<Mouse *>(e)) {
+				hashes[mouse->getFileHash()] = 1;
+			} else if (StaticSprite *sprite = dynamic_cast<StaticSprite *>(e)) {
+				hashes[sprite->getFileHash()] = 1;
+			} else if (DiskplayerSlot *slot = dynamic_cast<DiskplayerSlot *>(e)) {
+
+				sprite = dynamic_cast<StaticSprite *>(slot->getActiveSlot());
+				if (sprite)
+					hashes[sprite->getFileHash()] = 1;
+				sprite = dynamic_cast<StaticSprite *>(slot->getAppearSlot());
+				if (sprite)
+					hashes[sprite->getFileHash()] = 1;
+				sprite = dynamic_cast<StaticSprite *>(slot->getInactiveSlot());
+				if (sprite)
+					hashes[sprite->getFileHash()] = 1;
+			}
+		}
+		if (!hashes.empty()) {
+
+			for (auto &p : hashes) {
+				uint32 hash = p._key;
+				Common::String hash_string = Common::String::format("%08X.png", hash);
+				stream->writeString(hash_string + "\n");
+
+				//if (!Common::File::exists(root_path + "original/paletted/" + hash_string)) {
+				//	bat_stream->writeString("REM ");
+				//}
+
+				bat_stream->writeString("gimp-console-2.10.exe -b \"(apply-palette \\\"../original/paletted/" + hash_string + "\\\" \\\"../converted/" + hash_string + "\\\" \\\"../intermediate/" + name + ".csv" + "\\\") (gimp-quit 0)\"\n");
+			}
+		}
+
+		stream->finalize();
+		delete stream;
+
+		bat_stream->finalize();
+		delete bat_stream;
 	}
 }
 

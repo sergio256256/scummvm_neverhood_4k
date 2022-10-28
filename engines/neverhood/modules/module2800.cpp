@@ -39,14 +39,16 @@ Module2800::Module2800(NeverhoodEngine *vm, Module *parentModule, int which)
 	_vm->_soundMan->addMusic(0x64210814, 0xD2FA4D14);
 	setGlobalVar(V_RADIO_MOVE_DISH_VIDEO, 1);
 
-	if (which < 0) {
-		createScene(_vm->gameState().sceneNum, which);
-	} else if (which == 2) {
-		createScene(4, 3);
-	} else if (which == 1) {
-		createScene(4, 1);
-	} else {
-		createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which < 0) {
+			createScene(_vm->gameState().sceneNum, which);
+		} else if (which == 2) {
+			createScene(4, 3);
+		} else if (which == 1) {
+			createScene(4, 1);
+		} else {
+			createScene(0, 0);
+		}
 	}
 
 }
@@ -177,6 +179,7 @@ void Module2800::createScene(int sceneNum, int which) {
 		break;
 	case 1001:	// tower rotation video
 		_vm->_soundMan->stopMusic(0xD2FA4D14, 0, 0);
+		if (_musicResource)
 		_musicResource->stop(0);
 		_currentMusicFileHash = 0;
 		createSmackerScene(0x00800801, true, true, false);

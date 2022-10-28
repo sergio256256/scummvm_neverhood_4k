@@ -35,11 +35,12 @@ Module1900::Module1900(NeverhoodEngine *vm, Module *parentModule, int which)
 	: Module(vm, parentModule) {
 
 	// NOTE: The original has a Scene1908 here as well but it's not used here but in another module...
-
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else
-		createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else
+			createScene(0, 0);
+	}
 
 	_vm->_soundMan->addSoundList(0x04E1C09C, kModule1900SoundList);
 	_vm->_soundMan->setSoundListParams(kModule1900SoundList, true, 50, 600, 5, 150);

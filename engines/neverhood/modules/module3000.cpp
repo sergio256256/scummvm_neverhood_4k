@@ -54,18 +54,19 @@ Module3000::Module3000(NeverhoodEngine *vm, Module *parentModule, int which)
 		_vm->_soundMan->playSoundLooping(0x90F0D1C3);
 	}
 
-	if (which < 0) {
-		createScene(_vm->gameState().sceneNum, -1);
-	} else if (which == 0) {
-		createScene(1, 0);
-	} else if (which == 1) {
-		createScene(4, 2);
-	} else if (which == 2) {
-		createScene(4, 1);
-	} else if (which == 3) {
-		createScene(5, 1);
+	if (which != DBG_HEX) {
+		if (which < 0) {
+			createScene(_vm->gameState().sceneNum, -1);
+		} else if (which == 0) {
+			createScene(1, 0);
+		} else if (which == 1) {
+			createScene(4, 2);
+		} else if (which == 2) {
+			createScene(4, 1);
+		} else if (which == 3) {
+			createScene(5, 1);
+		}
 	}
-
 }
 
 Module3000::~Module3000() {

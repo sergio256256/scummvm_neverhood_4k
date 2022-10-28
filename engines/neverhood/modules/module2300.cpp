@@ -47,18 +47,20 @@ Module2300::Module2300(NeverhoodEngine *vm, Module *parentModule, int which)
 	_vm->_soundMan->playTwoSounds(0x1A214010, 0x48498E46, 0x50399F64, 0);
 	_vm->_soundMan->playTwoSounds(0x1A214010, 0x41861371, 0x43A2507F, 0);
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else if (which == 1)
-		createScene(2, 0);
-	else if (which == 2)
-		createScene(3, 0);
-	else if (which == 3)
-		createScene(4, -1);
-	else if (which == 4)
-		createScene(1, 3);
-	else
-		createScene(0, 1);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else if (which == 1)
+			createScene(2, 0);
+		else if (which == 2)
+			createScene(3, 0);
+		else if (which == 3)
+			createScene(4, -1);
+		else if (which == 4)
+			createScene(1, 3);
+		else
+			createScene(0, 1);
+	}
 
 }
 

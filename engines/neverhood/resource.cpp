@@ -29,7 +29,7 @@ namespace Neverhood {
 // SpriteResource
 
 SpriteResource::SpriteResource(NeverhoodEngine *vm)
-	 : _vm(vm), _pixels(nullptr) {
+	 : _vm(vm), _pixels(nullptr), _fileHash(0) {
 }
 
 SpriteResource::~SpriteResource() {
@@ -52,6 +52,7 @@ void SpriteResource::draw(Graphics::Surface *destSurface, bool flipX, bool flipY
 bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 	debug(2, "SpriteResource::load(%08X)", fileHash);
 	unload();
+	_fileHash = fileHash;
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeBitmap) {
 		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
@@ -63,8 +64,8 @@ bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 	
 		if (_resourceHandle.upscaledData(0)) {
 			_pixels = _resourceHandle.upscaledData(0);
-			_dimensions.width = RESCALE_X(_dimensions.width);
-			_dimensions.height = RESCALE_Y(_dimensions.height);
+			_dimensions.width = _resourceHandle.upscaledDataWidth(0);
+			_dimensions.height = _resourceHandle.upscaledDataHeight(0);
 
 			if (position) {
 				position->x = RESCALE_X(position->x);
@@ -79,6 +80,7 @@ void SpriteResource::unload() {
 	_vm->_res->unloadResource(_resourceHandle);
 	_pixels = nullptr;
 	_rle = false;
+	_fileHash = 0;
 }
 
 // PaletteResource

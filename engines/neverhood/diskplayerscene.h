@@ -59,6 +59,10 @@ public:
 	void appear();
 	void play();
 	void setLocked(bool isLocked) { _isLocked = isLocked; }
+	Sprite* getInactiveSlot() const { return _inactiveSlot; }
+	Sprite* getAppearSlot() const { return _appearSlot; }
+	Sprite* getActiveSlot() const { return _activeSlot; }
+
 protected:
 	DiskplayerScene *_diskplayerScene;
 	Sprite *_inactiveSlot;

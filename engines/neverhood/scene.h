@@ -59,6 +59,7 @@ public:
 	void setBackgroundY(int16 y) { _background->getSurface()->getDrawRect().y = y; }
 	int16 getBackgroundY() { return _background->getSurface()->getDrawRect().y; }
 	void setPalette(uint32 fileHash = 0);
+	Common::Array<byte> getPalette() const;
 	void setHitRects(uint32 id);
 	Sprite *insertStaticSprite(uint32 fileHash, int surfacePriority);
 	void insertScreenMouse(uint32 fileHash, const NRect *mouseRect = NULL);
@@ -164,6 +165,8 @@ public:
 
 	uint32 getBackgroundFileHash() const { return _backgroundFileHash; }
 	uint32 getCursorFileHash() const { return _cursorFileHash; }
+
+	void dumpPaletteData(const Common::String &name) const;
 
 protected:
 	Module *_parentModule;

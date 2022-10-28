@@ -443,7 +443,181 @@ void GameModule::checkRequests() {
 		openMainMenu();
 }
 
+void GameModule::iterateAllModulesAndScenes() {
+	Common::HashMap<uint32, Common::Array<uint32> > modules;
+
+	modules[1000] = {0, 4};
+	modules[1100] = {0, 8, 1002};
+	modules[1200] = {0, 2};
+	modules[1300] = {1, 17};
+	modules[1400] = {0, 6};
+	modules[1500] = {0, 3};
+	modules[1600] = {0, 8, 1001};
+	modules[1700] = {0, 4};
+	modules[1800] = {0, 8, 1009};
+	modules[1900] = {0, 0, 6};
+	modules[2000] = {0, 2};
+	modules[2100] = {0};
+	modules[2200] = {0, 47};
+	modules[2300] = {0, 4, 9999};
+	modules[2400] = {0, 2, 4, 5, 6, 7, 8, 9};
+	modules[2500] = {0, 9};
+	modules[2600] = {0, 4, 6, 7, 8, 1002, 1003, 1006, 1008, 9999};
+	modules[2700] = {0, 28, 30, 31};
+	modules[2800] = {0, 26, 1001};
+	modules[2900] = {0, 6};
+	modules[3000] = {1, 12, 1001, 1006, 1008};
+
+	for (auto &module : modules) {
+		int moduleNum = module._key;
+		auto &&sceneNums = module._value;
+
+		if (sceneNums.size() > 1) {
+			for (uint32 i = sceneNums[0] + 1; i < sceneNums[1]; ++i) {
+				sceneNums.push_back(i);
+			}
+		}
+	}
+
+	for (auto &module : modules) {
+		int moduleNum = module._key;
+		auto &&sceneNums = module._value;
+		for (uint32 sceneNum : sceneNums) {
+			createModuleWithScene(moduleNum, sceneNum);
+			static_cast<Scene *>(static_cast<Module *>(_childObject)->_childObject)->dumpPaletteData(Common::String::format("%d_%d", moduleNum, sceneNum));
+		}
+	}
+}
+
+void GameModule::createModuleWithScene(int moduleNum, int sceneNum) {
+	debug(1, "GameModule::createModuleWithScene(%d, %d)", moduleNum, sceneNum);
+	_moduleNum = moduleNum;
+
+	delete _childObject;
+
+	switch (_moduleNum) {
+	case 1000:
+		setGlobalVar(V_MODULE_NAME, 0x03294419);
+		_childObject = new Module1000(_vm, this, DBG_HEX);
+		static_cast<Module1000*>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1100:
+		setGlobalVar(V_MODULE_NAME, 0x0002C818);
+		_childObject = new Module1100(_vm, this, DBG_HEX);
+		static_cast<Module1100 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1200:
+		setGlobalVar(V_MODULE_NAME, 0x00478311);
+		_childObject = new Module1200(_vm, this, DBG_HEX);
+		static_cast<Module1200 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1300:
+		setGlobalVar(V_MODULE_NAME, 0x0061C090);
+		_childObject = new Module1300(_vm, this, DBG_HEX);
+		static_cast<Module1300 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1400:
+		setGlobalVar(V_MODULE_NAME, 0x00AD0012);
+		_childObject = new Module1400(_vm, this, DBG_HEX);
+		static_cast<Module1400 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1500:
+		_canRequestMainMenu = false;
+		setGlobalVar(V_MODULE_NAME, 0x00F10114);
+		_childObject = new Module1500(_vm, this, DBG_HEX);
+		static_cast<Module1500 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1600:
+		setGlobalVar(V_MODULE_NAME, 0x01A008D8);
+		_childObject = new Module1600(_vm, this, DBG_HEX);
+		static_cast<Module1600 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1700:
+		setGlobalVar(V_MODULE_NAME, 0x04212331);
+		_childObject = new Module1700(_vm, this, DBG_HEX);
+		static_cast<Module1700 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1800:
+		setGlobalVar(V_MODULE_NAME, 0x04A14718);
+		_childObject = new Module1800(_vm, this, DBG_HEX);
+		static_cast<Module1800 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 1900:
+		setGlobalVar(V_MODULE_NAME, 0x04E1C09C);
+		_childObject = new Module1900(_vm, this, DBG_HEX);
+		static_cast<Module1900 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2000:
+		setGlobalVar(V_MODULE_NAME, 0x08250000);
+		_childObject = new Module2000(_vm, this, DBG_HEX);
+		static_cast<Module2000 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2100:
+		setGlobalVar(V_MODULE_NAME, 0x10A10C14);
+		_childObject = new Module2100(_vm, this, DBG_HEX);
+		static_cast<Module2100 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2200:
+		setGlobalVar(V_MODULE_NAME, 0x11391412);
+		_childObject = new Module2200(_vm, this, DBG_HEX);
+		static_cast<Module2200 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2300:
+		setGlobalVar(V_MODULE_NAME, 0x1A214010);
+		_childObject = new Module2300(_vm, this, DBG_HEX);
+		static_cast<Module2300 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2400:
+		setGlobalVar(V_MODULE_NAME, 0x202D1010);
+		_childObject = new Module2400(_vm, this, DBG_HEX);
+		static_cast<Module2400 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2500:
+		setGlobalVar(V_MODULE_NAME, 0x29220120);
+		_childObject = new Module2500(_vm, this, DBG_HEX);
+		static_cast<Module2500 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2600:
+		setGlobalVar(V_MODULE_NAME, 0x40271018);
+		_childObject = new Module2600(_vm, this, DBG_HEX);
+		static_cast<Module2600 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2700:
+		setGlobalVar(V_MODULE_NAME, 0x42212411);
+		_childObject = new Module2700(_vm, this, DBG_HEX);
+		static_cast<Module2700 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2800:
+		setGlobalVar(V_MODULE_NAME, 0x64210814);
+		_childObject = new Module2800(_vm, this, DBG_HEX);
+		static_cast<Module2800 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 2900:
+		setGlobalVar(V_MODULE_NAME, 0x81100020);
+		if (DBG_HEX >= 0)
+			setGlobalVar(V_TELEPORTER_CURR_LOCATION, DBG_HEX);
+		_childObject = new Module2900(_vm, this, DBG_HEX);
+		static_cast<Module2900 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 3000:
+		setGlobalVar(V_MODULE_NAME, 0x81293110);
+		_childObject = new Module3000(_vm, this, DBG_HEX);
+		static_cast<Module3000 *>(_childObject)->createScene(sceneNum, 0);
+		break;
+	case 9999:
+		createDemoScene();
+		break;
+	default:
+		error("GameModule::createModule() Could not create module %d", moduleNum);
+	}
+	SetUpdateHandler(&GameModule::updateModule);
+	_childObject->handleUpdate();
+}
+
 void GameModule::createModule(int moduleNum, int which) {
+
+	//iterateAllModulesAndScenes();
+
 	debug(1, "GameModule::createModule(%d, %d)", moduleNum, which);
 	_moduleNum = moduleNum;
 

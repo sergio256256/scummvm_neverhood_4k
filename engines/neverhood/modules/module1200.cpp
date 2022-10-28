@@ -29,12 +29,14 @@ Module1200::Module1200(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	SetMessageHandler(&Module1200::handleMessage);
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else if (which == 1)
-		createScene(0, 2);
-	else
-		createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else if (which == 1)
+			createScene(0, 2);
+		else
+			createScene(0, 0);
+	}
 
 	_vm->_soundMan->addMusic(0x00478311, 0x62222CAE);
 	_vm->_soundMan->startMusic(0x62222CAE, 0, 0);

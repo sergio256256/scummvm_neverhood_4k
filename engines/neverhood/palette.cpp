@@ -94,7 +94,8 @@ void Palette::addBasePalette(uint32 fileHash, int toIndex, int count, int fromIn
 	if (toIndex + count > 256)
 		count = 256 - toIndex;
 	paletteResource.load(fileHash);
-	memcpy(_basePalette + toIndex * 4, paletteResource.palette() + fromIndex * 4, count * 4);
+	if (paletteResource.palette())
+		memcpy(_basePalette + toIndex * 4, paletteResource.palette() + fromIndex * 4, count * 4);
 }
 
 void Palette::copyPalette(const byte *palette, int toIndex, int count, int fromIndex) {
@@ -167,6 +168,11 @@ void Palette::fillBaseBlack(int index, int count) {
 
 void Palette::copyToBasePalette(byte *palette) {
 	memcpy(_basePalette, palette, 256 * 4);
+}
+
+
+byte *Palette::data() const {
+	return _palette;
 }
 
 void Palette::update() {

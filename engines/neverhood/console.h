@@ -38,6 +38,7 @@ private:
 
 	bool Cmd_Scene(int argc, const char **argv);
 	bool Cmd_Surfaces(int argc, const char **argv);
+	bool Cmd_Dump(int argc, const char **argv);
 	bool Cmd_Cheat(int argc, const char **argv);
 	bool Cmd_Dumpvars(int argc, const char **argv);
 	bool Cmd_PlaySound(int argc, const char **argv);

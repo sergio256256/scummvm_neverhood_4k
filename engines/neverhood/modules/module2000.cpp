@@ -27,12 +27,14 @@ namespace Neverhood {
 Module2000::Module2000(NeverhoodEngine *vm, Module *parentModule, int which)
 	: Module(vm, parentModule) {
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else if (which == 0)
-		createScene(0, 1);
-	else if (which == 1)
-		createScene(0, 3);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else if (which == 0)
+			createScene(0, 1);
+		else if (which == 1)
+			createScene(0, 3);
+	}
 
 }
 

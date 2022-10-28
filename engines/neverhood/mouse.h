@@ -43,6 +43,8 @@ public:
 	~Mouse() override;
 	void load(uint32 fileHash);
 	void updateCursor();
+	uint32 getFileHash() const;
+
 protected:
 	MouseType _mouseType;
 	MouseCursorResource _mouseCursorResource;

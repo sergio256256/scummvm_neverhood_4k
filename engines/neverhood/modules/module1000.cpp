@@ -32,13 +32,14 @@ Module1000::Module1000(NeverhoodEngine *vm, Module *parentModule, int which)
 	_vm->_soundMan->addMusic(0x03294419, 0x061880C6);
 	_vm->_soundMan->addMusic(0x03294419, _musicFileHash);
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, -1);
-	else if (which == 0)
-		createScene(0, 0);
-	else if (which == 1)
-		createScene(1, 1);
-
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, -1);
+		else if (which == 0)
+			createScene(0, 0);
+		else if (which == 1)
+			createScene(1, 1);
+	}
 }
 
 Module1000::~Module1000() {
@@ -131,7 +132,8 @@ Scene1001::Scene1001(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	setHitRects(0x004B4860);
 	setBackground(0x4086520E);
-	setPalette(0x4086520E);
+ 	setPalette(0x4086520E);
+
 	insertScreenMouse(0x6520A400);
 
 	if (which < 0) {
@@ -173,7 +175,7 @@ Scene1001::Scene1001(NeverhoodEngine *vm, Module *parentModule, int which)
 	_asLever = insertSprite<AsScene1001Lever>(this, RESCALE(150, 433), 1);
 
 	insertStaticSprite(0x809861A6, 950);
-	insertStaticSprite(0x89C03848, 1100);
+	insertStaticSprite(0x89C03848, 1100); // lever base
 
 	_ssButton = insertSprite<SsCommonButtonSprite>(this, 0x15288120, 100, 0);
 
@@ -184,7 +186,6 @@ Scene1001::Scene1001(NeverhoodEngine *vm, Module *parentModule, int which)
 	}
 
 	_asHammer = insertSprite<AsScene1001Hammer>(_asDoor);
-
 }
 
 Scene1001::~Scene1001() {

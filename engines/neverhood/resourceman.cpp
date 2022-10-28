@@ -189,6 +189,10 @@ void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fi
 		}
 	}
 
+	if (fnames.empty()) {
+		int q = 0;
+	}
+
 
 	for (Common::String cur_fname : fnames) {
 		Common::File file;

@@ -51,6 +51,8 @@ public:
 	void fillBaseWhite(int index, int count);
 	void fillBaseBlack(int index, int count);
 	void copyToBasePalette(byte *palette);
+	byte *data() const;
+
 protected:
 	int _status;
 	byte *_palette;

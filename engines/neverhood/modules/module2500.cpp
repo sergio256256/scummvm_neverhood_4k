@@ -59,10 +59,12 @@ Module2500::Module2500(NeverhoodEngine *vm, Module *parentModule, int which)
 	_vm->_soundMan->startMusic(0x05343184, 0, 0);
 	SetMessageHandler(&Module2500::handleMessage);
 
-	if (which < 0)
-		createScene(_vm->gameState().sceneNum, _vm->gameState().which);
-	else
-		createScene(0, 0);
+	if (which != DBG_HEX) {
+		if (which < 0)
+			createScene(_vm->gameState().sceneNum, _vm->gameState().which);
+		else
+			createScene(0, 0);
+	}
 
 	loadSound(0, 0x00880CCC);
 	loadSound(1, 0x00880CC0);

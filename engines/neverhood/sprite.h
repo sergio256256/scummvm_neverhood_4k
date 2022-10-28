@@ -121,6 +121,7 @@ public:
 	StaticSprite(NeverhoodEngine *vm, uint32 fileHash, int surfacePriority, int16 x = kDefPosition, int16 y = kDefPosition);
 	void loadSprite(uint32 fileHash, uint flags = 0, int surfacePriority = 0, int16 x = kDefPosition, int16 y = kDefPosition);
 	void updatePosition();
+	uint32 getFileHash() const;
 protected:
 	SpriteResource _spriteResource;
 };

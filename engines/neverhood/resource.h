@@ -52,6 +52,7 @@ public:
 	NPoint& getPosition() { return _position; }
 	bool isRle() const { return _rle; }
 	const byte *getPixels() const { return _pixels; }
+	uint32 getFileHash() const { return _fileHash; }
 protected:
 	NeverhoodEngine *_vm;
 	ResourceHandle _resourceHandle;
@@ -59,6 +60,7 @@ protected:
 	NPoint _position;
 	const byte *_pixels;
 	bool _rle;
+	uint32 _fileHash;
 };
 
 class PaletteResource {
@@ -121,6 +123,7 @@ public:
 	void draw(int frameNum, Graphics::Surface *destSurface);
 	int getCursorNum() const { return _cursorNum; }
 	void setCursorNum(int cursorNum) { _cursorNum = cursorNum; }
+	uint32 getFileHash() const { return _currFileHash; }
 protected:
 	int _cursorNum;
 	SpriteResource _cursorSprite;
