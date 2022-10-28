@@ -166,7 +166,7 @@ uint32 AsScene1001Window::handleMessage(int messageNum, const MessageParam &para
 	default:
 		break;
 	}
-	return 0;6
+	return 0;
 }
 
 AsScene1001Lever::AsScene1001Lever(NeverhoodEngine *vm, Scene *parentScene, int16 x, int16 y, int deltaXType)

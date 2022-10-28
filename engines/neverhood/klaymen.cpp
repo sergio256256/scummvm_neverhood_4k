@@ -885,7 +885,7 @@ void Klaymen::suWalkingTestExit() {
 
 	if (xdiff == 0 ||
 		(_actionStatus != 2 && _actionStatus != 3 && xdiff <= RESCALE_X(42) && _currFrameIndex >= 5 && _currFrameIndex <= 11) ||
-		(_actionStatus != 2 && _actionStatus != 3 && xdiff <= RESCALE_X(10) && _currFrameIndex >= 12 || _currFrameIndex <= 4) ||
+		(_actionStatus != 2 && _actionStatus != 3 && xdiff <= RESCALE_X(10) && (_currFrameIndex >= 12 || _currFrameIndex <= 4)) ||
 		(_actionStatus == 3 && xdiff < RESCALE_X(30)) ||
 		(_actionStatus == 3 && xdiff < RESCALE_X(150) && _currFrameIndex >= 6)) {
 		sendMessage(this, NM_SCENE_LEAVE, 0);
