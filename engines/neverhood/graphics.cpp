@@ -355,7 +355,7 @@ void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest,
 			for (int xc = 0; xc < width; xc++)
 				*dest-- = source[xc];
 			source += sourcePitch;
-			dest += destPitch;
+			dest += destPitch + 1;
 		}
 	}
 }
@@ -381,7 +381,7 @@ void unpackSpriteNormal(const byte *source, int width, int height, byte *dest, i
 			for (int xc = 0; xc < width; xc++)
 				*dest-- = source[xc];
 			source += sourcePitch;
-			dest += destPitch;
+			dest += destPitch + 1;
 		}
 	}
 
