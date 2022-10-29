@@ -33,11 +33,11 @@ Screen::Screen(NeverhoodEngine *vm)
 	_ticks = _vm->_system->getMillis();
 
 	_backScreen = new Graphics::Surface();
-	_backScreen->create(RESCALE(640, 480), Graphics::PixelFormat::createFormatCLUT8());
+	_backScreen->create(UPSCALE(640, 480), Graphics::PixelFormat::createFormatCLUT8());
 
 	_renderQueue = new RenderQueue();
 	_prevRenderQueue = new RenderQueue();
-	_microTiles = new MicroTileArray(RESCALE(640, 480));
+	_microTiles = new MicroTileArray(UPSCALE(640, 480));
 
 }
 
@@ -55,7 +55,7 @@ void Screen::update() {
 
 	if (_fullRefresh) {
 		// NOTE When playing a fullscreen/doubled Smacker video usually a full screen refresh is needed
-		_vm->_system->copyRectToScreen((const byte*)_backScreen->getPixels(), _backScreen->pitch, 0, 0, RESCALE(640, 480));
+		_vm->_system->copyRectToScreen((const byte*)_backScreen->getPixels(), _backScreen->pitch, 0, 0, UPSCALE(640, 480));
 		_fullRefresh = false;
 		return;
 	}

@@ -39,8 +39,8 @@ BaseSurface::BaseSurface(NeverhoodEngine *vm, int priority, int16 width, int16 h
 	_sysRect.height = height;
 	_clipRect.x1 = 0;
 	_clipRect.y1 = 0;
-	_clipRect.x2 = RESCALE_X(640);
-	_clipRect.y2 = RESCALE_Y(480);
+	_clipRect.x2 = UPSCALE_X(640);
+	_clipRect.y2 = UPSCALE_Y(480);
 	_surface = new Graphics::Surface();
 	_surface->create(_sysRect.width, _sysRect.height, Graphics::PixelFormat::createFormatCLUT8());
 }

@@ -461,7 +461,7 @@ void Scene::processMessageList() {
 				sendMessage(_parentModule, messageNum, messageParam);
 			} else if (messageNum == 0x4001) {
 				_isKlaymenBusy = true;
-				sendPointMessage(_klaymen, 0x4001, _mouseClickPos);
+				sendPointMessage(_klaymen, 0x4001, NPoint{DOWNSCALE_X(_mouseClickPos.x), DOWNSCALE_Y(_mouseClickPos.y)});
 			} else if (messageNum == 0x100D) {
 				if (this->hasMessageHandler() && sendMessage(this, NM_ANIMATION_START, messageParam) != 0)
 					continue;
@@ -725,14 +725,14 @@ StaticScene::StaticScene(NeverhoodEngine *vm, Module *parentModule, uint32 backg
 
 	setBackground(backgroundFileHash);
 	setPalette(backgroundFileHash);
-	insertPuzzleMouse(cursorFileHash, RESCALE_X(20), RESCALE_X(620));
+	insertPuzzleMouse(cursorFileHash, UPSCALE_X(20), UPSCALE_X(620));
 }
 
 uint32 StaticScene::handleMessage(int messageNum, const MessageParam &param, Entity *sender) {
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= RESCALE_X(20) || param.asPoint().x >= RESCALE_X(620))
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620))
 			leaveScene(0);
 		break;
 	default:

@@ -68,8 +68,8 @@ bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 			_dimensions.height = _resourceHandle.upscaledDataHeight(0);
 
 			if (position) {
-				position->x = RESCALE_X(position->x);
-				position->y = RESCALE_Y(position->y);
+				position->x = UPSCALE_X(position->x);
+				position->y = UPSCALE_Y(position->y);
 			}
 		}
 	}
@@ -223,16 +223,16 @@ bool AnimResource::load(uint32 fileHash) {
 		frameList += 32;
 
 		if (_resourceHandle.upscaledData(0)) {
-			frameInfo.drawOffset.x = RESCALE_X(frameInfo.drawOffset.x);
-			frameInfo.drawOffset.y = RESCALE_Y(frameInfo.drawOffset.y);
+			frameInfo.drawOffset.x = UPSCALE_X(frameInfo.drawOffset.x);
+			frameInfo.drawOffset.y = UPSCALE_Y(frameInfo.drawOffset.y);
 			frameInfo.drawOffset.width = _resourceHandle.upscaledDataWidth(frameIndex);
 			frameInfo.drawOffset.height = _resourceHandle.upscaledDataHeight(frameIndex);
-			frameInfo.deltaX = RESCALE_X(frameInfo.deltaX);
-			frameInfo.deltaY = RESCALE_Y(frameInfo.deltaY);
-			frameInfo.collisionBoundsOffset.x = RESCALE_X(frameInfo.collisionBoundsOffset.x);
-			frameInfo.collisionBoundsOffset.y = RESCALE_Y(frameInfo.collisionBoundsOffset.y);
-			frameInfo.collisionBoundsOffset.width = RESCALE_X(frameInfo.collisionBoundsOffset.width);
-			frameInfo.collisionBoundsOffset.height = RESCALE_Y(frameInfo.collisionBoundsOffset.height);
+			frameInfo.deltaX = UPSCALE_X(frameInfo.deltaX);
+			frameInfo.deltaY = UPSCALE_Y(frameInfo.deltaY);
+			frameInfo.collisionBoundsOffset.x = UPSCALE_X(frameInfo.collisionBoundsOffset.x);
+			frameInfo.collisionBoundsOffset.y = UPSCALE_Y(frameInfo.collisionBoundsOffset.y);
+			frameInfo.collisionBoundsOffset.width = UPSCALE_X(frameInfo.collisionBoundsOffset.width);
+			frameInfo.collisionBoundsOffset.height = UPSCALE_Y(frameInfo.collisionBoundsOffset.height);
 			frameInfo.spriteDataOffs = _resourceHandle.upscaledData(frameIndex) - _spriteData; // TODO: 64 bit @@SB
 		}
 
@@ -298,14 +298,14 @@ NDimensions AnimResource::loadSpriteDimensions(uint32 fileHash) {
 MouseCursorResource::MouseCursorResource(NeverhoodEngine *vm)
 	: _cursorSprite(vm), _cursorNum(4), _currFileHash(0) {
 
-	_rect.width = RESCALE_X(32);
-	_rect.height = RESCALE_Y(32);
+	_rect.width = UPSCALE_X(32);
+	_rect.height = UPSCALE_Y(32);
 }
 
 void MouseCursorResource::load(uint32 fileHash) {
 	if (_currFileHash != fileHash) {
 		if (_cursorSprite.load(fileHash) && !_cursorSprite.isRle() &&
-			_cursorSprite.getDimensions().width == RESCALE_X(96) && _cursorSprite.getDimensions().height == RESCALE_Y(224)) {
+			_cursorSprite.getDimensions().width == UPSCALE_X(96) && _cursorSprite.getDimensions().height == UPSCALE_Y(224)) {
 			_currFileHash = fileHash;
 		} else {
 			unload();
@@ -321,13 +321,13 @@ void MouseCursorResource::unload() {
 
 NDrawRect& MouseCursorResource::getRect() {
 	static const NPoint kCursorHotSpots[] = {
-		{RESCALE_X(-15), RESCALE_Y(-5)},
-		{RESCALE_X(-17), RESCALE_Y(-25)},
-		{RESCALE_X(-17), RESCALE_Y(-30)},
-		{RESCALE_X(-14), RESCALE_Y(-1)},
-		{RESCALE_X(-3), RESCALE_Y(-7)},
-		{RESCALE_X(-30), RESCALE_Y(-18)},
-		{RESCALE_X(-1), RESCALE_Y(-18)}
+		{UPSCALE_X(-15), UPSCALE_Y(-5)},
+		{UPSCALE_X(-17), UPSCALE_Y(-25)},
+		{UPSCALE_X(-17), UPSCALE_Y(-30)},
+		{UPSCALE_X(-14), UPSCALE_Y(-1)},
+		{UPSCALE_X(-3), UPSCALE_Y(-7)},
+		{UPSCALE_X(-30), UPSCALE_Y(-18)},
+		{UPSCALE_X(-1), UPSCALE_Y(-18)}
 	};
 	_rect.x = kCursorHotSpots[_cursorNum].x;
 	_rect.y = kCursorHotSpots[_cursorNum].y;
@@ -338,10 +338,10 @@ void MouseCursorResource::draw(int frameNum, Graphics::Surface *destSurface) {
 	if (_cursorSprite.getPixels()) {
 		const int sourcePitch =  (_cursorSprite.getDimensions().width + 3) & 0xFFFC; // 4 byte alignment
 		const int destPitch = destSurface->pitch;
-		const byte *source = _cursorSprite.getPixels() + _cursorNum * (sourcePitch * RESCALE_Y(32)) + frameNum * RESCALE_X(32);
+		const byte *source = _cursorSprite.getPixels() + _cursorNum * (sourcePitch * UPSCALE_Y(32)) + frameNum * UPSCALE_X(32);
 		byte *dest = (byte*)destSurface->getPixels();
-		for (int16 yc = 0; yc < RESCALE_Y(32); yc++) {
-			memcpy(dest, source, RESCALE_X(32));
+		for (int16 yc = 0; yc < UPSCALE_Y(32); yc++) {
+			memcpy(dest, source, UPSCALE_X(32));
 			source += sourcePitch;
 			dest += destPitch;
 		}

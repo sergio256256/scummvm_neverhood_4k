@@ -26,9 +26,9 @@ namespace Neverhood {
 AsScene1001Door::AsScene1001Door(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100) {
 
-	createSurface(800, RESCALE(137, 242));
-	_x = RESCALE_X(726);
-	_y = RESCALE_Y(440);
+	createSurface(800, UPSCALE(137, 242));
+	_x = UPSCALE_X(726);
+	_y = UPSCALE_Y(440);
 	stShowIdleDoor();
 	loadSound(1, 0xED403E03);
 	SetUpdateHandler(&AnimatedSprite::update);
@@ -95,7 +95,7 @@ void AsScene1001Door::stBustedDoorMove() {
 	setGlobalVar(V_DOOR_BUSTED, 1);
 	startAnimation(0x624C0498, 6, 6);
 	NextState(&AsScene1001Door::stBustedDoorGone);
-	_x = RESCALE_X(30);
+	_x = UPSCALE_X(30);
 }
 
 void AsScene1001Door::stBustedDoorGone() {
@@ -107,9 +107,9 @@ void AsScene1001Door::stBustedDoorGone() {
 AsScene1001Hammer::AsScene1001Hammer(NeverhoodEngine *vm, Sprite *asDoor)
 	: AnimatedSprite(vm, 1100), _asDoor(asDoor) {
 
-	_x = RESCALE_X(547);
-	_y = RESCALE_Y(206);
-	createSurface(900, RESCALE(177, 192));
+	_x = UPSCALE_X(547);
+	_y = UPSCALE_Y(206);
+	createSurface(900, UPSCALE(177, 192));
 	startAnimation(0x022C90D4, -1, -1);
 	_newStickFrameIndex = STICK_LAST_FRAME;
 	SetUpdateHandler(&AnimatedSprite::update);
@@ -139,9 +139,9 @@ uint32 AsScene1001Hammer::handleMessage(int messageNum, const MessageParam &para
 AsScene1001Window::AsScene1001Window(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1200) {
 
-	_x = RESCALE_X(320);
-	_y = RESCALE_Y(240);
-	createSurface(100, RESCALE(66, 129));
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
+	createSurface(100, UPSCALE(66, 129));
 	startAnimation(0xC68C2299, 0, -1);
 	_newStickFrameIndex = 0;
 	SetUpdateHandler(&AnimatedSprite::update);
@@ -172,7 +172,7 @@ uint32 AsScene1001Window::handleMessage(int messageNum, const MessageParam &para
 AsScene1001Lever::AsScene1001Lever(NeverhoodEngine *vm, Scene *parentScene, int16 x, int16 y, int deltaXType)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(1010, RESCALE(71, 73));
+	createSurface(1010, UPSCALE(71, 73));
 	setDoDeltaX(deltaXType);
 	startAnimation(0x04A98C36, 0, -1);
 	_newStickFrameIndex = 0;
@@ -250,7 +250,7 @@ AsScene1002Ring::AsScene1002Ring(NeverhoodEngine *vm, Scene *parentScene, bool i
 	SetUpdateHandler(&AsScene1002Ring::update);
 
 	if (_isSpecial) {
-		createSurface(990, RESCALE(68, 314));
+		createSurface(990, UPSCALE(68, 314));
 		if (isRingLow) {
 			startAnimation(0x04103090, 0, -1);
 			SetMessageHandler(&AsScene1002Ring::hmRingHangingLow);
@@ -259,12 +259,12 @@ AsScene1002Ring::AsScene1002Ring(NeverhoodEngine *vm, Scene *parentScene, bool i
 			SetMessageHandler(&AsScene1002Ring::hmRingIdle);
 		}
 	} else {
-		createSurface(990, RESCALE(68, 138));
+		createSurface(990, UPSCALE(68, 138));
 		startAnimation(0xA85C4011, _vm->_rnd->getRandomNumber(15), -1);
 		SetMessageHandler(&AsScene1002Ring::hmRingIdle);
 	}
 
-	setClipRect(0, clipY1, RESCALE(640, 480));
+	setClipRect(0, clipY1, UPSCALE(640, 480));
 
 	_x = x;
 	_y = y;
@@ -395,7 +395,7 @@ uint32 AsScene1002Ring::hmRingReleased(int messageNum, const MessageParam &param
 AsScene1002Door::AsScene1002Door(NeverhoodEngine *vm, NRect &clipRect)
 	: StaticSprite(vm, 1200) {
 
-	loadSprite(0x1052370F, kSLFDefDrawOffset | kSLFSetPosition, 800, RESCALE(526, getGlobalVar(V_FLYTRAP_RING_DOOR) ? 49 : 239));
+	loadSprite(0x1052370F, kSLFDefDrawOffset | kSLFSetPosition, 800, UPSCALE(526, getGlobalVar(V_FLYTRAP_RING_DOOR) ? 49 : 239));
 	setClipRect(clipRect);
 	SetUpdateHandler(&AsScene1002Door::update);
 	SetMessageHandler(&AsScene1002Door::handleMessage);
@@ -425,22 +425,22 @@ uint32 AsScene1002Door::handleMessage(int messageNum, const MessageParam &param,
 }
 
 void AsScene1002Door::suOpenDoor() {
-	if (_y > RESCALE_Y(49)) {
-		_y -= RESCALE_Y(8);
-		if (_y < RESCALE_Y(49)) {
+	if (_y > UPSCALE_Y(49)) {
+		_y -= UPSCALE_Y(8);
+		if (_y < UPSCALE_Y(49)) {
 			SetSpriteUpdate(nullptr);
-			_y = RESCALE_Y(49);
+			_y = UPSCALE_Y(49);
 		}
 		_needRefresh = true;
 	}
 }
 
 void AsScene1002Door::suCloseDoor() {
-	if (_y < RESCALE_Y(239)) {
-		_y += RESCALE_Y(8);
-		if (_y > RESCALE_Y(239)) {
+	if (_y < UPSCALE_Y(239)) {
+		_y += UPSCALE_Y(8);
+		if (_y > UPSCALE_Y(239)) {
 			SetSpriteUpdate(nullptr);
-			_y = RESCALE_Y(239);
+			_y = UPSCALE_Y(239);
 		}
 		_needRefresh = true;
 	}
@@ -449,7 +449,7 @@ void AsScene1002Door::suCloseDoor() {
 AsScene1002BoxingGloveHitEffect::AsScene1002BoxingGloveHitEffect(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1400) {
 
-	createSurface(1025, RESCALE(88, 165));
+	createSurface(1025, UPSCALE(88, 165));
 	setVisible(false);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1002BoxingGloveHitEffect::handleMessage);
@@ -459,8 +459,8 @@ uint32 AsScene1002BoxingGloveHitEffect::handleMessage(int messageNum, const Mess
 	uint32 messageResult = Sprite::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case 0x2004:
-		_x = ((Sprite*)sender)->getX() - RESCALE_X(98);
-		_y = ((Sprite*)sender)->getY() - RESCALE_Y(111);
+		_x = ((Sprite*)sender)->getX() - UPSCALE_X(98);
+		_y = ((Sprite*)sender)->getY() - UPSCALE_Y(111);
 		startAnimation(0x0422255A, 0, -1);
 		setVisible(true);
 		break;
@@ -477,7 +477,7 @@ uint32 AsScene1002BoxingGloveHitEffect::handleMessage(int messageNum, const Mess
 AsScene1002DoorSpy::AsScene1002DoorSpy(NeverhoodEngine *vm, NRect &clipRect, Scene *parentScene, Sprite *asDoor, Sprite *asScene1002BoxingGloveHitEffect)
 	: AnimatedSprite(vm, 1300), _clipRect(clipRect), _parentScene(parentScene), _asDoor(asDoor), _asBoxingGloveHitEffect(asScene1002BoxingGloveHitEffect) {
 
-	createSurface(800, RESCALE(136, 147));
+	createSurface(800, UPSCALE(136, 147));
 	setClipRect(clipRect);
 	suDoorSpy();
 	loadSound(0, 0xC0C40298);
@@ -518,8 +518,8 @@ uint32 AsScene1002DoorSpy::hmDoorSpyAnimation(int messageNum, const MessageParam
 }
 
 void AsScene1002DoorSpy::suDoorSpy() {
-	_x = _asDoor->getX() + RESCALE_X(34);
-	_y = _asDoor->getY() + RESCALE_Y(175);
+	_x = _asDoor->getX() + UPSCALE_X(34);
+	_y = _asDoor->getY() + UPSCALE_Y(175);
 }
 
 void AsScene1002DoorSpy::stDoorSpyIdle() {
@@ -530,7 +530,7 @@ void AsScene1002DoorSpy::stDoorSpyIdle() {
 }
 
 void AsScene1002DoorSpy::stDoorSpyBoxingGlove() {
-	setClipRect(RESCALE(0, 0), RESCALE(640, 480));
+	setClipRect(UPSCALE(0, 0), UPSCALE(640, 480));
 	_parentScene->setSurfacePriority(getSurface(), 1200);
 	startAnimation(0x586C1D48, 1, -1);
 	SetMessageHandler(&AsScene1002DoorSpy::hmDoorSpyAnimation);
@@ -543,7 +543,7 @@ SsCommonPressButton::SsCommonPressButton(NeverhoodEngine *vm, Scene *parentScene
 	_soundFileHash = soundFileHash != 0 ? soundFileHash : 0x44141000;
 	_fileHashes[0] = fileHash1;
 	_fileHashes[1] = fileHash2;
-	createSurface(surfacePriority, RESCALE(40, 40));
+	createSurface(surfacePriority, UPSCALE(40, 40));
 	loadSprite(fileHash1, kSLFDefDrawOffset | kSLFDefPosition);
 	setVisible(false);
 	SetUpdateHandler(&SsCommonPressButton::update);
@@ -592,21 +592,21 @@ uint32 SsCommonPressButton::handleMessage(int messageNum, const MessageParam &pa
 AsScene1002VenusFlyTrap::AsScene1002VenusFlyTrap(NeverhoodEngine *vm, Scene *parentScene, Sprite *klaymen, bool isSecond)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _klaymen(klaymen), _isSecond(isSecond), _countdown(0) {
 
-	createSurface(995, RESCALE(175, 195));
+	createSurface(995, UPSCALE(175, 195));
 	if (!_isSecond) {
 		if (getGlobalVar(V_FLYTRAP_RING_DOOR)) {
 			setDoDeltaX(1);
-			_x = RESCALE_X(366);
-			_y = RESCALE_Y(435);
+			_x = UPSCALE_X(366);
+			_y = UPSCALE_Y(435);
 			stRingGrabbed();
 		} else {
-			_x = RESCALE_X(174) + getGlobalVar(V_FLYTRAP_POSITION_1) * RESCALE_Y(32);
-			_y = RESCALE_Y(435);
+			_x = UPSCALE_X(174) + getGlobalVar(V_FLYTRAP_POSITION_1) * UPSCALE_Y(32);
+			_y = UPSCALE_Y(435);
 			stIdle();
 		}
 	} else {
-		_x = RESCALE_X(186) + getGlobalVar(V_FLYTRAP_POSITION_2) * RESCALE_Y(32);
-		_y = RESCALE_Y(364);
+		_x = UPSCALE_X(186) + getGlobalVar(V_FLYTRAP_POSITION_2) * UPSCALE_Y(32);
+		_y = UPSCALE_Y(364);
 		if (getGlobalVar(V_FLYTRAP_RING_BRIDGE) || getGlobalVar(V_FLYTRAP_RING_FENCE)) {
 			stRingGrabbed();
 		} else {
@@ -626,9 +626,9 @@ void AsScene1002VenusFlyTrap::update() {
 }
 
 void AsScene1002VenusFlyTrap::upIdle() {
-	if (_countdown == 0 && _klaymen->getX() - RESCALE_X(20) > _x)
+	if (_countdown == 0 && _klaymen->getX() - UPSCALE_X(20) > _x)
 		setDoDeltaX(1);
-	else if (_klaymen->getX() + RESCALE_X(20) < _x)
+	else if (_klaymen->getX() + UPSCALE_X(20) < _x)
 		setDoDeltaX(0);
 	update();
 }
@@ -644,12 +644,12 @@ uint32 AsScene1002VenusFlyTrap::handleMessage(int messageNum, const MessageParam
 		break;
 	case 0x1011:
 		if (_isSecond) {
-			if (_x >= RESCALE_X(154) && _x <= RESCALE_X(346)) {
+			if (_x >= UPSCALE_X(154) && _x <= UPSCALE_X(346)) {
 				sendMessage(_parentScene, 0x2000, 0);
 				messageResult = 1;
 			}
 		} else {
-			if (_x >= RESCALE_X(174) && _x <= RESCALE_X(430)) {
+			if (_x >= UPSCALE_X(174) && _x <= UPSCALE_X(430)) {
 				sendMessage(_parentScene, 0x2000, 0);
 				messageResult = 1;
 			}
@@ -796,15 +796,15 @@ void AsScene1002VenusFlyTrap::stIdle() {
 	SetUpdateHandler(&AsScene1002VenusFlyTrap::upIdle);
 	SetMessageHandler(&AsScene1002VenusFlyTrap::handleMessage);
 	if (_isSecond) {
-		if (_x >= RESCALE_X(154) && _x <= RESCALE_X(346))
-			setGlobalVar(V_FLYTRAP_POSITION_2, (_x - RESCALE_X(186)) / RESCALE_Y(32));
+		if (_x >= UPSCALE_X(154) && _x <= UPSCALE_X(346))
+			setGlobalVar(V_FLYTRAP_POSITION_2, (_x - UPSCALE_X(186)) / UPSCALE_Y(32));
 		else {
 			NextState(&AsScene1002VenusFlyTrap::stWalkBack);
 			_countdown = 12;
 		}
 	} else {
-		if (_x >= RESCALE_X(174) && _x <= RESCALE_X(430))
-			setGlobalVar(V_FLYTRAP_POSITION_1, (_x - RESCALE_X(174)) / RESCALE_Y(32));
+		if (_x >= UPSCALE_X(174) && _x <= UPSCALE_X(430))
+			setGlobalVar(V_FLYTRAP_POSITION_1, (_x - UPSCALE_X(174)) / UPSCALE_Y(32));
 		else {
 			NextState(&AsScene1002VenusFlyTrap::stWalkBack);
 			_countdown = 12;
@@ -827,11 +827,11 @@ void AsScene1002VenusFlyTrap::stSpitOutKlaymen() {
 }
 
 void AsScene1002VenusFlyTrap::swallowKlaymen() {
-	if (_x - RESCALE_X(15) < _klaymen->getX() && _x + RESCALE_X(15) > _klaymen->getX()) {
+	if (_x - UPSCALE_X(15) < _klaymen->getX() && _x + UPSCALE_X(15) > _klaymen->getX()) {
 		if (_isSecond)
-			setDoDeltaX(_x > RESCALE_X(265) && _x < RESCALE_X(330) ? 1 : 0);
+			setDoDeltaX(_x > UPSCALE_X(265) && _x < UPSCALE_X(330) ? 1 : 0);
 		else
-			setDoDeltaX(_x > RESCALE_X(320) ? 1 : 0);
+			setDoDeltaX(_x > UPSCALE_X(320) ? 1 : 0);
 		sendMessage(_klaymen, 0x2001, 0);
 		startAnimation(0x8C2C80D4, 0, -1);
 		SetUpdateHandler(&AsScene1002VenusFlyTrap::update);
@@ -843,9 +843,9 @@ void AsScene1002VenusFlyTrap::swallowKlaymen() {
 AsScene1002OutsideDoorBackground::AsScene1002OutsideDoorBackground(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1200), _countdown(0), _isDoorClosed(true) {
 
-	createSurface(850, RESCALE(186, 212));
-	_x = RESCALE_X(320);
-	_y = RESCALE_Y(240);
+	createSurface(850, UPSCALE(186, 212));
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	if (getGlobalVar(V_FLYTRAP_RING_DOOR)) {
 		startAnimation(0x004A4495, -1, -1);
 		_newStickFrameIndex = STICK_LAST_FRAME;
@@ -917,7 +917,7 @@ void AsScene1002OutsideDoorBackground::stDoorClosed() {
 AsScene1002KlaymenLadderHands::AsScene1002KlaymenLadderHands(NeverhoodEngine *vm, Klaymen *klaymen)
 	: AnimatedSprite(vm, 1200), _klaymen(klaymen) {
 
-	createSurface(1200, RESCALE(40, 163));
+	createSurface(1200, UPSCALE(40, 163));
 	setVisible(false);
 	SetUpdateHandler(&AsScene1002KlaymenLadderHands::update);
 	SetMessageHandler(&Sprite::handleMessage);
@@ -947,7 +947,7 @@ AsScene1002KlaymenPeekHand::AsScene1002KlaymenPeekHand(NeverhoodEngine *vm, Scen
 	: AnimatedSprite(vm, 1200), _parentScene(parentScene), _klaymen(klaymen),
 	_isClipRectSaved(false) {
 
-	createSurface(1000, RESCALE(33, 41));
+	createSurface(1000, UPSCALE(33, 41));
 	setVisible(false);
 	SetUpdateHandler(&AsScene1002KlaymenPeekHand::update);
 	SetMessageHandler(&AsScene1002KlaymenPeekHand::handleMessage);
@@ -974,7 +974,7 @@ uint32 AsScene1002KlaymenPeekHand::handleMessage(int messageNum, const MessagePa
 			sendMessage(_parentScene, NM_PRIORITY_CHANGE, 1200);
 			_isClipRectSaved = true;
 			_savedClipRect = _surface->getClipRect();
-			setClipRect(RESCALE(0, 0), RESCALE(640, 480));
+			setClipRect(UPSCALE(0, 0), UPSCALE(640, 480));
 		} else if (param.asInteger() == 0x88001184) {
 			sendMessage(_parentScene, NM_PRIORITY_CHANGE, 1000);
 			if (_isClipRectSaved)
@@ -990,9 +990,9 @@ uint32 AsScene1002KlaymenPeekHand::handleMessage(int messageNum, const MessagePa
 AsScene1004TrashCan::AsScene1004TrashCan(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100) {
 
-	_x = RESCALE_X(330);
-	_y = RESCALE_Y(327);
-	createSurface(800, RESCALE(56, 50));
+	_x = UPSCALE_X(330);
+	_y = UPSCALE_Y(327);
+	createSurface(800, UPSCALE(56, 50));
 	setVisible(false);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1004TrashCan::handleMessage);
@@ -1162,7 +1162,7 @@ KmScene1002::KmScene1002(NeverhoodEngine *vm, Scene *parentScene, int16 x, int16
 }
 
 void KmScene1002::xUpdate() {
-	if (_x >= RESCALE_X(250) && _x <= RESCALE_X(435) && _y >= RESCALE_Y(420)) {
+	if (_x >= UPSCALE_X(250) && _x <= UPSCALE_X(435) && _y >= UPSCALE_Y(420)) {
 		if (_idleTableNum == 0) {
 			setKlaymenIdleTable(klaymenIdleTable1002, ARRAYSIZE(klaymenIdleTable1002));
 			_idleTableNum = 1;
@@ -1593,7 +1593,7 @@ uint32 KmScene1002::hmHitByBoxingGlove(int messageNum, const MessageParam &param
 		speedUpFrameIndex = getFrameIndex(kKlaymenSpeedUpHash);
 		if (_currFrameIndex < speedUpFrameIndex) {
 			startAnimation(0x35AA8059, speedUpFrameIndex, -1);
-			_y = RESCALE_Y(435);
+			_y = UPSCALE_Y(435);
 		}
 		messageResult = 0;
 		break;

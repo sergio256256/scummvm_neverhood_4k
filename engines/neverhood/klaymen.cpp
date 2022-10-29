@@ -55,7 +55,7 @@ Klaymen::Klaymen(NeverhoodEngine *vm, Scene *parentScene, int16 x, int16 y, NRec
 	_doYHitIncr(false), _isLeverDown(false), _isSittingInTeleporter(false), _actionStatusChanged(false), _ladderStatus(0), _pathPoints(nullptr), _soundFlag(false),
 	_idleTableNum(0), _otherSprite(nullptr), _moveObjectCountdown(0), _walkResumeFrameIncr(0) {
 
-	createSurface(1000, RESCALE(320, 200));
+	createSurface(1000, UPSCALE(320, 200));
 	_x = x;
 	_y = y;
 	_destX = x;
@@ -609,6 +609,7 @@ uint32 Klaymen::hmStartAction(int messageNum, const MessageParam &param, Entity 
 
 
 void Klaymen::startWalkToX(int16 x, bool walkExt) {
+	x = UPSCALE_X(x); // it was previously downscaled to fit data from original messages
 	int16 xdiff = ABS(x - _x);
 	if (x == _x) {
 		_destX = x;
@@ -616,11 +617,11 @@ void Klaymen::startWalkToX(int16 x, bool walkExt) {
 			gotoState(nullptr);
 			gotoNextStateExt();
 		}
-	} else if (xdiff <= RESCALE_X(36) && !_isWalking && !_isSneaking && !_isLargeStep) {
+	} else if (xdiff <= UPSCALE_X(36) && !_isWalking && !_isSneaking && !_isLargeStep) {
 		_destX = x;
 		gotoState(nullptr);
 		gotoNextStateExt();
-	} else if (xdiff <= RESCALE_X(42) && _actionStatus != 3) {
+	} else if (xdiff <= UPSCALE_X(42) && _actionStatus != 3) {
 		if (_isSneaking && ((!_doDeltaX && x - _x > 0) || (_doDeltaX && x - _x < 0)) && ABS(_destX - _x) > xdiff) {
 			_destX = x;
 		} else {
@@ -673,10 +674,10 @@ void Klaymen::suAction() {
 	_deltaY = 0;
 
 	if (_frameChanged) {
-		if (xdiff > RESCALE_X(6))
-			_x += RESCALE_X(6);
-		else if (xdiff < RESCALE_X(-6))
-			_x -= RESCALE_X(6);
+		if (xdiff > UPSCALE_X(6))
+			_x += UPSCALE_X(6);
+		else if (xdiff < UPSCALE_X(-6))
+			_x -= UPSCALE_X(6);
 		else
 			_x = _destX;
 	}
@@ -690,10 +691,10 @@ void Klaymen::suSneaking() {
 	int16 xdiff = _destX - _x;
 
 	if (_currFrameIndex == 9) {
-		if (xdiff > RESCALE_X(26))
-			_deltaX += xdiff - RESCALE_X(26);
-		else if (xdiff < RESCALE_X(-26))
-			_deltaX -= xdiff + RESCALE_X(26);
+		if (xdiff > UPSCALE_X(26))
+			_deltaX += xdiff - UPSCALE_X(26);
+		else if (xdiff < UPSCALE_X(-26))
+			_deltaX -= xdiff + UPSCALE_X(26);
 	}
 
 	if (xdiff > _deltaX)
@@ -848,7 +849,7 @@ void Klaymen::stUpdateWalkingFirst() {
 	} else {
 		_isSneaking = true;
 		_acceptInput = true;
-		if (ABS(_destX - _x) <= RESCALE_X(42) && _currFrameIndex >= 5 && _currFrameIndex <= 11) {
+		if (ABS(_destX - _x) <= UPSCALE_X(42) && _currFrameIndex >= 5 && _currFrameIndex <= 11) {
 			if (_actionStatus == 0) {
 				_busyStatus = 1;
 				startAnimation(0xF234EE31, 0, -1);
@@ -856,7 +857,7 @@ void Klaymen::stUpdateWalkingFirst() {
 				_busyStatus = 2;
 				startAnimation(0xF135CC21, 0, -1);
 			}
-		} else if (ABS(_destX - _x) <= RESCALE_X(10) && (_currFrameIndex >= 12 || _currFrameIndex <= 4)) {
+		} else if (ABS(_destX - _x) <= UPSCALE_X(10) && (_currFrameIndex >= 12 || _currFrameIndex <= 4)) {
 			if (_actionStatus == 0) {
 				_busyStatus = 1;
 				startAnimation(0x8604A152, 0, -1);
@@ -884,10 +885,10 @@ void Klaymen::suWalkingTestExit() {
 	_deltaX = 0;
 
 	if (xdiff == 0 ||
-		(_actionStatus != 2 && _actionStatus != 3 && xdiff <= RESCALE_X(42) && _currFrameIndex >= 5 && _currFrameIndex <= 11) ||
-		(_actionStatus != 2 && _actionStatus != 3 && xdiff <= RESCALE_X(10) && (_currFrameIndex >= 12 || _currFrameIndex <= 4)) ||
-		(_actionStatus == 3 && xdiff < RESCALE_X(30)) ||
-		(_actionStatus == 3 && xdiff < RESCALE_X(150) && _currFrameIndex >= 6)) {
+		(_actionStatus != 2 && _actionStatus != 3 && xdiff <= UPSCALE_X(42) && _currFrameIndex >= 5 && _currFrameIndex <= 11) ||
+		(_actionStatus != 2 && _actionStatus != 3 && xdiff <= UPSCALE_X(10) && (_currFrameIndex >= 12 || _currFrameIndex <= 4)) ||
+		(_actionStatus == 3 && xdiff < UPSCALE_X(30)) ||
+		(_actionStatus == 3 && xdiff < UPSCALE_X(150) && _currFrameIndex >= 6)) {
 		sendMessage(this, NM_SCENE_LEAVE, 0);
 	} else {
 		HitRect *hitRectPrev = _parentScene->findHitRectAtPos(_x, _y);
@@ -1029,7 +1030,7 @@ void Klaymen::startSpecialWalkRight(int16 x) {
 		gotoNextStateExt();
 	} else if (_x < x) {
 		startWalkToX(x, false);
-	} else if (_x - x <= RESCALE_X(105)) {
+	} else if (_x - x <= UPSCALE_X(105)) {
 		startWalkToXExt(x);
 	} else {
 		startWalkToX(x, false);
@@ -1043,7 +1044,7 @@ void Klaymen::startSpecialWalkLeft(int16 x) {
 		gotoNextStateExt();
 	} else if (x < _x) {
 		startWalkToX(x, false);
-	} else if (x - _x <= RESCALE_X(105)) {
+	} else if (x - _x <= UPSCALE_X(105)) {
 		startWalkToXExt(x);
 	} else {
 		startWalkToX(x, false);
@@ -1305,15 +1306,16 @@ void Klaymen::stStartWalkingExt() {
 }
 
 void Klaymen::startWalkToXDistance(int16 destX, int16 distance) {
+	distance = UPSCALE_X(distance);
 	if (_x > destX) {
 		if (_x == destX + distance) {
 			_destX = destX + distance;
 			gotoState(nullptr);
 			gotoNextStateExt();
 		} else if (_x < destX + distance) {
-			startWalkToXExt(destX + distance);
+			startWalkToXExt(DOWNSCALE_X(destX + distance));
 		} else {
-			startWalkToX(destX + distance, false);
+			startWalkToX(DOWNSCALE_X(destX + distance), false);
 		}
 	} else {
 		if (_x == destX - distance) {
@@ -1321,14 +1323,15 @@ void Klaymen::startWalkToXDistance(int16 destX, int16 distance) {
 			gotoState(nullptr);
 			gotoNextStateExt();
 		} else if (_x > destX - distance) {
-			startWalkToXExt(destX - distance);
+			startWalkToXExt(DOWNSCALE_X(destX - distance));
 		} else {
-			startWalkToX(destX - distance, false);
+			startWalkToX(DOWNSCALE_X(destX - distance), false);
 		}
 	}
 }
 
 void Klaymen::startWalkToXExt(int16 x) {
+	x = UPSCALE_X(x);
 	int16 xdiff = ABS(x - _x);
 	if (x == _x) {
 		_destX = x;
@@ -1336,11 +1339,11 @@ void Klaymen::startWalkToXExt(int16 x) {
 			gotoState(nullptr);
 			gotoNextStateExt();
 		}
-	} else if (xdiff <= RESCALE_X(36) && !_isWalking && !_isSneaking && !_isLargeStep) {
+	} else if (xdiff <= UPSCALE_X(36) && !_isWalking && !_isSneaking && !_isLargeStep) {
 		_destX = x;
 		gotoState(nullptr);
 		gotoNextStateExt();
-	} else if (xdiff <= RESCALE_X(42) && _actionStatus != 3) {
+	} else if (xdiff <= UPSCALE_X(42) && _actionStatus != 3) {
 		if (_isSneaking && ((!_doDeltaX && x - _x > 0) || (_doDeltaX && x - _x < 0)) && ABS(_destX - _x) > xdiff) {
 			_destX = x;
 		} else {
@@ -1637,7 +1640,7 @@ uint32 Klaymen::hmClimbLadderUpDown(int messageNum, const MessageParam &param, E
 		} else if (param.asInteger() == 0x02421405) {
 			if (_ladderStatus == 1) {
 				startAnimationByHash(0x3A292504, 0x01084280, 0);
-				if (_destY >= _y - 30)
+				if (_destY >= _y - UPSCALE_Y(30))
 					sendMessage(this, NM_SCENE_LEAVE, 0);
 			} else {
 				startAnimationByHash(0x122D1505, 0x01084280, 0);
@@ -1655,7 +1658,7 @@ uint32 Klaymen::hmClimbLadderUpDown(int messageNum, const MessageParam &param, E
 void Klaymen::stStartClimbLadderUp() {
 	if (!stStartAction(AnimationCallback(&Klaymen::stStartClimbLadderUp))) {
 		_busyStatus = 0;
-		if (_destY >= _y - RESCALE_Y(30)) {
+		if (_destY >= _y - UPSCALE_Y(30)) {
 			gotoNextStateExt();
 		} else if (_ladderStatus == 0) {
 			_ladderStatus = 1;
@@ -1823,7 +1826,7 @@ void Klaymen::stWalkingOpenDoor() {
 }
 
 void Klaymen::suWalkingOpenDoor() {
-	if (!_isWalkingOpenDoorNotified && ABS(_destX - _x) < RESCALE_X(80)) {
+	if (!_isWalkingOpenDoorNotified && ABS(_destX - _x) < UPSCALE_X(80)) {
 		sendMessage(_parentScene, 0x4829, 0);
 		_isWalkingOpenDoorNotified = true;
 	}
@@ -2501,11 +2504,11 @@ uint32 Klaymen::hmStandIdleSpecial(int messageNum, const MessageParam &param, En
 		playSound(0, 0x5252A0E4);
 		setDoDeltaX(((Sprite*)sender)->isDoDeltaX() ? 1 : 0);
 		if (_doDeltaX) {
-			_x = ((Sprite*)sender)->getX() - RESCALE_X(75);
+			_x = ((Sprite*)sender)->getX() - UPSCALE_X(75);
 		} else {
-			_x = ((Sprite*)sender)->getX() + RESCALE_X(75);
+			_x = ((Sprite*)sender)->getX() + UPSCALE_X(75);
 		}
-		_y = ((Sprite*)sender)->getY() - RESCALE_X(200);
+		_y = ((Sprite*)sender)->getY() - UPSCALE_X(200);
 		if (param.asInteger() == 0) {
 			stSpitOutFall0();
 		} else if (param.asInteger() == 1) {
@@ -2523,7 +2526,7 @@ uint32 Klaymen::hmStandIdleSpecial(int messageNum, const MessageParam &param, En
 
 void Klaymen::suFallDown() {
 	AnimatedSprite::updateDeltaXY();
-	HitRect *hitRect = _parentScene->findHitRectAtPos(_x, _y + RESCALE_Y(10));
+	HitRect *hitRect = _parentScene->findHitRectAtPos(_x, _y + UPSCALE_Y(10));
 	if (hitRect->type == 0x5001) {
 		_y = hitRect->rect.y1;
 		updateBounds();
@@ -2590,7 +2593,7 @@ void Klaymen::stFallTouchdown() {
 
 void Klaymen::suFallSkipJump() {
 	updateDeltaXY();
-	HitRect *hitRect = _parentScene->findHitRectAtPos(_x, _y + RESCALE_Y(10));
+	HitRect *hitRect = _parentScene->findHitRectAtPos(_x, _y + UPSCALE_Y(10));
 	if (hitRect->type == 0x5001) {
 		_y = hitRect->rect.y1;
 		updateBounds();
@@ -2657,8 +2660,8 @@ void Klaymen::stContinueMoveObject() {
 }
 
 void Klaymen::suRidePlatform() {
-	_x = _attachedSprite->getX() - RESCALE_X(20);
-	_y = _attachedSprite->getY() + RESCALE_Y(46);
+	_x = _attachedSprite->getX() - UPSCALE_X(20);
+	_y = _attachedSprite->getY() + UPSCALE_Y(46);
 	updateBounds();
 }
 
