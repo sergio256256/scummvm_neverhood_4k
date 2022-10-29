@@ -260,7 +260,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 		// Restoring game
 		if (_vm->_gameState.which == 0) {
 			// Klaymen on top
-			insertKlaymen<KmScene1002>(90, 226);
+			insertKlaymen<KmScene1002>(RESCALE(90, 226));
 			_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 			setMessageList(0x004B4270);
 			_klaymen->setClipRect(31, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart3->getDrawRect().y2());
@@ -268,7 +268,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 			_klaymen->setRepl(64, 0);
 		} else {
 			// Klaymen on the floor
-			insertKlaymen<KmScene1002>(379, 435);
+			insertKlaymen<KmScene1002>(RESCALE(379, 435));
 			_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 			setMessageList(0x004B4270);
 			_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
@@ -276,7 +276,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 		}
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmScene1002>(650, 435);
+		insertKlaymen<KmScene1002>(RESCALE(650, 435));
 		_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 		setMessageList(0x004B4478);
 		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
@@ -284,7 +284,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 		_vm->_gameState.which = 1;
 	} else if (which == 2) {
 		// Klaymen coming up the ladder
-		insertKlaymen<KmScene1002>(68, 645);
+		insertKlaymen<KmScene1002>(RESCALE(68, 645));
 		_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 		setMessageList(0x004B4298);
 		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
@@ -293,7 +293,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 		sendMessage(_klaymen, 0x4820, 0);
 	} else {
 		// Klaymen entering from the left, peeking
-		insertKlaymen<KmScene1002>(90, 226);
+		insertKlaymen<KmScene1002>(RESCALE(90, 226));
 		_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 		setMessageList(0x004B4470);
 		_klaymen->setClipRect(31, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart3->getDrawRect().y2());
@@ -310,11 +310,11 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 	tempClipRect.set(tempSprite->getDrawRect().x, tempSprite->getDrawRect().y,
 		_ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart2->getDrawRect().y2());
 
-	_asRing1 = insertSprite<AsScene1002Ring>(this, false, 258, 191, _ssCeiling->getDrawRect().y, false);
-	_asRing2 = insertSprite<AsScene1002Ring>(this, false, 297, 189, _ssCeiling->getDrawRect().y, false);
-	_asRing3 = insertSprite<AsScene1002Ring>(this, true, 370, 201, _ssCeiling->getDrawRect().y, getGlobalVar(V_FLYTRAP_RING_DOOR));
-	_asRing4 = insertSprite<AsScene1002Ring>(this, false, 334, 191, _ssCeiling->getDrawRect().y, false);
-	_asRing5 = insertSprite<AsScene1002Ring>(this, false, 425, 184, _ssCeiling->getDrawRect().y, false);
+	_asRing1 = insertSprite<AsScene1002Ring>(this, false, RESCALE(258, 191), _ssCeiling->getDrawRect().y, false);
+	_asRing2 = insertSprite<AsScene1002Ring>(this, false, RESCALE(297, 189), _ssCeiling->getDrawRect().y, false);
+	_asRing3 = insertSprite<AsScene1002Ring>(this, true, RESCALE(370, 201), _ssCeiling->getDrawRect().y, getGlobalVar(V_FLYTRAP_RING_DOOR));
+	_asRing4 = insertSprite<AsScene1002Ring>(this, false, RESCALE(334, 191), _ssCeiling->getDrawRect().y, false);
+	_asRing5 = insertSprite<AsScene1002Ring>(this, false, RESCALE(425, 184), _ssCeiling->getDrawRect().y, false);
 
 	_asDoor = insertSprite<AsScene1002Door>(tempClipRect);
 	tempSprite = insertSprite<AsScene1002BoxingGloveHitEffect>();
@@ -339,7 +339,7 @@ Scene1002::~Scene1002() {
 
 void Scene1002::update() {
 	Scene::update();
-	if (!_isKlaymenFloor && _klaymen->getY() > 230) {
+	if (!_isKlaymenFloor && _klaymen->getY() > RESCALE_Y(230)) {
 		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
 		_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 		deleteSprite(&_ssLadderArchPart3);
@@ -369,7 +369,7 @@ uint32 Scene1002::handleMessage(int messageNum, const MessageParam &param, Entit
 				setMessageList(0x004B44B8);
 			} else {
 				sendEntityMessage(_klaymen, 0x1014, _asRing3);
-				if (_asVenusFlyTrap->getX() - 10 < 366 && _asVenusFlyTrap->getX() + 10 > 366) {
+				if (_asVenusFlyTrap->getX() - RESCALE_X(10) < RESCALE_X(366) && _asVenusFlyTrap->getX() + RESCALE_X(10) > RESCALE_X(366)) {
 					setGlobalVar(V_FLYTRAP_RING_EATEN, 1);
 					setMessageList(0x004B44A8);
 				} else {
@@ -391,10 +391,10 @@ uint32 Scene1002::handleMessage(int messageNum, const MessageParam &param, Entit
 		if (_isClimbingLadder) {
 			setMessageList2(0x004B43D0);
 		} else {
-			if (_klaymen->getY() > 420) {
+			if (_klaymen->getY() > RESCALE_Y(420)) {
 				sendEntityMessage(_klaymen, 0x1014, _asVenusFlyTrap);
 				setMessageList2(0x004B4480);
-			} else if (_klaymen->getY() > 227) {
+			} else if (_klaymen->getY() > RESCALE_Y(227)) {
 				setMessageList2(0x004B41E0);
 			} else {
 				setMessageList2(0x004B4148);
@@ -490,17 +490,17 @@ Scene1004::Scene1004(NeverhoodEngine *vm, Module *parentModule, int which)
 	if (which < 0) {
 		// Restoring game
 		setRectList(0x004B7C70);
-		insertKlaymen<KmScene1004>(330, 327);
+		insertKlaymen<KmScene1004>(RESCALE(330, 327));
 		setMessageList(0x004B7C18);
 	} else if (which == 1) {
 		// Klaymen returning from reading a note
 		setRectList(0x004B7C70);
-		insertKlaymen<KmScene1004>(330, 327);
+		insertKlaymen<KmScene1004>(RESCALE(330, 327));
 		setMessageList(0x004B7C08);
 	} else {
 		// Klaymen coming down the ladder
 		loadDataResource(0x01900A04);
-		insertKlaymen<KmScene1004>(_dataResource.getPoint(0x80052A29).x, 27);
+		insertKlaymen<KmScene1004>(_dataResource.getPoint(0x80052A29).x, RESCALE_Y(27));
 		setMessageList(0x004B7BF0);
 	}
 
@@ -551,7 +551,7 @@ uint32 Scene1004::handleMessage(int messageNum, const MessageParam &param, Entit
 }
 
 void Scene1004::updatePaletteArea() {
-	if (_klaymen->getY() < 150) {
+	if (_klaymen->getY() < RESCALE_Y(150)) {
 		if (_paletteAreaStatus != 0) {
 			_paletteAreaStatus = 0;
 			_palette->addBasePalette(0x406B0D10, 0, 64, 0);
@@ -575,13 +575,13 @@ Scene1005::Scene1005(NeverhoodEngine *vm, Module *parentModule, int which)
 		setBackground(0x2800E011);
 		setPalette(0x2800E011);
 		insertStaticSprite(0x492D5AD7, 100);
-		insertPuzzleMouse(0x0E015288, 20, 620);
+		insertPuzzleMouse(0x0E015288, RESCALE(20, 620));
 	} else {
 		setBackground(0x8870A546);
 		setPalette(0x8870A546);
 		insertStaticSprite(0x40D1E0A9, 100);
 		insertStaticSprite(0x149C00A6, 100);
-		insertPuzzleMouse(0x0A54288F, 20, 620);
+		insertPuzzleMouse(0x0A54288F, RESCALE(20, 620));
 	}
 
 	drawTextToBackground();
@@ -592,7 +592,7 @@ uint32 Scene1005::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620)
+		if (param.asPoint().x <= RESCALE_X(20) || param.asPoint().x >= RESCALE_X(620))
 			leaveScene(0);
 		break;
 	default:
@@ -604,14 +604,14 @@ uint32 Scene1005::handleMessage(int messageNum, const MessageParam &param, Entit
 void Scene1005::drawTextToBackground() {
 	TextResource textResource(_vm);
 	const char *textStart, *textEnd;
-	int16 y = 36;
+	int16 y = RESCALE_Y(36);
 	uint32 textIndex = getTextIndex();
 	FontSurface *fontSurface = FontSurface::createFontSurface(_vm, getGlobalVar(V_ENTRANCE_OPEN) ? 0x283CE401 : 0xC6604282);
 	textResource.load(0x80283101);
 	textStart = textResource.getString(textIndex, textEnd);
 	while (textStart < textEnd) {
-		fontSurface->drawString(_background->getSurface(), 188, y, (const byte*)textStart);
-		y += 36;
+		fontSurface->drawString(_background->getSurface(), RESCALE_X(188), y, (const byte *)textStart);
+		y += RESCALE_Y(36);
 		textStart += strlen(textStart) + 1;
 	}
 	delete fontSurface;
