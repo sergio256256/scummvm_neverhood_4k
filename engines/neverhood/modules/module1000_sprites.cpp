@@ -1238,12 +1238,12 @@ uint32 KmScene1002::xHandleMessage(int messageNum, const MessageParam &param) {
 		break;
 	case 0x4821:
 		sendMessage(_parentScene, NM_KLAYMEN_CLIMB_LADDER, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderDown);
 		break;
 	case 0x4822:
 		sendMessage(_parentScene, NM_KLAYMEN_CLIMB_LADDER, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderUp);
 		break;
 	case 0x4823:
@@ -1641,12 +1641,12 @@ uint32 KmScene1004::xHandleMessage(int messageNum, const MessageParam &param) {
 		break;
 	case 0x4821:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderDown);
 		break;
 	case 0x4822:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderUp);
 		break;
 	case 0x4823:
@@ -1655,12 +1655,12 @@ uint32 KmScene1004::xHandleMessage(int messageNum, const MessageParam &param) {
 		break;
 	case 0x4824:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = _dataResource.getPoint(param.asInteger()).y;
+		_destY = UPSCALE_Y(_dataResource.getPoint(param.asInteger()).y);
 		GotoState(&Klaymen::stStartClimbLadderDown);
 		break;
 	case 0x4825:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = _dataResource.getPoint(param.asInteger()).y;
+		_destY = UPSCALE_Y(_dataResource.getPoint(param.asInteger()).y);
 		GotoState(&Klaymen::stStartClimbLadderUp);
 		break;
 	case 0x4828:
