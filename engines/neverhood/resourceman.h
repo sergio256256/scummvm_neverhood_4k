@@ -67,7 +67,6 @@ public:
 	int upscaledDataWidth(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->getSurface()->w : 0; }
 	int upscaledDataHeight(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->getSurface()->h : 0; }
 
-	//const byte *upscaledData() const { return _upscaledData ? (byte *)_upscaledData->getSurface()->convertTo(Graphics::PixelFormat::createFormatCLUT8()) : 0; }
 	ResourceFileEntry *_resourceFileEntry;
 	const byte *_extData;
 	const byte *_data;

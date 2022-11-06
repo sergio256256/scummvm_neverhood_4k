@@ -42,7 +42,7 @@ BaseSurface::BaseSurface(NeverhoodEngine *vm, int priority, int16 width, int16 h
 	_clipRect.x2 = UPSCALE_X(640);
 	_clipRect.y2 = UPSCALE_Y(480);
 	_surface = new Graphics::Surface();
-	_surface->create(_sysRect.width, _sysRect.height, Graphics::PixelFormat::createFormatCLUT8());
+	_surface->create(_sysRect.width, _sysRect.height, Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24)); //Graphics::PixelFormat::createFormatCLUT8());
 }
 
 BaseSurface::~BaseSurface() {
@@ -74,6 +74,8 @@ void BaseSurface::drawSpriteResource(SpriteResource &spriteResource) {
 		spriteResource.draw(_surface, false, false);
 		++_version;
 	}
+
+
 }
 
 void BaseSurface::drawSpriteResourceEx(SpriteResource &spriteResource, bool flipX, bool flipY, int16 width, int16 height) {
@@ -336,26 +338,29 @@ void unpackSpriteRle(const byte *source, int width, int height, byte *dest, int 
 
 void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY) {
 
-	const int sourcePitch = width;
+	const int bytesPerPixel = 4;
+	const int sourcePitch = width * bytesPerPixel;
 
 	if (flipY) {
 		dest += destPitch * (height - 1);
 		destPitch = -destPitch;
 	}
 
+	//flipX = false;
+
 	if (!flipX) {
 		while (height-- > 0) {
-			memcpy(dest, source, width);
+			memcpy(dest, source, width * bytesPerPixel);
 			source += sourcePitch;
 			dest += destPitch;
 		}
 	} else {
 		while (height-- > 0) {
-			dest += width - 1;
-			for (int xc = 0; xc < width; xc++)
-				*dest-- = source[xc];
+			dest += (width - 1) * bytesPerPixel;
+			for (int xs = 0; xs < sourcePitch; xs += bytesPerPixel, dest -= bytesPerPixel)
+				memcpy(dest, source + xs, bytesPerPixel);
 			source += sourcePitch;
-			dest += destPitch + 1;
+			dest += destPitch + bytesPerPixel;
 		}
 	}
 }

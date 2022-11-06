@@ -639,12 +639,12 @@ uint32 KmScene2403::xHandleMessage(int messageNum, const MessageParam &param) {
 		break;
 	case 0x4821:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderDown);
 		break;
 	case 0x4822:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderUp);
 		break;
 	case 0x4823:
@@ -652,7 +652,7 @@ uint32 KmScene2403::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stClimbLadderHalf);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(_x > UPSCALE_X((int16)param.asInteger()) ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x483F:
@@ -735,12 +735,12 @@ uint32 KmScene2406::xHandleMessage(int messageNum, const MessageParam &param) {
 		break;
 	case 0x4821:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderDown);
 		break;
 	case 0x4822:
 		sendMessage(_parentScene, 0x2000, 0);
-		_destY = param.asInteger();
+		_destY = UPSCALE_Y(param.asInteger());
 		GotoState(&Klaymen::stStartClimbLadderUp);
 		break;
 	case 0x4823:

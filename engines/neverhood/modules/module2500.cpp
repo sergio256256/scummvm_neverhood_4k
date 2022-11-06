@@ -298,7 +298,6 @@ Scene2501::Scene2501(NeverhoodEngine *vm, Module *parentModule, int which)
 	_dataResource.load(calcHash("Ashooded"));
 
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 
 	if (which >= 0 && _tracks[_currTrackIndex]->which2 == which) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
@@ -471,7 +470,6 @@ void Scene2501::moveCarToPoint(NPoint &pt) {
 void Scene2501::changeTrack() {
 	_currTrackIndex = _newTrackIndex;
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 	if (_currTrackIndex == 0)
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
 	else

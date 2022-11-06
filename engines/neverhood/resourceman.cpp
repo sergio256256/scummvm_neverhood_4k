@@ -163,12 +163,13 @@ void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fi
 	unloadUpscaledResource(resourceHandle);
 
 	Common::Array<Common::String> fnames;
+	Common::String folder = "4k_32b";
 	Common::String fname = Common::String::format("%08X", fileHash);
 
 	if (!isAnimation) {
 		Common::File file;
 
-		fname += ".png";
+		fname = folder + "/" + fname + ".png";
 		if (file.exists(fname)) {
 			fnames.push_back(fname);
 		}
@@ -178,7 +179,7 @@ void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fi
 		int index = 0;
 		while (true) 
 		{
-			Common::String index_fname = Common::String::format("%s-%03d.png", fname.c_str(), index);
+			Common::String index_fname = Common::String::format("%s/%s-%03d.png", folder.c_str(), fname.c_str(), index);
 			index++;
 
 			if (file.exists(index_fname)) {

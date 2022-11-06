@@ -32,7 +32,6 @@ class AsCommonCar : public AnimatedSprite {
 public:
 	AsCommonCar(NeverhoodEngine *vm, Scene *parentScene, int16 x, int16 y);
 	~AsCommonCar() override;
-	void setPathPoints(NPointArray *pathPoints);
 protected:
 	Scene *_parentScene;
 	NPointArray *_pathPoints;
@@ -61,7 +60,13 @@ protected:
 	int _soundCounter;
 	int _turnMoveStatus;
 	int16 _destX, _destY;
-	NPoint pathPoint(uint index) { return (*_pathPoints)[index]; }
+	NPoint pathPoint(uint index) {
+		NPoint upscaled = (*_pathPoints)[index];
+		upscaled.x = UPSCALE_X(upscaled.x);
+		upscaled.y = UPSCALE_Y(upscaled.y);
+
+		return upscaled;
+	}
 	void update();
 	void upIdle();
 	uint32 handleMessage(int messageNum, const MessageParam &param, Entity *sender);

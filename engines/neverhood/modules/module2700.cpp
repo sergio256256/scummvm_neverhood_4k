@@ -582,7 +582,6 @@ Scene2701::Scene2701(NeverhoodEngine *vm, Module *parentModule, int which)
 	_which2 = tracks->which2;
 	_dataResource.load(tracks->dataResourceFilename);
 	_trackPoints = _dataResource.getPointArray(tracks->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _which2) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
@@ -713,7 +712,6 @@ Scene2702::Scene2702(NeverhoodEngine *vm, Module *parentModule, int which)
 	}
 
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _tracks[_currTrackIndex]->which2) {
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
@@ -795,7 +793,6 @@ void Scene2702::moveCarToPoint(NPoint pt) {
 void Scene2702::changeTrack() {
 	_currTrackIndex = _newTrackIndex;
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 	if (_isUpperTrack) {
 		if (_currTrackIndex == 0)
 			sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
@@ -844,7 +841,6 @@ Scene2703::Scene2703(NeverhoodEngine *vm, Module *parentModule, int which, uint3
 	_which2 = tracks->which2;
 	_dataResource.load(tracks->dataResourceFilename);
 	_trackPoints = _dataResource.getPointArray(tracks->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _which2) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
@@ -965,7 +961,6 @@ Scene2704::Scene2704(NeverhoodEngine *vm, Module *parentModule, int which, uint3
 	_which2 = tracks->which2;
 	_dataResource.load(tracks->dataResourceFilename);
 	_trackPoints = _dataResource.getPointArray(tracks->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _which2) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
@@ -1061,7 +1056,6 @@ Scene2706::Scene2706(NeverhoodEngine *vm, Module *parentModule, int which)
 		_currTrackIndex = 0;
 
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _tracks[_currTrackIndex]->which2) {
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
@@ -1127,7 +1121,6 @@ void Scene2706::moveCarToPoint(NPoint pt) {
 void Scene2706::changeTrack() {
 	_currTrackIndex = _newTrackIndex;
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
-	_asCar->setPathPoints(_trackPoints);
 	if (_currTrackIndex == 0)
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
 	else

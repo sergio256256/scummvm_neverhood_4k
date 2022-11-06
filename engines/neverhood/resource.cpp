@@ -336,12 +336,13 @@ NDrawRect& MouseCursorResource::getRect() {
 
 void MouseCursorResource::draw(int frameNum, Graphics::Surface *destSurface) {
 	if (_cursorSprite.getPixels()) {
-		const int sourcePitch =  (_cursorSprite.getDimensions().width + 3) & 0xFFFC; // 4 byte alignment
+		int bytesPerPixel = 4;
+		const int sourcePitch =  ((_cursorSprite.getDimensions().width + 3) & 0xFFFC) * bytesPerPixel; // 4 byte alignment
 		const int destPitch = destSurface->pitch;
-		const byte *source = _cursorSprite.getPixels() + _cursorNum * (sourcePitch * UPSCALE_Y(32)) + frameNum * UPSCALE_X(32);
+		const byte *source = _cursorSprite.getPixels() + _cursorNum * (sourcePitch * UPSCALE_Y(32)) + frameNum * bytesPerPixel * UPSCALE_X(32);
 		byte *dest = (byte*)destSurface->getPixels();
 		for (int16 yc = 0; yc < UPSCALE_Y(32); yc++) {
-			memcpy(dest, source, UPSCALE_X(32));
+			memcpy(dest, source, bytesPerPixel * UPSCALE_X(32));
 			source += sourcePitch;
 			dest += destPitch;
 		}

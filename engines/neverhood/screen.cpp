@@ -22,6 +22,7 @@
 #include "graphics/palette.h"
 #include "video/smk_decoder.h"
 #include "neverhood/screen.h"
+#include "image/png.h"
 
 namespace Neverhood {
 
@@ -33,7 +34,7 @@ Screen::Screen(NeverhoodEngine *vm)
 	_ticks = _vm->_system->getMillis();
 
 	_backScreen = new Graphics::Surface();
-	_backScreen->create(UPSCALE(640, 480), Graphics::PixelFormat::createFormatCLUT8());
+	_backScreen->create(UPSCALE(640, 480), Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24)); //Graphics::PixelFormat::createFormatCLUT8());
 
 	_renderQueue = new RenderQueue();
 	_prevRenderQueue = new RenderQueue();
@@ -51,7 +52,8 @@ Screen::~Screen() {
 
 void Screen::update() {
 	_ticks = _vm->_system->getMillis();
-	updatePalette();
+	if (_vm->_system->getScreenFormat().bytesPerPixel == 1)
+		updatePalette();
 
 	if (_fullRefresh) {
 		// NOTE When playing a fullscreen/doubled Smacker video usually a full screen refresh is needed
@@ -102,8 +104,6 @@ void Screen::update() {
 		Common::Rect &r = *ri;
 		_vm->_system->copyRectToScreen((const byte*)_backScreen->getBasePtr(r.left, r.top), _backScreen->pitch, r.left, r.top, r.width(), r.height());
 	}
-
-	//_vm->_system->copyRectToScreen((const byte *)_backScreen->getBasePtr(0, 0), _backScreen->pitch, 0, 0, RESCALE(640, 480));
 
 	delete updateRects;
 
@@ -375,6 +375,32 @@ void Screen::queueBlit(const Graphics::Surface *surface, int16 destX, int16 dest
 
 }
 
+int getAlphaOffset(int pos, int bytes_per_pixel) {
+	return (pos & 0xFFFFFFFC) + bytes_per_pixel - 1;
+}
+
+byte clampByte(int16 val) {
+	return (byte)((val < 0) ? 0 : (val > 255) ? 255 : val);
+}
+
+void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel) {
+	int16 min = 180;
+	int16 max = 200;
+	int16 width = max - min;
+
+	int16 alpha = src[getAlphaOffset(0, bytes_per_pixel)];
+
+	if (alpha >= max) {
+		memcpy(dst, src, bytes_per_pixel);
+	}
+	else if (alpha >= min) {
+		float falpha = (alpha - min) / (float)width;
+		for (int i = 0; i < bytes_per_pixel; ++i) {
+			dst[i] = clampByte(src[i] * falpha + dst[i] * (1.f - falpha));
+		}
+	}
+}
+
 void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &clipRect) {
 
 	const Graphics::Surface *surface = renderItem._surface;
@@ -385,6 +411,7 @@ void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &cl
 	const int16 y1 = MIN<int16>(clipRect.bottom, renderItem._destY + renderItem._height);
 	const int16 width = x1 - x0;
 	int16 height = y1 - y0;
+	int16 bytes_per_pixel = 4;
 
 	if (width < 0 || height < 0)
 		return;
@@ -395,24 +422,26 @@ void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &cl
 	if (shadowSurface) {
 		const byte *shadowSource = (const byte*)shadowSurface->getBasePtr(x0, y0);
 		while (height--) {
-			for (int xc = 0; xc < width; xc++)
-				if (source[xc] != 0)
-					dest[xc] = shadowSource[xc];
+			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel)
+				blendColor(dest + xc, shadowSource + xc, bytes_per_pixel);
+				//if (source[getAlphaOffset(xc)] > 127)
+				//	memcpy(dest + xc, shadowSource + xc, bytes_per_pixel);
 			source += surface->pitch;
 			shadowSource += shadowSurface->pitch;
 			dest += _backScreen->pitch;
 		}
 	} else if (!renderItem._transparent) {
 		while (height--) {
-			memcpy(dest, source, width);
+			memcpy(dest, source, width * bytes_per_pixel);
 			source += surface->pitch;
 			dest += _backScreen->pitch;
 		}
 	} else {
 		while (height--) {
-			for (int xc = 0; xc < width; xc++)
-				if (source[xc] != 0)
-					dest[xc] = source[xc];
+			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel)
+				blendColor(dest + xc, source + xc, bytes_per_pixel);
+				//if (source[getAlphaOffset(xc)] > 127)
+				//	memcpy(dest + xc, source + xc, bytes_per_pixel);
 			source += surface->pitch;
 			dest += _backScreen->pitch;
 		}

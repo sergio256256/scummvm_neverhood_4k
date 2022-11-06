@@ -182,7 +182,7 @@ struct PixelFormat {
 
 	/** Define a CLUT8 pixel format. */
 	static inline PixelFormat createFormatCLUT8() {
-		return PixelFormat(1, 0, 0, 0, 0, 0, 0, 0, 0);
+		return Graphics::PixelFormat(4, 8, 8, 8, 8, 0, 8, 16, 24); // PixelFormat(1, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
 	/** Check if two pixel formats are the same */

@@ -64,10 +64,6 @@ AsCommonCar::~AsCommonCar() {
 		setGlobalVar(V_CAR_DELTA_X, !getGlobalVar(V_CAR_DELTA_X));
 }
 
-void AsCommonCar::setPathPoints(NPointArray *pathPoints) {
-	_pathPoints = pathPoints;
-}
-
 void AsCommonCar::update() {
 	if (_newDeltaXType >= 0) {
 		setDoDeltaX(_newDeltaXType);

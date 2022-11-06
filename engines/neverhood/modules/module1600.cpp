@@ -263,7 +263,6 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 		setMessageList(0x004B47A8);
 		SetMessageHandler(&Scene1608::hmUpperFloor);
 		SetUpdateHandler(&Scene1608::upUpperFloor);
-		_asCar->setPathPoints(_roomPathPoints);
 		sendMessage(_asCar, NM_POSITION_CHANGE, _roomPathPoints->size() - 1);
 		_sprite3 = insertStaticSprite(0xB47026B0, 1100);
 		_clipRect1.set(_sprite3->getDrawRect().x, _sprite3->getDrawRect().y, 640, _sprite2->getDrawRect().y2());
@@ -304,7 +303,6 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 		SetUpdateHandler(&Scene1608::upRidingCar);
 		_asIdleCarLower->setVisible(false);
 		_asIdleCarFull->setVisible(false);
-		_asCar->setPathPoints(_roomPathPoints);
 		sendMessage(_asCar, NM_POSITION_CHANGE, 0);
 		sendMessage(_asCar, NM_CAR_MOVE_TO_NEXT_POINT, 90);
 		_sprite3 = insertStaticSprite(0xB47026B0, 1100);
