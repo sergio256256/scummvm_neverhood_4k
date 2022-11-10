@@ -199,9 +199,12 @@ void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fi
 		Common::File file;
 		file.open(cur_fname);
 
+		resourceHandle._upscaledData.reserve(fnames.size());
+
 		Image::PNGDecoder *decoder = new Image::PNGDecoder();
 		if (decoder->loadStream(file)) {
-			resourceHandle._upscaledData.push_back(decoder);
+			resourceHandle._upscaledData.push_back(new ResourceHandle::UpscaledData(decoder));
+			delete decoder;
 		}
 		else {
 			warning("Couldn't decode ");
@@ -212,8 +215,8 @@ void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fi
 }
 
 void ResourceMan::unloadUpscaledResource(ResourceHandle &resourceHandle) {
-	for (Image::PNGDecoder *d : resourceHandle._upscaledData) {
-		delete d;
+	for (ResourceHandle::UpscaledData *data : resourceHandle._upscaledData) {
+		delete data;
 	}
 	resourceHandle._upscaledData.clear();
 }
@@ -239,4 +242,18 @@ void ResourceMan::purgeResources() {
 	}
 }
 
-} // End of namespace Neverhood
+ ResourceHandle::UpscaledData::UpscaledData(Image::PNGDecoder *decoder) {
+	const Graphics::Surface *surface = decoder->getSurface();
+	format = surface->format;
+	data = (const byte*)surface->getPixels();
+	const_cast<Graphics::Surface*>(surface)->setPixels(nullptr);
+	width = surface->w;
+	height = surface->h;
+ }
+
+
+ ResourceHandle::UpscaledData::~UpscaledData() {
+	 free((void*)data);
+ }
+
+ } // End of namespace Neverhood

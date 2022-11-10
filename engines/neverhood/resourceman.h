@@ -63,16 +63,26 @@ public:
 	const byte *extData() const { return _extData; };
 	uint32 fileHash() const { return isValid() ? _resourceFileEntry->archiveEntry->fileHash : 0; };
 
-	const byte *upscaledData(unsigned int index) const { return _upscaledData.size() > index ? (byte *)_upscaledData[index]->getSurface()->getPixels() : 0; }
-	int upscaledDataWidth(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->getSurface()->w : 0; }
-	int upscaledDataHeight(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->getSurface()->h : 0; }
+	const byte *upscaledData(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->data : 0; }
+	int16 upscaledDataWidth(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->width : 0; }
+	int16 upscaledDataHeight(unsigned int index) const { return _upscaledData.size() > index ? _upscaledData[index]->height : 0; }
 
 	ResourceFileEntry *_resourceFileEntry;
 	const byte *_extData;
 	const byte *_data;
-	//Graphics::Surface *_upscaledData;
 
-	Common::Array<Image::PNGDecoder*> _upscaledData;
+	struct UpscaledData {
+		const byte *data = nullptr;
+		int16 width = 0;
+		int16 height = 0;
+		Graphics::PixelFormat format;
+
+		UpscaledData() {};
+		UpscaledData(Image::PNGDecoder *decoder);
+		~UpscaledData();
+	};
+
+	Common::Array<UpscaledData*> _upscaledData;
 };
 
 class ResourceMan {
