@@ -263,7 +263,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 			insertKlaymen<KmScene1002>(UPSCALE(90, 226));
 			_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 			setMessageList(0x004B4270);
-			_klaymen->setClipRect(31, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart3->getDrawRect().y2());
+			_klaymen->setClipRect(UPSCALE(31, 0), _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart3->getDrawRect().y2());
 			_asKlaymenLadderHands->getSurface()->getClipRect() = _klaymen->getSurface()->getClipRect();
 			_klaymen->setRepl(64, 0);
 		} else {
@@ -296,7 +296,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 		insertKlaymen<KmScene1002>(UPSCALE(90, 226));
 		_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 		setMessageList(0x004B4470);
-		_klaymen->setClipRect(31, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart3->getDrawRect().y2());
+		_klaymen->setClipRect(UPSCALE(31, 0), _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart3->getDrawRect().y2());
 		_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 		_asKlaymenPeekHand = insertSprite<AsScene1002KlaymenPeekHand>(this, _klaymen);
 		_asKlaymenPeekHand->setClipRect(_klaymen->getClipRect());
