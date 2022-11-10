@@ -377,8 +377,14 @@ MainMenu::MainMenu(NeverhoodEngine *vm, Module *parentModule)
 		insertStaticSprite(0x0C24C0EE, 100);	// "Music is off" button
 
 	for (uint buttonIndex = 0; buttonIndex < 9; ++buttonIndex) {
+		NRect rect = kMenuButtonCollisionBounds[buttonIndex];
+		rect.x1 = UPSCALE_X(rect.x1);
+		rect.x2 = UPSCALE_X(rect.x2);
+		rect.y1 = UPSCALE_X(rect.y1);
+		rect.y2 = UPSCALE_X(rect.y2);
+
 		Sprite *menuButton = insertSprite<MenuButton>(this, buttonIndex,
-			kMenuButtonFileHashes[buttonIndex], kMenuButtonCollisionBounds[buttonIndex]);
+			kMenuButtonFileHashes[buttonIndex], rect);
 		addCollisionSprite(menuButton);
 	}
 
