@@ -26,7 +26,7 @@ namespace Neverhood {
 AsCommonCar::AsCommonCar(NeverhoodEngine *vm, Scene *parentScene, int16 x, int16 y)
 	: AnimatedSprite(vm, 1000), _parentScene(parentScene) {
 
-	createSurface(200, 556, 328);
+	createSurface(200, UPSCALE(556, 556));
 	_x = x;
 	_y = y;
 	_destX = x;
@@ -136,10 +136,10 @@ uint32 AsCommonCar::handleMessage(int messageNum, const MessageParam &param, Ent
 			NPoint pt = param.asPoint();
 			if (_yMoveTotalSteps <= 0 && !_isBusy) {
 				// Check if we're already exiting (or something)
-				if ((pt.x <= 20 && _exitDirection == 1) ||
-					(pt.x >= 620 && _exitDirection == 3) ||
-					(pt.y <= 20 && _exitDirection == 2) ||
-					(pt.y >= 460 && _exitDirection == 4))
+				if ((pt.x <= UPSCALE_X(20) && _exitDirection == 1) ||
+					(pt.x >= UPSCALE_X(620) && _exitDirection == 3) ||
+					(pt.y <= UPSCALE_X(20) && _exitDirection == 2) ||
+					(pt.y >= UPSCALE_X(460) && _exitDirection == 4))
 					break;
 				_destX = pt.x;
 				_destY = pt.y;
@@ -599,28 +599,28 @@ void AsCommonCar::suMoveToNextPoint() {
 		int distance = calcDistance(_destX, _destY, _x, _y);
 		_x = newX;
 		_y = newY;
-		if (newX > 20 && newX < 620 && newY > 20 && newY < 460) {
+		if (newX > UPSCALE_X(20) && newX < UPSCALE_X(620) && newY > UPSCALE_X(20) && newY < UPSCALE_X(460)) {
 			_exitDirection = 0;
 			_inMainArea = true;
 		} else if (_inMainArea) {
 			_destX = pathPoint(_pathPoints->size() - 1).x;
 			_destY = pathPoint(_pathPoints->size() - 1).y;
 			_inMainArea = false;
-			if (_x <= 20)
+			if (_x <= UPSCALE_X(20))
 				_exitDirection = 1;
-			else if (_x >= 620)
+			else if (_x >= UPSCALE_X(620))
 				_exitDirection = 3;
-			else if (_y <= 20)
+			else if (_y <= UPSCALE_Y(20))
 				_exitDirection = 2;
-			else if (_y >= 460)
+			else if (_y >= UPSCALE_Y(460))
 				_exitDirection = 4;
 			if (_exitDirection != 0 && _isBraking) {
 				_isBraking = false;
 				_steps = 11;
 			}
 		}
-		if ((distance < 20 && _exitDirection == 0 && _lastDistance < distance) ||
-			(_exitDirection == 0 && _lastDistance + 20 < distance))
+		if ((distance < UPSCALE_X(20) && _exitDirection == 0 && _lastDistance < distance) ||
+			(_exitDirection == 0 && _lastDistance + UPSCALE_X(20) < distance))
 			_isBraking = true;
 		if (distance < _lastDistance)
 			_lastDistance = distance;
@@ -744,28 +744,28 @@ void AsCommonCar::suMoveToPrevPoint() {
 		int distance = calcDistance(_destX, _destY, _x, _y);
 		_x = newX;
 		_y = newY;
-		if (newX > 20 && newX < 620 && newY > 20 && newY < 460) {
+		if (newX > UPSCALE_X(20) && newX < UPSCALE_X(620) && newY > UPSCALE_X(20) && newY < UPSCALE_X(460)) {
 			_exitDirection = 0;
 			_inMainArea = true;
 		} else if (_inMainArea) {
 			_destX = pathPoint(0).x;
 			_destY = pathPoint(0).y;
 			_inMainArea = false;
-			if (_x <= 20)
+			if (_x <= UPSCALE_X(20))
 				_exitDirection = 1;
-			else if (_x >= 620)
+			else if (_x >= UPSCALE_X(620))
 				_exitDirection = 3;
-			else if (_y <= 20)
+			else if (_y <= UPSCALE_Y(20))
 				_exitDirection = 2;
-			else if (_y >= 460)
+			else if (_y >= UPSCALE_Y(460))
 				_exitDirection = 4;
 			if (_exitDirection != 0 && _isBraking) {
 				_isBraking = false;
 				_steps = 11;
 			}
 		}
-		if ((distance < 20 && _exitDirection == 0 && _lastDistance < distance) ||
-			(_exitDirection == 0 && _lastDistance + 20 < distance))
+		if ((distance < UPSCALE_X(20) && _exitDirection == 0 && _lastDistance < distance) ||
+			(_exitDirection == 0 && _lastDistance + UPSCALE_X(20) < distance))
 			_isBraking = true;
 		if (distance < _lastDistance)
 			_lastDistance = distance;
@@ -909,7 +909,7 @@ uint32 KmScene1608::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x4834:

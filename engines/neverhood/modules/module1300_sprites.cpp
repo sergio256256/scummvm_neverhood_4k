@@ -26,8 +26,8 @@ namespace Neverhood {
 AsScene1302Bridge::AsScene1302Bridge(NeverhoodEngine *vm, Scene *parentScene)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	createSurface1(0x88148150, 500);
 	if (!getGlobalVar(V_FLYTRAP_RING_BRIDGE)) {
 		startAnimation(0x88148150, 0, -1);
@@ -137,9 +137,9 @@ void SsScene1302Fence::suMoveUp() {
 AsScene1303Balloon::AsScene1303Balloon(NeverhoodEngine *vm, Scene *parentScene)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(200, 128, 315);
-	_x = 289;
-	_y = 390;
+	createSurface(200, UPSCALE(128, 315));
+	_x = UPSCALE_X(289);
+	_y = UPSCALE_Y(390);
 	startAnimation(0x800278D2, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1303Balloon::handleMessage);
@@ -215,8 +215,8 @@ AsScene1306Elevator::AsScene1306Elevator(NeverhoodEngine *vm, Scene *parentScene
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _asElevatorDoor(asElevatorDoor), _isUp(false), _isDown(true),
 	_countdown(0) {
 
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	createSurface1(0x043B0270, 100);
 	startAnimation(0x043B0270, 0, -1);
 	_newStickFrameIndex = 0;
@@ -352,7 +352,7 @@ AsScene1307Key::AsScene1307Key(NeverhoodEngine *vm, Scene *parentScene, uint key
 	pt = (*_pointList)[getSubVar(VA_CURR_KEY_SLOT_NUMBERS, _keyIndex)];
 	_x = pt.x;
 	_y = pt.y;
-	createSurface(kAsScene1307KeySurfacePriorities[getSubVar(VA_CURR_KEY_SLOT_NUMBERS, _keyIndex) % 4], 190, 148);
+	createSurface(kAsScene1307KeySurfacePriorities[getSubVar(VA_CURR_KEY_SLOT_NUMBERS, _keyIndex) % 4], UPSCALE(190, 148));
 	startAnimation(fileHashes[0], 0, -1);
 	loadSound(0, 0xDC4A1280);
 	loadSound(1, 0xCC021233);
@@ -454,7 +454,7 @@ void AsScene1307Key::stMoveKey() {
 	int16 newX = pt.x + kAsScene1307KeyXDelta;
 	int16 newY = pt.y + kAsScene1307KeyYDelta;
 	sendMessage(_parentScene, NM_PRIORITY_CHANGE, 1000);
-	setClipRect(0, 0, 640, 480);
+	setClipRect(UPSCALE(0, 0), UPSCALE(640, 480));
 	_prevX = _x;
 	_prevY = _y;
 	if (newX == _x && newY == _y) {
@@ -556,8 +556,8 @@ uint32 AsScene1308KeyboardDoor::handleMessage(int messageNum, const MessageParam
 
 void AsScene1308KeyboardDoor::stFallingKeys() {
 	startAnimation(0x6238B191, 0, -1);
-	_x = 580;
-	_y = 383;
+	_x = UPSCALE_X(580);
+	_y = UPSCALE_Y(383);
 	NextState(&AsScene1308KeyboardDoor::stFallingKeysDone);
 }
 
@@ -623,8 +623,8 @@ SsScene1308Number::SsScene1308Number(NeverhoodEngine *vm, uint32 fileHash, int i
 AsScene1308Mouse::AsScene1308Mouse(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100) {
 
-	_x = 286;
-	_y = 429;
+	_x = UPSCALE_X(286);
+	_y = UPSCALE_Y(429);
 	createSurface1(0xA282C472, 100);
 	startAnimation(0xA282C472, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
@@ -845,7 +845,7 @@ uint32 KmScene1306::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x482E:

@@ -30,18 +30,18 @@ Sprite::Sprite(NeverhoodEngine *vm, int objectPriority)
 	: Entity(vm, objectPriority), _x(0), _y(0), _spriteUpdateCb(nullptr), _filterXCb(nullptr), _filterYCb(nullptr),
 	_dataResource(vm), _doDeltaX(false), _doDeltaY(false), _needRefresh(false), _flags(0), _surface(nullptr) {
 
-	_drawOffset.x = 0;
-	_drawOffset.y = 0;
-	_drawOffset.width = 0;
-	_drawOffset.height = 0;
-	_collisionBounds.x1 = 0;
-	_collisionBounds.y1 = 0;
-	_collisionBounds.x2 = 0;
-	_collisionBounds.y2 = 0;
-	_collisionBoundsOffset.x = 0;
-	_collisionBoundsOffset.y = 0;
-	_collisionBoundsOffset.width = 0;
-	_collisionBoundsOffset.height = 0;
+	_drawOffset.x = UPSCALE_X(0);
+	_drawOffset.y = UPSCALE_Y(0);
+	_drawOffset.width = UPSCALE_X(0);
+	_drawOffset.height = UPSCALE_Y(0);
+	_collisionBounds.x1 = UPSCALE_X(0);
+	_collisionBounds.y1 = UPSCALE_Y(0);
+	_collisionBounds.x2 = UPSCALE_X(0);
+	_collisionBounds.y2 = UPSCALE_Y(0);
+	_collisionBoundsOffset.x = UPSCALE_X(0);
+	_collisionBoundsOffset.y = UPSCALE_Y(0);
+	_collisionBoundsOffset.width = UPSCALE_X(0);
+	_collisionBoundsOffset.height = UPSCALE_Y(0);
 
 	SetMessageHandler(&Sprite::handleMessage);
 }
@@ -131,7 +131,7 @@ StaticSprite::StaticSprite(NeverhoodEngine *vm, uint32 fileHash, int surfacePrio
 	createSurface(surfacePriority, _spriteResource.getDimensions().width, _spriteResource.getDimensions().height);
 	_x = x == kDefPosition ? _spriteResource.getPosition().x : x;
 	_y = y == kDefPosition ? _spriteResource.getPosition().y : y;
-	_drawOffset.set(0, 0, _spriteResource.getDimensions().width, _spriteResource.getDimensions().height);
+	_drawOffset.set(UPSCALE(0, 0), _spriteResource.getDimensions().width, _spriteResource.getDimensions().height);
 	_needRefresh = true;
 	updatePosition();
 }

@@ -671,12 +671,12 @@ uint32 AsScene1002VenusFlyTrap::handleMessage(int messageNum, const MessageParam
 		break;
 	case 0x480C:
 		if (_isSecond) {
-			if (_x >= 154 && _x <= 346)
+			if (_x >= UPSCALE_X(154) && _x <= UPSCALE_X(346))
 				messageResult = 1;
 			else
 				messageResult = 0;
 		} else {
-			if (_x >= 174 && _x <= 430)
+			if (_x >= UPSCALE_X(174) && _x <= UPSCALE_X(430))
 				messageResult = 1;
 			else
 				messageResult = 0;
@@ -721,7 +721,7 @@ uint32 AsScene1002VenusFlyTrap::hmAnimationExt(int messageNum, const MessagePara
 			playSound(0, 0xC21190D8);
 		else if (param.asInteger() == 0x41881801) {
 			if (_isSecond) {
-				if (_x > 330)
+				if (_x > UPSCALE_X(330))
 					sendMessage(_klaymen, 0x4811, 2);
 				else
 					sendMessage(_klaymen, 0x4811, 0);
@@ -1078,7 +1078,7 @@ uint32 KmScene1001::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x4836:

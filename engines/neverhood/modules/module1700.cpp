@@ -162,55 +162,55 @@ Scene1705::Scene1705(NeverhoodEngine *vm, Module *parentModule, int which)
 	insertSprite<SsScene1705WallSymbol>(kScene1705FileHashes[getSubVar(VA_GOOD_CANNON_SYMBOLS_2, 1)], 1);
 	insertSprite<SsScene1705WallSymbol>(kScene1705FileHashes[getSubVar(VA_GOOD_CANNON_SYMBOLS_2, 2)], 2);
 	_sprite = insertStaticSprite(0x31313A22, 1100);
-	_ssTape = insertSprite<SsScene1705Tape>(this, 15, 1100, 238, 439, 0x02363852);
+	_ssTape = insertSprite<SsScene1705Tape>(this, 15, 1100, UPSCALE(238, 439), 0x02363852);
 	addCollisionSprite(_ssTape);
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene1705>(231, 434);
+		insertKlaymen<KmScene1705>(UPSCALE(231, 434));
 		setMessageList(0x004B69E8);
 		sendMessage(this, 0x2000, 0);
-		_klaymen->setClipRect(0, 0, _sprite->getDrawRect().x2(), 480);
+		_klaymen->setClipRect(UPSCALE(0, 0), _sprite->getDrawRect().x2(), UPSCALE_Y(480));
 	} else if (which == 1) {
 		// Klaymen teleporting in
-		insertKlaymen<KmScene1705>(431, 434);
+		insertKlaymen<KmScene1705>(UPSCALE(431, 434));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B6A08, false);
 		sendMessage(this, 0x2000, 1);
-		_klaymen->setClipRect(0, 0, _sprite->getDrawRect().x2(), 480);
+		_klaymen->setClipRect(UPSCALE(0, 0), _sprite->getDrawRect().x2(), UPSCALE_Y(480));
 	} else if (which == 2) {
 		// Klaymen teleporting out
-		insertKlaymen<KmScene1705>(431, 434);
+		insertKlaymen<KmScene1705>(UPSCALE(431, 434));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B6AA0, false);
 		sendMessage(this, 0x2000, 1);
-		_klaymen->setClipRect(0, 0, _sprite->getDrawRect().x2(), 480);
+		_klaymen->setClipRect(UPSCALE(0, 0), _sprite->getDrawRect().x2(), UPSCALE_Y(480));
 	} else if (which == 3) {
 		// Klaymen returning from teleporter console
-		insertKlaymen<KmScene1705>(431, 434);
+		insertKlaymen<KmScene1705>(UPSCALE(431, 434));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B6A18, false);
 		sendMessage(this, 0x2000, 1);
-		_klaymen->setClipRect(0, 0, _sprite->getDrawRect().x2(), 480);
+		_klaymen->setClipRect(UPSCALE(0, 0), _sprite->getDrawRect().x2(), UPSCALE_Y(480));
 	} else {
 		// Klaymen falling through the hole
-		insertKlaymen<KmScene1705>(231, 74);
+		insertKlaymen<KmScene1705>(UPSCALE(231, 74));
 		sendMessage(_klaymen, 0x2000, 0);
 		setMessageList(0x004B69F0);
 		sendMessage(this, 0x2000, 0);
 		tempSprite = insertStaticSprite(0x30303822, 1100);
-		_klaymen->setClipRect(0, tempSprite->getDrawRect().y, _sprite->getDrawRect().x2(), 480);
+		_klaymen->setClipRect(UPSCALE_X(0), tempSprite->getDrawRect().y, _sprite->getDrawRect().x2(), UPSCALE_Y(480));
 	}
 
 }
 
 void Scene1705::update() {
 	Scene::update();
-	if (_klaymen->getX() < 224 && _paletteArea != 0) {
+	if (_klaymen->getX() < UPSCALE_X(224) && _paletteArea != 0) {
 		_palette->addBasePalette(0xF2210C15, 0, 64, 0);
 		_palette->startFadeToPalette(12);
 		_paletteArea = 0;
-	} else if (_klaymen->getX() >= 224 && _paletteArea == 0) {
+	} else if (_klaymen->getX() >= UPSCALE_X(224) && _paletteArea == 0) {
 		_palette->addBasePalette(0x91D3A391, 0, 64, 0);
 		_palette->startFadeToPalette(12);
 		_paletteArea = 1;
@@ -230,7 +230,7 @@ uint32 Scene1705::handleMessage(int messageNum, const MessageParam &param, Entit
 		}
 		break;
 	case 0x4826:
-		if (sender == _ssTape && _klaymen->getX() <= 318) {
+		if (sender == _ssTape && _klaymen->getX() <= UPSCALE_X(318)) {
 			sendEntityMessage(_klaymen, 0x1014, sender);
 			setMessageList(0x004B6AC0);
 		}

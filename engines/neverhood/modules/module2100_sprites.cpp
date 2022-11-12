@@ -26,9 +26,9 @@ namespace Neverhood {
 AsScene2101Door::AsScene2101Door(NeverhoodEngine *vm, bool isOpen)
 	: AnimatedSprite(vm, 1100) {
 
-	createSurface(100, 328, 347);
-	_x = 320;
-	_y = 240;
+	createSurface(100, UPSCALE(328, 328));
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2101Door::handleMessage);
 	if (isOpen) {
@@ -81,7 +81,7 @@ AsScene2101HitByDoorEffect::AsScene2101HitByDoorEffect(NeverhoodEngine *vm, Spri
 
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2101HitByDoorEffect::handleMessage);
-	createSurface(1200, 88, 165);
+	createSurface(1200, UPSCALE(88, 88));
 	setVisible(false);
 }
 
@@ -112,7 +112,7 @@ SsCommonFloorButton::SsCommonFloorButton(NeverhoodEngine *vm, Scene *parentScene
 	SetMessageHandler(&SsCommonFloorButton::handleMessage);
 	if (_soundFileHash == 0)
 		_soundFileHash = 0x44141000;
-	createSurface(1010, 61, 30);
+	createSurface(1010, UPSCALE(61, 61));
 	if (_fileHash1)
 		loadSprite(_fileHash1, kSLFDefDrawOffset | kSLFDefPosition);
 	else
@@ -239,7 +239,7 @@ uint32 KmScene2101::hmHitByDoor(int messageNum, const MessageParam &param, Entit
 		speedUpFrameIndex = getFrameIndex(kKlaymenSpeedUpHash);
 		if (_currFrameIndex < speedUpFrameIndex) {
 			startAnimation(0x35AA8059, speedUpFrameIndex, -1);
-			_y = 438;
+			_y = UPSCALE_Y(438);
 		}
 		messageResult = 0;
 		break;

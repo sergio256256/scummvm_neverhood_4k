@@ -159,17 +159,17 @@ Scene1001::Scene1001(NeverhoodEngine *vm, Module *parentModule, int which)
 	} else {
 		// Klaymen sleeping
 		setRectList(0x004B4A00);
-		insertKlaymen<KmScene1001>(UPSCALE(200, 433)); // (200, 433);//
+		insertKlaymen<KmScene1001>(UPSCALE(200, 433));
 		setMessageList(0x004B4890);
 	}
 
 	tempSprite = insertStaticSprite(0x2080A3A8, 1300);
 
-	_klaymen->setClipRect(0, 0, tempSprite->getDrawRect().x2(), UPSCALE_Y(480));
+	_klaymen->setClipRect(UPSCALE(0, 0), tempSprite->getDrawRect().x2(), UPSCALE_Y(480));
 
 	if (!getGlobalVar(V_DOOR_BUSTED)) {
 		_asDoor = insertSprite<AsScene1001Door>();
-		_asDoor->setClipRect(0, 0, tempSprite->getDrawRect().x2(), UPSCALE_Y(480));
+		_asDoor->setClipRect(UPSCALE(0, 0), tempSprite->getDrawRect().x2(), UPSCALE_Y(480));
 	}
 
 	_asLever = insertSprite<AsScene1001Lever>(this, UPSCALE(150, 433), 1);
@@ -271,7 +271,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 			insertKlaymen<KmScene1002>(UPSCALE(379, 435));
 			_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 			setMessageList(0x004B4270);
-			_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
+			_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, UPSCALE_Y(0), _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
 			_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 		}
 	} else if (which == 1) {
@@ -279,7 +279,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 		insertKlaymen<KmScene1002>(UPSCALE(650, 435));
 		_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 		setMessageList(0x004B4478);
-		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
+		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, UPSCALE_Y(0), _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
 		_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 		_vm->_gameState.which = 1;
 	} else if (which == 2) {
@@ -287,7 +287,7 @@ Scene1002::Scene1002(NeverhoodEngine *vm, Module *parentModule, int which)
 		insertKlaymen<KmScene1002>(UPSCALE(68, 645));
 		_asKlaymenLadderHands = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
 		setMessageList(0x004B4298);
-		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
+		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, UPSCALE_Y(0), _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
 		_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 		_vm->_gameState.which = 1;
 		sendMessage(_klaymen, 0x4820, 0);
@@ -340,7 +340,7 @@ Scene1002::~Scene1002() {
 void Scene1002::update() {
 	Scene::update();
 	if (!_isKlaymenFloor && _klaymen->getY() > UPSCALE_Y(230)) {
-		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, 0, _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
+		_klaymen->setClipRect(_ssLadderArch->getDrawRect().x, UPSCALE_Y(0), _ssLadderArchPart2->getDrawRect().x2(), _ssLadderArchPart1->getDrawRect().y2());
 		_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 		deleteSprite(&_ssLadderArchPart3);
 		_klaymen->clearRepl();
@@ -513,7 +513,7 @@ Scene1004::Scene1004(NeverhoodEngine *vm, Module *parentModule, int which)
 	insertStaticSprite(0x3060222E, 1300);
 	tempSprite = insertStaticSprite(0x0E002004, 1300);
 
-	_klaymen->setClipRect(0, tempSprite->getDrawRect().y, UPSCALE(640, 480));
+	_klaymen->setClipRect(UPSCALE_X(0), tempSprite->getDrawRect().y, UPSCALE(640, 480));
 	_asKlaymenLadderHands->setClipRect(_klaymen->getClipRect());
 
 	_asTrashCan = insertSprite<AsScene1004TrashCan>();
@@ -575,13 +575,13 @@ Scene1005::Scene1005(NeverhoodEngine *vm, Module *parentModule, int which)
 		setBackground(0x2800E011);
 		setPalette(0x2800E011);
 		insertStaticSprite(0x492D5AD7, 100);
-		insertPuzzleMouse(0x0E015288, UPSCALE(20, 620));
+		insertPuzzleMouse(0x0E015288, UPSCALE_X(20), UPSCALE_X(620));
 	} else {
 		setBackground(0x8870A546);
 		setPalette(0x8870A546);
 		insertStaticSprite(0x40D1E0A9, 100);
 		insertStaticSprite(0x149C00A6, 100);
-		insertPuzzleMouse(0x0A54288F, UPSCALE(20, 620));
+		insertPuzzleMouse(0x0A54288F, UPSCALE_X(20), UPSCALE_X(620));
 	}
 
 	drawTextToBackground();

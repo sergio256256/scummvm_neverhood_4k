@@ -1306,6 +1306,7 @@ void Klaymen::stStartWalkingExt() {
 }
 
 void Klaymen::startWalkToXDistance(int16 destX, int16 distance) {
+	destX = UPSCALE_X(destX);
 	distance = UPSCALE_X(distance);
 	if (_x > destX) {
 		if (_x == destX + distance) {
@@ -1318,7 +1319,7 @@ void Klaymen::startWalkToXDistance(int16 destX, int16 distance) {
 			startWalkToX(DOWNSCALE_X(destX + distance), false);
 		}
 	} else {
-		if (_x == destX - distance) {
+		if (DOWNSCALE_X(_x) == DOWNSCALE_X(destX - distance)) {
 			_destX = destX - distance;
 			gotoState(nullptr);
 			gotoNextStateExt();
@@ -1539,7 +1540,7 @@ void Klaymen::stReleaseRing() {
 }
 
 void Klaymen::startWalkToAttachedSpriteXDistance(int16 distance) {
-	startWalkToXDistance(_attachedSprite->getX(), distance);
+	startWalkToXDistance(DOWNSCALE_X(_attachedSprite->getX()), distance);
 }
 
 void Klaymen::stContinueClimbLadderUp() {
@@ -2240,7 +2241,7 @@ uint32 Klaymen::hmTeleporterAppearDisappear(int messageNum, const MessageParam &
 }
 
 void Klaymen::stStandWonderAbout() {
-	if (_x > 260)
+	if (_x > UPSCALE_X(260))
 		setDoDeltaX(1);
 	_busyStatus = 0;
 	_acceptInput = true;
@@ -2612,7 +2613,7 @@ void Klaymen::stFallSkipJump() {
 }
 
 void Klaymen::upMoveObject() {
-	if (_x >= 380)
+	if (_x >= UPSCALE_X(380))
 		gotoNextStateExt();
 	Klaymen::update();
 }

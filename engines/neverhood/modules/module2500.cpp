@@ -245,14 +245,14 @@ Scene2501::Scene2501(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	_ssTrackShadowBackground = createSprite<SsCommonTrackShadowBackground>(0x99BE9015); // Don't add this to the sprite list
 	addEntity(_ssTrackShadowBackground);
-	_asCar = createSprite<AsCommonCar>(this, 211, 400); // Create but don't add to the sprite list yet
-	_asIdleCarLower = insertSprite<AsCommonIdleCarLower>(211, 400);
-	_asIdleCarFull = insertSprite<AsCommonIdleCarFull>(211, 400);
+	_asCar = createSprite<AsCommonCar>(this, UPSCALE(211, 400)); // Create but don't add to the sprite list yet
+	_asIdleCarLower = insertSprite<AsCommonIdleCarLower>(UPSCALE(211, 400));
+	_asIdleCarFull = insertSprite<AsCommonIdleCarFull>(UPSCALE(211, 400));
 	insertStaticSprite(0xC42AC521, 1500);
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2501>(162, 393);
+		insertKlaymen<KmScene2501>(UPSCALE(162, 393));
 		_kmScene2501 = _klaymen;
 		_klaymenInCar = false;
 		setMessageList(0x004B2538);
@@ -266,7 +266,7 @@ Scene2501::Scene2501(NeverhoodEngine *vm, Module *parentModule, int which)
 		// 1: Klaymen entering riding the car on the left track
 		// 2: Klaymen entering riding the car on the bottom track
 		addSprite(_asCar);
-		_kmScene2501 = (Klaymen*)new KmScene2501(_vm, this, 275, 393);
+		_kmScene2501 = (Klaymen *)new KmScene2501(_vm, this, UPSCALE(275, 393));
 		_klaymenInCar = true;
 		sendMessage(_kmScene2501, 0x2000, 1);
 		_kmScene2501->setDoDeltaX(1);
@@ -277,7 +277,7 @@ Scene2501::Scene2501(NeverhoodEngine *vm, Module *parentModule, int which)
 		_currTrackIndex = which;
 	} else {
 		// Klaymen entering the car
-		insertKlaymen<KmScene2501>(162, 393);
+		insertKlaymen<KmScene2501>(UPSCALE(162, 393));
 		_kmScene2501 = _klaymen;
 		_klaymenInCar = false;
 		setMessageList(0x004B2538);
@@ -302,12 +302,12 @@ Scene2501::Scene2501(NeverhoodEngine *vm, Module *parentModule, int which)
 	if (which >= 0 && _tracks[_currTrackIndex]->which2 == which) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
-		if (testPoint.x < 0 || testPoint.x >= 640 || testPoint.y < 0 || testPoint.y >= 480)
+		if (testPoint.x < UPSCALE_X(0) || testPoint.x >= UPSCALE_X(640) || testPoint.y < UPSCALE_Y(0) || testPoint.y >= UPSCALE_Y(480))
 			sendMessage(_asCar, NM_CAR_MOVE_TO_PREV_POINT, 150);
 	} else {
 		NPoint testPoint = (*_trackPoints)[0];
 		sendMessage(_asCar, NM_POSITION_CHANGE, 0);
-		if (testPoint.x < 0 || testPoint.x >= 640 || testPoint.y < 0 || testPoint.y >= 480)
+		if (testPoint.x < UPSCALE_X(0) || testPoint.x >= UPSCALE_X(640) || testPoint.y < UPSCALE_Y(0) || testPoint.y >= UPSCALE_Y(480))
 			sendMessage(_asCar, NM_CAR_MOVE_TO_NEXT_POINT, 150);
 	}
 
@@ -346,7 +346,7 @@ void Scene2501::update() {
 void Scene2501::upCarAtHome() {
 	Scene::update();
 	if (_mouseClicked) {
-		if (_mouseClickPos.x <= 210 && _asCar->getX() == 211 && _asCar->getY() == 400) {
+		if (_mouseClickPos.x <= UPSCALE_X(210) && DOWNSCALE_X(_asCar->getX()) == 211 && DOWNSCALE_Y(_asCar->getY()) == 400) {
 			sendMessage(_asCar, NM_CAR_LEAVE, 0);
 			SetUpdateHandler(&Scene2501::upGettingOutOfCar);
 		} else {
@@ -479,10 +479,10 @@ void Scene2501::changeTrack() {
 }
 
 void Scene2501::updateKlaymenClipRect() {
-	if (_kmScene2501->getX() <= 211)
-		_kmScene2501->setClipRect(0, 0, 640, 480);
+	if (_kmScene2501->getX() <= UPSCALE_X(211))
+		_kmScene2501->setClipRect(UPSCALE(0, 0), UPSCALE(640, 480));
 	else
-		_kmScene2501->setClipRect(0, 0, 640, 388);
+		_kmScene2501->setClipRect(UPSCALE(0, 0), UPSCALE(640, 388));
 }
 
 Scene2504::Scene2504(NeverhoodEngine *vm, Module *parentModule, int which)
@@ -494,7 +494,7 @@ Scene2504::Scene2504(NeverhoodEngine *vm, Module *parentModule, int which)
 	setPalette(0x90791B80);
 	ssButton = insertSprite<SsScene2504Button>();
 	addCollisionSprite(ssButton);
-	insertPuzzleMouse(0x91B8490F, 20, 620);
+	insertPuzzleMouse(0x91B8490F, UPSCALE_X(20), UPSCALE_X(620));
 	SetMessageHandler(&Scene2504::handleMessage);
 	SetUpdateHandler(&Scene::update);
 }
@@ -503,7 +503,7 @@ uint32 Scene2504::handleMessage(int messageNum, const MessageParam &param, Entit
 	uint32 messageResult = Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620)
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620))
 			leaveScene(0);
 		break;
 	default:

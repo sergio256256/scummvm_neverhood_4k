@@ -111,20 +111,20 @@ Scene1901::Scene1901(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene1901>(120, 380);
+		insertKlaymen<KmScene1901>(UPSCALE(120, 380));
 		setMessageList(0x004B3408);
 	} else if (which == 1) {
 		// Klaymen returning from the puzzle
-		insertKlaymen<KmScene1901>(372, 380);
+		insertKlaymen<KmScene1901>(UPSCALE(372, 380));
 		setMessageList(0x004B3410);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene1901>(0, 380);
+		insertKlaymen<KmScene1901>(UPSCALE(0, 380));
 		setMessageList(0x004B3400);
 	}
 
 	tempSprite = insertStaticSprite(0x4830A402, 1100);
-	_klaymen->setClipRect(tempSprite->getDrawRect().x, 0, 640, 480);
+	_klaymen->setClipRect(tempSprite->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 
 }
 
@@ -148,7 +148,7 @@ Scene1907::Scene1907(NeverhoodEngine *vm, Module *parentModule)
 
 	_asWaterHint = insertSprite<AsScene1907WaterHint>();
 
-	insertPuzzleMouse(0x28E0120E, 20, 620);
+	insertPuzzleMouse(0x28E0120E, UPSCALE_X(20), UPSCALE_X(620));
 
 	SetMessageHandler(&Scene1907::handleMessage);
 	SetUpdateHandler(&Scene1907::update);
@@ -203,7 +203,7 @@ uint32 Scene1907::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if ((param.asPoint().x <= 20 || param.asPoint().x >= 620) &&
+		if ((param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) &&
 			!_hasPlugInFailed && _moveDownCountdown == 0 && _moveUpCountdown == 0 && _countdown3 == 0) {
 			leaveScene(0);
 		}

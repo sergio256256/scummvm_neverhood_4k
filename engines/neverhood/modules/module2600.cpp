@@ -236,7 +236,7 @@ Scene2609::Scene2609(NeverhoodEngine *vm, Module *parentModule, int which)
 	_asWater = insertSprite<AsScene2609Water>();
 	_ssButton = insertSprite<SsScene2609Button>(this);
 	addCollisionSprite(_ssButton);
-	insertPuzzleMouse(0x09A1251C, 20, 620);
+	insertPuzzleMouse(0x09A1251C, UPSCALE_X(20), UPSCALE_X(620));
 	insertStaticSprite(0x02138002, 1200);
 	insertStaticSprite(0x825E2827, 1200);
 }
@@ -245,7 +245,7 @@ uint32 Scene2609::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if ((param.asPoint().x <= 20 || param.asPoint().x >= 620) && !_isBusy)
+		if ((param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) && !_isBusy)
 			leaveScene(0);
 		break;
 	case NM_ANIMATION_UPDATE:

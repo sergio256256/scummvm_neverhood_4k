@@ -26,9 +26,9 @@ namespace Neverhood {
 AsScene2201CeilingFan::AsScene2201CeilingFan(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100) {
 
-	_x = 403;
-	_y = 259;
-	createSurface(100, 233, 96);
+	_x = UPSCALE_X(403);
+	_y = UPSCALE_Y(259);
+	createSurface(100, UPSCALE(233, 233));
 	startAnimation(0x8600866, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 }
@@ -36,9 +36,9 @@ AsScene2201CeilingFan::AsScene2201CeilingFan(NeverhoodEngine *vm)
 AsScene2201Door::AsScene2201Door(NeverhoodEngine *vm, Klaymen *klaymen, Sprite *ssDoorLight, bool isOpen)
 	: AnimatedSprite(vm, 1100), _klaymen(klaymen), _ssDoorLight(ssDoorLight), _countdown(0), _isOpen(isOpen) {
 
-	_x = 408;
-	_y = 290;
-	createSurface(900, 63, 266);
+	_x = UPSCALE_X(408);
+	_y = UPSCALE_Y(290);
+	createSurface(900, UPSCALE(63, 63));
 	SetUpdateHandler(&AsScene2201Door::update);
 	SetMessageHandler(&AsScene2201Door::handleMessage);
 	if (_isOpen) {
@@ -107,7 +107,7 @@ void AsScene2201Door::stCloseDoor() {
 SsScene2201PuzzleCube::SsScene2201PuzzleCube(NeverhoodEngine *vm, uint32 positionIndex, uint32 cubeIndex)
 	: StaticSprite(vm, 900) {
 
-	createSurface(100, 16, 16);
+	createSurface(100, UPSCALE(16, 16));
 	loadSprite(kSsScene2201PuzzleCubeFileHashes[cubeIndex], kSLFCenteredDrawOffset | kSLFSetPosition, 0,
 		kSsScene2201PuzzleCubePoints[positionIndex].x, kSsScene2201PuzzleCubePoints[positionIndex].y);
 }
@@ -287,27 +287,27 @@ void SsScene2202PuzzleCube::moveCube(int16 newCubePosition) {
 	if (_xDelta > _yDelta) {
 		SetSpriteUpdate(&SsScene2202PuzzleCube::suMoveCubeX);
 		if (_xIncr > 0) {
-			if (_newX - _x >= 180)
-				_xFlagPos = _newX - 90;
+			if (_newX - _x >= UPSCALE_X(180))
+				_xFlagPos = _newX - UPSCALE_X(90);
 			else
 				_xFlagPos = _x + _newX / 2;
 		} else {
-			if (_x - _newX >= 180)
-				_xFlagPos = _x + 90;
+			if (_x - _newX >= UPSCALE_X(180))
+				_xFlagPos = _x + UPSCALE_X(90);
 			else
 				_xFlagPos = _x / 2 + _newX;
 		}
 		playSound(0);
 	} else {
 		SetSpriteUpdate(&SsScene2202PuzzleCube::suMoveCubeY);
-		if (_yIncr > 0) {
-			if (_newY - _y >= 180)
-				_xFlagPos = _newY - 90;
+		if (_yIncr > UPSCALE_Y(0)) {
+			if (_newY - _y >= UPSCALE_Y(180))
+				_xFlagPos = _newY - UPSCALE_Y(90);
 			else
 				_xFlagPos = _y + _newY / 2;
 		} else {
-			if (_y - _newY >= 180)
-				_xFlagPos = _y + 90;
+			if (_y - _newY >= UPSCALE_Y(180))
+				_xFlagPos = _y + UPSCALE_Y(90);
 			else
 				_xFlagPos = _y / 2 + _newY;
 		}
@@ -366,8 +366,8 @@ AsScene2203Door::AsScene2203Door(NeverhoodEngine *vm, Scene *parentScene, uint d
 
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2203Door::handleMessage);
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	createSurface1(kAsScene2203DoorFileHashes[_doorIndex], 900);
 	if (getGlobalVar(V_LARGE_DOOR_NUMBER) == _doorIndex) {
 		startAnimation(kAsScene2203DoorFileHashes[_doorIndex], -1, -1);
@@ -426,7 +426,7 @@ SsScene2205DoorFrame::SsScene2205DoorFrame(NeverhoodEngine *vm)
 	: StaticSprite(vm, 900) {
 
 	SetMessageHandler(&SsScene2205DoorFrame::handleMessage);
-	createSurface(1100, 45, 206);
+	createSurface(1100, UPSCALE(45, 45));
 	loadSprite(getGlobalVar(V_LIGHTS_ON) ? 0x24306227 : 0xD90032A0, kSLFDefDrawOffset | kSLFDefPosition);
 }
 
@@ -578,7 +578,7 @@ AsScene2207Elevator::AsScene2207Elevator(NeverhoodEngine *vm, Scene *parentScene
 	pt = _dataResource.getPoint(0x403A82B1);
 	_x = pt.x;
 	_y = pt.y;
-	createSurface(1100, 129, 103);
+	createSurface(1100, UPSCALE(129, 129));
 	startAnimation(getGlobalVar(V_LIGHTS_ON) ? 0xC858CC19 : 0x294B3377, 0, 0);
 	_newStickFrameIndex = 0;
 	SetUpdateHandler(&AsScene2207Elevator::update);
@@ -688,7 +688,7 @@ AsScene2207Lever::AsScene2207Lever(NeverhoodEngine *vm, Scene *parentScene, int1
 
 	_x = x;
 	_y = y;
-	createSurface(1010, 71, 73);
+	createSurface(1010, UPSCALE(71, 71));
 	setDoDeltaX(doDeltaX);
 	startAnimation(0x80880090, 0, -1);
 	_newStickFrameIndex = 0;
@@ -749,8 +749,8 @@ void AsScene2207Lever::stLeverUpEvent() {
 AsScene2207WallRobotAnimation::AsScene2207WallRobotAnimation(NeverhoodEngine *vm, Scene *parentScene)
 	: AnimatedSprite(vm, 1200), _idle(true) {
 
-	_x = 309;
-	_y = 320;
+	_x = UPSCALE_X(309);
+	_y = UPSCALE_Y(320);
 	createSurface1(0xCCFD6090, 100);
 	startAnimation(0xCCFD6090, 0, -1);
 	_newStickFrameIndex = 0;
@@ -832,8 +832,8 @@ void AsScene2207WallRobotAnimation::cbStopAnimation() {
 AsScene2207WallCannonAnimation::AsScene2207WallCannonAnimation(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1200), _idle(true) {
 
-	_x = 309;
-	_y = 320;
+	_x = UPSCALE_X(309);
+	_y = UPSCALE_Y(320);
 	createSurface1(0x8CAA0099, 100);
 	startAnimation(0x8CAA0099, 0, -1);
 	_newStickFrameIndex = 0;
@@ -882,8 +882,8 @@ void AsScene2207WallCannonAnimation::cbStopAnimation() {
 SsScene2207Symbol::SsScene2207Symbol(NeverhoodEngine *vm, uint32 fileHash, int index)
 	: StaticSprite(vm, fileHash, 100) {
 
-	_x = 330;
-	_y = 246 + index * 50;
+	_x = UPSCALE_X(330);
+	_y = UPSCALE_Y(246) + index * UPSCALE_Y(50);
 	updatePosition();
 }
 
@@ -930,7 +930,7 @@ uint32 KmScene2201::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stReturnFromUse);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x482E:
@@ -1014,7 +1014,7 @@ uint32 KmScene2203::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stReturnFromUse);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x483F:
@@ -1174,7 +1174,7 @@ uint32 KmScene2206::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x482E:
@@ -1207,7 +1207,7 @@ uint32 KmScene2206::xHandleMessage(int messageNum, const MessageParam &param) {
 void KmScene2206::suRidePlatformDown() {
 	_platformDeltaY++;
 	_y += _platformDeltaY;
-	if (_y > 600)
+	if (_y > UPSCALE_Y(600))
 		sendMessage(this, NM_SCENE_LEAVE, 0);
 }
 
@@ -1275,7 +1275,7 @@ uint32 KmScene2207::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stReleaseLever);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x483F:
@@ -1347,7 +1347,7 @@ uint32 KmScene2242::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x4837:
@@ -1401,7 +1401,7 @@ uint32 KmHallOfRecords::xHandleMessage(int messageNum, const MessageParam &param
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x4837:
@@ -1456,7 +1456,7 @@ uint32 KmScene2247::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x4837:

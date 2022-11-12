@@ -30,12 +30,12 @@ namespace Neverhood {
 
 // Used for both the scene sprites and the scene itself (for clipping)
 static const NPoint kScene1201PointArray[] = {
-	{218, 193}, {410, 225}, {368, 277},
-	{194, 227}, {366, 174}, {458, 224},
-	{242, 228}, {512, 228}, {458, 277},
-	{217, 233}, {458, 173}, {410, 276},
-	{203, 280}, {371, 226}, {508, 279},
-	{230, 273}, {410, 171}, {493, 174}
+	{UPSCALE(218, 193)}, {UPSCALE(410, 225)}, {UPSCALE(368, 277)},
+	{UPSCALE(194, 227)}, {UPSCALE(366, 174)}, {UPSCALE(458, 224)},
+	{UPSCALE(242, 228)}, {UPSCALE(512, 228)}, {UPSCALE(458, 277)},
+	{UPSCALE(217, 233)}, {UPSCALE(458, 173)}, {UPSCALE(410, 276)},
+	{UPSCALE(203, 280)}, {UPSCALE(371, 226)}, {UPSCALE(508, 279)},
+	{UPSCALE(230, 273)}, {UPSCALE(410, 171)}, {UPSCALE(493, 174)}
 };
 
 class AsScene1201Tape : public AnimatedSprite {

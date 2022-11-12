@@ -25,27 +25,27 @@
 namespace Neverhood {
 
 static const NPoint kAsScene1907SymbolGroundPositions[] = {
-	{160, 310}, { 90, 340}, {210, 335},
-	{210, 380}, {310, 340}, {290, 400},
-	{400, 375}, {370, 435}, {475, 415}
+	{UPSCALE(160, 310)}, {UPSCALE( 90, 340)}, {UPSCALE(210, 335)},
+	{UPSCALE(210, 380)}, {UPSCALE(310, 340)}, {UPSCALE(290, 400)},
+	{UPSCALE(400, 375)}, {UPSCALE(370, 435)}, {UPSCALE(475, 415)}
 };
 
 static const NPoint kAsScene1907SymbolPluggedInPositions[] = {
-	{275, 125}, {244, 125}, {238, 131},
-	{221, 135}, {199, 136}, {168, 149},
-	{145, 152}, {123, 154}, {103, 157}
+	{UPSCALE(275, 125)}, {UPSCALE(244, 125)}, {UPSCALE(238, 131)},
+	{UPSCALE(221, 135)}, {UPSCALE(199, 136)}, {UPSCALE(168, 149)},
+	{UPSCALE(145, 152)}, {UPSCALE(123, 154)}, {UPSCALE(103, 157)}
 };
 
 static const NPoint kAsScene1907SymbolGroundHitPositions[] = {
-	{275, 299}, {244, 299}, {238, 305},
-	{221, 309}, {199, 310}, {168, 323},
-	{145, 326}, {123, 328}, {103, 331}
+	{UPSCALE(275, 299)}, {UPSCALE(244, 299)}, {UPSCALE(238, 305)},
+	{UPSCALE(221, 309)}, {UPSCALE(199, 310)}, {UPSCALE(168, 323)},
+	{UPSCALE(145, 326)}, {UPSCALE(123, 328)}, {UPSCALE(103, 331)}
 };
 
 static const NPoint kAsScene1907SymbolPluggedInDownPositions[] = {
-	{275, 136}, {244, 156}, {238, 183},
-	{221, 207}, {199, 228}, {168, 262},
-	{145, 285}, {123, 307}, {103, 331}
+	{UPSCALE(275, 136)}, {UPSCALE(244, 156)}, {UPSCALE(238, 183)},
+	{UPSCALE(221, 207)}, {UPSCALE(199, 228)}, {UPSCALE(168, 262)},
+	{UPSCALE(145, 285)}, {UPSCALE(123, 307)}, {UPSCALE(103, 331)}
 };
 
 static const uint32 kAsScene1907SymbolFileHashes[] = {
@@ -148,7 +148,7 @@ void AsScene1907Symbol::suFallOff() {
 		_fallOffDelay--;
 	} else {
 		_y += _yAccel;
-		_yAccel += 8;
+		_yAccel += UPSCALE_Y(8);
 		if (_y >= kAsScene1907SymbolGroundHitPositions[_currPositionIndex].y) {
 			_y = kAsScene1907SymbolGroundHitPositions[_currPositionIndex].y;
 			stFallOffHitGround();
@@ -167,14 +167,14 @@ void AsScene1907Symbol::suFallOffHitGround() {
 		_y -= _someY;
 	}
 
-	if (_currStep < 8) {
+	if (_currStep < UPSCALE_Y(8)) {
 		_y -= _yAccel;
-		_yAccel -= 4;
-		if (_yAccel < 0)
-			_yAccel = 0;
-	} else if (_currStep < 15) {
+		_yAccel -= UPSCALE_Y(4);
+		if (_yAccel < UPSCALE_Y(0))
+			_yAccel = UPSCALE_Y(0);
+	} else if (_currStep < UPSCALE_Y(15)) {
 		_y += _yAccel;
-		_yAccel += 4;
+		_yAccel += UPSCALE_Y(4);
 	} else {
 		_y = kAsScene1907SymbolGroundPositions[_newPositionIndex].y;
 		cbFallOffHitGroundEvent();
@@ -185,8 +185,8 @@ void AsScene1907Symbol::suFallOffHitGround() {
 
 void AsScene1907Symbol::suMoveDown() {
 	_y += _yIncr;
-	if (_yIncr < 11)
-		_yIncr++;
+	if (_yIncr < UPSCALE_Y(11))
+		_yIncr += UPSCALE_Y(1);
 	if (_y >= kAsScene1907SymbolPluggedInDownPositions[_elementIndex].y) {
 		_y = kAsScene1907SymbolPluggedInDownPositions[_elementIndex].y;
 		_isMoving = false;
@@ -197,16 +197,16 @@ void AsScene1907Symbol::suMoveDown() {
 void AsScene1907Symbol::suMoveUp() {
 	_y -= _yIncr;
 	if (getGlobalVar(V_WALL_BROKEN)) {
-		if (_y - (9 + (_elementIndex > 5 ? 31 : 0)) < kAsScene1907SymbolPluggedInPositions[_elementIndex].y)
-			_yIncr--;
+		if (_y - (UPSCALE_Y(9) + (_elementIndex > 5 ? UPSCALE_Y(31) : 0)) < kAsScene1907SymbolPluggedInPositions[_elementIndex].y)
+			_yIncr -= UPSCALE_Y(1);
 		else
-			_yIncr++;
+			_yIncr += UPSCALE_Y(1);
 	} else
-		_yIncr = 2;
-	if (_yIncr > 9)
-		_yIncr = 9;
-	else if (_yIncr < 1)
-		_yIncr = 1;
+		_yIncr = UPSCALE_Y(2);
+	if (_yIncr > UPSCALE_Y(9))
+		_yIncr = UPSCALE_Y(9);
+	else if (_yIncr < UPSCALE_Y(1))
+		_yIncr = UPSCALE_Y(1);
 	if (_y < kAsScene1907SymbolPluggedInPositions[_elementIndex].y) {
 		_y = kAsScene1907SymbolPluggedInPositions[_elementIndex].y;
 		_isMoving = false;
@@ -250,7 +250,7 @@ void AsScene1907Symbol::fallOff(int newPositionIndex, int fallOffDelay) {
 	_playBackwards = true;
 	_newStickFrameIndex = STICK_LAST_FRAME;
 	_currStep = 0;
-	_yAccel = 1;
+	_yAccel = UPSCALE_Y(1);
 	SetUpdateHandler(&AsScene1907Symbol::update);
 	SetMessageHandler(&AsScene1907Symbol::handleMessage);
 	SetSpriteUpdate(&AsScene1907Symbol::suFallOff);
@@ -266,7 +266,7 @@ void AsScene1907Symbol::stFallOffHitGround() {
 	NextState(&AsScene1907Symbol::cbFallOffHitGroundEvent);
 	_newStickFrameIndex = 0;
 	_currStep = 0;
-	_yAccel = 30;
+	_yAccel = UPSCALE_Y(30);
 	_deltaX = (_x - kAsScene1907SymbolGroundPositions[_newPositionIndex].x) / 15;
 	_xBreak = _deltaX * 15;
 	_smallDeltaX = _x - kAsScene1907SymbolGroundPositions[_newPositionIndex].x - _xBreak;
@@ -309,7 +309,7 @@ void AsScene1907Symbol::moveUp() {
 	stopAnimation();
 	SetMessageHandler(&AsScene1907Symbol::handleMessage);
 	SetSpriteUpdate(&AsScene1907Symbol::suMoveUp);
-	_yIncr = 1;
+	_yIncr = UPSCALE_Y(1);
 	_isMoving = true;
 }
 
@@ -318,7 +318,7 @@ void AsScene1907Symbol::moveDown() {
 	stopAnimation();
 	SetMessageHandler(&AsScene1907Symbol::handleMessage);
 	SetSpriteUpdate(&AsScene1907Symbol::suMoveDown);
-	_yIncr = 4;
+	_yIncr = UPSCALE_Y(4);
 	_isMoving = true;
 }
 
@@ -381,8 +381,8 @@ AsScene1907WaterHint::AsScene1907WaterHint(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1400) {
 
 	createSurface1(0x110A1061, 1500);
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	startAnimation(0x110A1061, 0, -1);
 	_newStickFrameIndex = 0;
 	setVisible(false);
@@ -448,7 +448,7 @@ uint32 KmScene1901::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stReturnFromUse);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x483F:

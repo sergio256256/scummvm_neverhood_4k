@@ -94,13 +94,13 @@ Scene2101::Scene2101(NeverhoodEngine *vm, Module *parentModule, int which)
 	insertStaticSprite(0x00502330, 1100);
 	tempSprite = insertStaticSprite(0x78492010, 1100);
 	_ssFloorButton = insertSprite<SsCommonFloorButton>(this, 0x72427010, 0x32423010, 200, 0);
-	_asTape1 = insertSprite<AsScene1201Tape>(this, 18, 1100, 412, 443, 0x9148A011);
+	_asTape1 = insertSprite<AsScene1201Tape>(this, 18, 1100, UPSCALE(412, 443), 0x9148A011);
 	addCollisionSprite(_asTape1);
-	_asTape2 = insertSprite<AsScene1201Tape>(this, 11, 1100, 441, 443, 0x9048A093);
+	_asTape2 = insertSprite<AsScene1201Tape>(this, 11, 1100, UPSCALE(441, 443), 0x9048A093);
 	addCollisionSprite(_asTape2);
 
 	if (which < 0) {
-		insertKlaymen<KmScene2101>(380, 438);
+		insertKlaymen<KmScene2101>(UPSCALE(380, 438));
 		setMessageList(0x004B8E48);
 		sendMessage(this, 0x2000, 0);
 		_asDoor = insertSprite<AsScene2101Door>(false);
@@ -108,7 +108,7 @@ Scene2101::Scene2101(NeverhoodEngine *vm, Module *parentModule, int which)
 		_countdown1 = 0;
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmScene2101>(640, 438);
+		insertKlaymen<KmScene2101>(UPSCALE(640, 438));
 		setMessageList(0x004B8E50);
 		sendMessage(this, 0x2000, 0);
 		_asDoor = insertSprite<AsScene2101Door>(true);
@@ -116,7 +116,7 @@ Scene2101::Scene2101(NeverhoodEngine *vm, Module *parentModule, int which)
 		_countdown1 = 48;
 	} else if (which == 2) {
 		// Klaymen teleporting out
-		insertKlaymen<KmScene2101>(115, 438);
+		insertKlaymen<KmScene2101>(UPSCALE(115, 438));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B8F58);
 		sendMessage(this, 0x2000, 1);
@@ -125,7 +125,7 @@ Scene2101::Scene2101(NeverhoodEngine *vm, Module *parentModule, int which)
 		_countdown1 = 0;
 	} else if (which == 3) {
 		// Klaymen returning from the teleporter console
-		insertKlaymen<KmScene2101>(115, 438);
+		insertKlaymen<KmScene2101>(UPSCALE(115, 438));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B8EB0);
 		sendMessage(this, 0x2000, 1);
@@ -134,7 +134,7 @@ Scene2101::Scene2101(NeverhoodEngine *vm, Module *parentModule, int which)
 		_countdown1 = 0;
 	} else {
 		// Klaymen teleporting in
-		insertKlaymen<KmScene2101>(115, 438);
+		insertKlaymen<KmScene2101>(UPSCALE(115, 438));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B8EA0);
 		sendMessage(this, 0x2000, 1);
@@ -144,7 +144,7 @@ Scene2101::Scene2101(NeverhoodEngine *vm, Module *parentModule, int which)
 	}
 
 	_asHitByDoorEffect = insertSprite<AsScene2101HitByDoorEffect>(_klaymen);
-	_klaymen->setClipRect(0, 0, tempSprite->getDrawRect().x2(), 480);
+	_klaymen->setClipRect(UPSCALE(0, 0), tempSprite->getDrawRect().x2(), UPSCALE_Y(480));
 
 }
 
@@ -156,13 +156,13 @@ void Scene2101::update() {
 				_doorStatus = 1;
 			}
 		} else {
-			if (_klaymen->getX() > 575)
+			if (_klaymen->getX() > UPSCALE_X(575))
 				_canAcceptInput  = false;
 			if (--_countdown1 == 0) {
-				if (_klaymen->getX() < 480) {
+				if (_klaymen->getX() < UPSCALE_X(480)) {
 					sendMessage(_asDoor, NM_KLAYMEN_CLOSE_DOOR, 0);
 					_doorStatus = 1;
-				} else if (_klaymen->getX() >= 480 && _klaymen->getX() <= 575) {
+				} else if (_klaymen->getX() >= UPSCALE_X(480) && _klaymen->getX() <= UPSCALE_X(575)) {
 					_klaymen->setDoDeltaX(0);
 					setMessageList2(0x004B8F48);
 					sendMessage(_asDoor, NM_KLAYMEN_CLOSE_DOOR, 0);
@@ -171,7 +171,7 @@ void Scene2101::update() {
 				}
 			}
 		}
-	} else if (_doorStatus == 1 && _messageValue >= 0 && _klaymen->getX() > 470 && !isMessageList2(0x004B8F48))
+	} else if (_doorStatus == 1 && _messageValue >= 0 && _klaymen->getX() > UPSCALE_X(470) && !isMessageList2(0x004B8F48))
 		setMessageList2(0x004B8F50);
 	Scene::update();
 }
@@ -208,10 +208,10 @@ uint32 Scene2101::handleMessage(int messageNum, const MessageParam &param, Entit
 		break;
 	case 0x4826:
 		if (sender == _asTape1 || sender == _asTape2) {
-			if (_klaymen->getX() >= 228 && _klaymen->getX() <= 500) {
+			if (_klaymen->getX() >= UPSCALE_X(228) && _klaymen->getX() <= UPSCALE_X(500)) {
 				sendEntityMessage(_klaymen, 0x1014, sender);
 				setMessageList(0x004B8F78);
-			} else if (_klaymen->getX() < 228)
+			} else if (_klaymen->getX() < UPSCALE_X(228))
 				setMessageList2(0x004B8F00);
 		}
 		break;

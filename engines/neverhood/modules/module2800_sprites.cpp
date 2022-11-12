@@ -28,7 +28,7 @@ AsScene2803LightCord::AsScene2803LightCord(NeverhoodEngine *vm, Scene *parentSce
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _fileHash1(fileHash1), _fileHash2(fileHash2),
 	_isPulled(false), _isBusy(false) {
 
-	createSurface(1010, 28, 379);
+	createSurface(1010, UPSCALE(28, 28));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
 	_x = x;
@@ -103,8 +103,8 @@ AsScene2803TestTubeOne::AsScene2803TestTubeOne(NeverhoodEngine *vm, uint32 fileH
 	createSurface1(fileHash1, 100);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2803TestTubeOne::handleMessage);
-	_x = 529;
-	_y = 326;
+	_x = UPSCALE_X(529);
+	_y = UPSCALE_Y(326);
 }
 
 uint32 AsScene2803TestTubeOne::handleMessage(int messageNum, const MessageParam &param, Entity *sender) {
@@ -125,7 +125,7 @@ uint32 AsScene2803TestTubeOne::handleMessage(int messageNum, const MessageParam 
 AsScene2803Rope::AsScene2803Rope(NeverhoodEngine *vm, Scene *parentScene, int16 x)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(990, 68, 476);
+	createSurface(990, UPSCALE(68, 68));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
 	SetMessageHandler(&AsScene2803Rope::handleMessage);
@@ -356,8 +356,8 @@ AsScene2804Crystal::AsScene2804Crystal(NeverhoodEngine *vm, AsScene2804CrystalWa
 		_needRefresh = true;
 		_newStickFrameIndex = kAsScene2804CrystalFrameNums[_colorNum];
 	} else {
-		_x = 320;
-		_y = 240;
+		_x = UPSCALE_X(320);
+		_y = UPSCALE_Y(240);
 		createSurface1(kAsScene2804CrystalFileHashes[crystalIndex], 1200);
 		startAnimation(kAsScene2804CrystalFileHashes[crystalIndex], _colorNum, -1);
 		setVisible(false);
@@ -461,8 +461,8 @@ AsScene2804BeamCoil::AsScene2804BeamCoil(NeverhoodEngine *vm, Scene *parentScene
 	: AnimatedSprite(vm, 1400), _parentScene(parentScene), _ssBeamCoilBody(ssBeamCoilBody), _countdown(0) {
 
 	createSurface1(0x00494891, 1000);
-	_x = 125;
-	_y = 184;
+	_x = UPSCALE_X(125);
+	_y = UPSCALE_Y(184);
 	setVisible(false);
 	_needRefresh = true;
 	AnimatedSprite::updatePosition();
@@ -541,8 +541,8 @@ AsScene2804BeamTarget::AsScene2804BeamTarget(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1400) {
 
 	createSurface1(0x03842000, 1000);
-	_x = 475;
-	_y = 278;
+	_x = UPSCALE_X(475);
+	_y = UPSCALE_Y(278);
 	setVisible(false);
 	_needRefresh = true;
 	updatePosition();
@@ -573,8 +573,8 @@ AsScene2806Spew::AsScene2806Spew(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1200) {
 
 	createSurface1(0x04211490, 1200);
-	_x = 378;
-	_y = 423;
+	_x = UPSCALE_X(378);
+	_y = UPSCALE_Y(423);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2806Spew::handleMessage);
 	setDoDeltaX(1);
@@ -680,12 +680,12 @@ AsScene2808TestTube::AsScene2808TestTube(NeverhoodEngine *vm, int testTubeSetNum
 	: AnimatedSprite(vm, 1100), _testTubeSetNum(testTubeSetNum), _testTubeIndex(testTubeIndex), _ssDispenser(ssDispenser), _fillLevel(0) {
 
 	if (testTubeSetNum == 0) {
-		_x = 504;
-		_y = 278;
+		_x = UPSCALE_X(504);
+		_y = UPSCALE_Y(278);
 	} else {
 		setDoDeltaX(1);
-		_x = 136;
-		_y = 278;
+		_x = UPSCALE_X(136);
+		_y = UPSCALE_Y(278);
 	}
 
 	createSurface1(kClass490FileHashes[testTubeIndex], 1100);
@@ -762,8 +762,8 @@ AsScene2808Handle::AsScene2808Handle(NeverhoodEngine *vm, Scene *parentScene, in
 	: AnimatedSprite(vm, 1300), _parentScene(parentScene), _testTubeSetNum(testTubeSetNum), _isActivated(false) {
 
 	loadSound(0, 0xE18D1F30);
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	if (_testTubeSetNum == 1)
 		setDoDeltaX(1);
 	createSurface1(0x040900D0, 1300);
@@ -821,11 +821,11 @@ AsScene2808Flow::AsScene2808Flow(NeverhoodEngine *vm, Scene *parentScene, int te
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _testTubeSetNum(testTubeSetNum) {
 
 	if (testTubeSetNum == 0) {
-		_x = 312;
-		_y = 444;
+		_x = UPSCALE_X(312);
+		_y = UPSCALE_Y(444);
 	} else {
-		_x = 328;
-		_y = 444;
+		_x = UPSCALE_X(328);
+		_y = UPSCALE_Y(444);
 	}
 	createSurface1(0xB8414818, 1200);
 	startAnimation(0xB8414818, 0, -1);
@@ -865,8 +865,8 @@ void AsScene2808Flow::stKeepFlowing() {
 AsScene2808LightEffect::AsScene2808LightEffect(NeverhoodEngine *vm, int testTubeSetNum)
 	: AnimatedSprite(vm, 800), _countdown(1) {
 
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	if (testTubeSetNum == 1)
 		setDoDeltaX(1);
 	createSurface1(0x804C2404, 800);
@@ -891,8 +891,8 @@ AsScene2809Spew::AsScene2809Spew(NeverhoodEngine *vm)
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2809Spew::handleMessage);
 	createSurface1(0x04211490, 1200);
-	_x = 262;
-	_y = 423;
+	_x = UPSCALE_X(262);
+	_y = UPSCALE_Y(423);
 	setDoDeltaX(0);
 	setVisible(false);
 }
@@ -918,7 +918,7 @@ uint32 AsScene2809Spew::handleMessage(int messageNum, const MessageParam &param,
 AsScene2810Rope::AsScene2810Rope(NeverhoodEngine *vm, Scene *parentScene, int16 x)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(990, 68, 476);
+	createSurface(990, UPSCALE(68, 68));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2810Rope::handleMessage);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
@@ -952,8 +952,8 @@ AsScene2812Winch::AsScene2812Winch(NeverhoodEngine *vm)
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2812Winch::handleMessage);
 	setVisible(false);
-	_x = 280;
-	_y = 184;
+	_x = UPSCALE_X(280);
+	_y = UPSCALE_Y(184);
 }
 
 AsScene2812Winch::~AsScene2812Winch() {
@@ -981,13 +981,13 @@ uint32 AsScene2812Winch::handleMessage(int messageNum, const MessageParam &param
 AsScene2812Rope::AsScene2812Rope(NeverhoodEngine *vm, Scene *parentScene)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(990, 68, 476);
+	createSurface(990, UPSCALE(68, 68));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2812Rope::handleMessage);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
 	startAnimation(0xAE080551, 0, -1);
-	_x = 334;
-	_y = 201;
+	_x = UPSCALE_X(334);
+	_y = UPSCALE_Y(201);
 }
 
 uint32 AsScene2812Rope::handleMessage(int messageNum, const MessageParam &param, Entity *sender) {
@@ -1095,7 +1095,7 @@ uint32 KmScene2801::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x482E:
@@ -1576,7 +1576,7 @@ uint32 KmScene2810::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stStartClimbLadderUp);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x4837:
@@ -1653,7 +1653,7 @@ uint32 KmScene2812::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stClimbLadderHalf);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x482E:

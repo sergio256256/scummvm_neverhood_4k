@@ -123,7 +123,7 @@ Scene1201::Scene1201(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	insertScreenMouse(0x9A2C0409);
 
-	_asTape = insertSprite<AsScene1201Tape>(this, 3, 1100, 243, 340, 0x9148A011);
+	_asTape = insertSprite<AsScene1201Tape>(this, 3, 1100, UPSCALE(243, 340), 0x9148A011);
 	addCollisionSprite(_asTape);
 
 	tempSprite = insertStaticSprite(0x03C82530, 100);
@@ -136,10 +136,10 @@ Scene1201::Scene1201(NeverhoodEngine *vm, Module *parentModule, int which)
 	topY3 = tempSprite->getY() + tempSprite->getDrawRect().height;
 
 	tempSprite = insertStaticSprite(0x04063110, 500);
-	topY4 = tempSprite->getY() + 1;
+	topY4 = tempSprite->getY() + UPSCALE_Y(1);
 
 	_asTntManRope = insertSprite<AsScene1201TntManRope>(getGlobalVar(V_TNT_DUMMY_BUILT) && which != 1);
-	_asTntManRope->setClipRect(0, topY4, 640, 480);
+	_asTntManRope->setClipRect(UPSCALE_X(0), topY4, UPSCALE(640, 480));
 
 	insertStaticSprite(0x400B04B0, 1200);
 
@@ -153,37 +153,37 @@ Scene1201::Scene1201(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene1201>(364, 333);
+		insertKlaymen<KmScene1201>(UPSCALE(364, 333));
 		setMessageList(0x004AEC08);
 	} else if (which == 3) {
 		// Klaymen standing after the weasel exploded
-		insertKlaymen<KmScene1201>(400, 329);
+		insertKlaymen<KmScene1201>(UPSCALE(400, 329));
 		setMessageList(0x004AEC08);
 	} else if (which == 2) {
 		// Klaymen entering from the right
 		if (getGlobalVar(V_CREATURE_ANGRY) && !getGlobalVar(V_CREATURE_EXPLODED)) {
-			insertKlaymen<KmScene1201>(374, 333);
+			insertKlaymen<KmScene1201>(UPSCALE(374, 333));
 			setMessageList(0x004AEC08);
 		} else {
-			insertKlaymen<KmScene1201>(640, 329);
+			insertKlaymen<KmScene1201>(UPSCALE(640, 329));
 			setMessageList(0x004AEC20);
 		}
 	} else if (which == 1) {
 		// Klaymen returning from the TNT console
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X)) {
-			insertKlaymen<KmScene1201>(364, 333);
+			insertKlaymen<KmScene1201>(UPSCALE(364, 333));
 			_klaymen->setDoDeltaX(1);
 		} else {
-			insertKlaymen<KmScene1201>(246, 333);
+			insertKlaymen<KmScene1201>(UPSCALE(246, 333));
 		}
 		setMessageList(0x004AEC30);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene1201>(0, 336);
+		insertKlaymen<KmScene1201>(UPSCALE(0, 336));
 		setMessageList(0x004AEC10);
 	}
 
-	_klaymen->setClipRect(x1, 0, x2, 480);
+	_klaymen->setClipRect(x1, UPSCALE_Y(0), x2, UPSCALE_Y(480));
 	_klaymen->setRepl(64, 0);
 
 	if (getGlobalVar(V_CREATURE_ANGRY) && !getGlobalVar(V_CREATURE_EXPLODED)) {
@@ -200,28 +200,28 @@ Scene1201::Scene1201(NeverhoodEngine *vm, Module *parentModule, int which)
 		insertStaticSprite(0x10002ED8, 500);
 		if (!getGlobalVar(V_CREATURE_EXPLODED)) {
 			_asTntMan = insertSprite<AsScene1201TntMan>(this, _asTntManRope, which == 1);
-			_asTntMan->setClipRect(x1, 0, x2, 480);
+			_asTntMan->setClipRect(x1, UPSCALE_Y(0), x2, UPSCALE_Y(480));
 			_asTntMan->setRepl(64, 0);
 			addCollisionSprite(_asTntMan);
 			tempSprite = insertSprite<AsScene1201TntManFlame>(_asTntMan);
-			tempSprite->setClipRect(x1, 0, x2, 480);
+			tempSprite->setClipRect(x1, UPSCALE_Y(0), x2, UPSCALE_Y(480));
 		}
 
 		uint32 tntIndex = 1;
 		while (tntIndex < 18) {
 			uint32 elemIndex = getSubVar(VA_TNT_POSITIONS, tntIndex);
 			int16 clipY2;
-			if (kScene1201PointArray[elemIndex].y < 175)
+			if (kScene1201PointArray[elemIndex].y < UPSCALE_Y(175))
 				clipY2 = topY1;
-			else if (kScene1201PointArray[elemIndex].y < 230)
+			else if (kScene1201PointArray[elemIndex].y < UPSCALE_Y(230))
 				clipY2 = topY2;
 			else
 				clipY2 = topY3;
 			insertSprite<SsScene1201Tnt>(tntIndex, getSubVar(VA_TNT_POSITIONS, tntIndex), clipY2);
 			elemIndex = getSubVar(VA_TNT_POSITIONS, tntIndex + 1);
-			if (kScene1201PointArray[elemIndex].y < 175)
+			if (kScene1201PointArray[elemIndex].y < UPSCALE_Y(175))
 				clipY2 = topY1;
-			else if (kScene1201PointArray[elemIndex].y < 230)
+			else if (kScene1201PointArray[elemIndex].y < UPSCALE_Y(230))
 				clipY2 = topY2;
 			else
 				clipY2 = topY3;
@@ -243,12 +243,12 @@ Scene1201::Scene1201(NeverhoodEngine *vm, Module *parentModule, int which)
 		while (tntIndex < 18) {
 			uint32 elemIndex = getSubVar(VA_TNT_POSITIONS, tntIndex);
 			int16 clipY2;
-			if (kScene1201PointArray[elemIndex].x < 300) {
-				clipY2 = 480;
+			if (kScene1201PointArray[elemIndex].x < UPSCALE_Y(300)) {
+				clipY2 = UPSCALE_Y(480);
 			} else {
-				if (kScene1201PointArray[elemIndex].y < 175)
+				if (kScene1201PointArray[elemIndex].y < UPSCALE_Y(175))
 					clipY2 = topY1;
-				else if (kScene1201PointArray[elemIndex].y < 230)
+				else if (kScene1201PointArray[elemIndex].y < UPSCALE_Y(230))
 					clipY2 = topY2;
 				else
 					clipY2 = topY3;
@@ -267,7 +267,7 @@ Scene1201::Scene1201(NeverhoodEngine *vm, Module *parentModule, int which)
 	tempSprite = insertStaticSprite(0x63D400BC, 900);
 
 	_asLeftDoor = insertSprite<AsScene1201LeftDoor>(_klaymen);
-	_asLeftDoor->setClipRect(x1, tempSprite->getDrawRect().y, tempSprite->getDrawRect().x2(), 480);
+	_asLeftDoor->setClipRect(x1, tempSprite->getDrawRect().y, tempSprite->getDrawRect().x2(), UPSCALE_Y(480));
 
 	if (getGlobalVar(V_CREATURE_ANGRY) && getGlobalVar(V_MATCH_STATUS) == 0)
 		setGlobalVar(V_MATCH_STATUS, 1);
@@ -281,7 +281,7 @@ Scene1201::Scene1201(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (getGlobalVar(V_CREATURE_ANGRY) && getGlobalVar(V_CREATURE_EXPLODED) == 0) {
 		_asCreature = insertSprite<AsScene1201Creature>(this, _klaymen);
-		_asCreature->setClipRect(x1, 0, x2, 480);
+		_asCreature->setClipRect(x1, UPSCALE_Y(0), x2, UPSCALE_Y(480));
 	}
 
 }
@@ -311,7 +311,7 @@ uint32 Scene1201::handleMessage(int messageNum, const MessageParam &param, Entit
 			_canAcceptInput = false;
 			sendMessage(_asCreature, NM_KLAYMEN_STOP_CLIMBING, 0);
 		} else if (param.asInteger() == 0x090EB048) {
-			if (_klaymen->getX() < 572)
+			if (_klaymen->getX() < UPSCALE_X(572))
 				setMessageList2(0x004AEC90);
 			else
 				setMessageList2(0x004AEC20);
@@ -378,7 +378,7 @@ Scene1202::Scene1202(NeverhoodEngine *vm, Module *parentModule)
 	_paletteResource.load(0x60250EB5);
 	_paletteResource.copyPalette(_paletteData);
 
-	insertPuzzleMouse(0x10ED160A, 20, 620);
+	insertPuzzleMouse(0x10ED160A, UPSCALE_X(20), UPSCALE_X(620));
 
 	for (int tntIndex = 0; tntIndex < 18; tntIndex++) {
 		_asTntItems[tntIndex] = insertSprite<AsScene1202TntItem>(this, tntIndex);
@@ -435,7 +435,7 @@ uint32 Scene1202::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if ((param.asPoint().x <= 20 || param.asPoint().x >= 620) && !_isPuzzleSolved)
+		if ((param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) && !_isPuzzleSolved)
 			leaveScene(0);
 		break;
 	case NM_ANIMATION_UPDATE:
@@ -454,7 +454,7 @@ uint32 Scene1202::hmSolved(int messageNum, const MessageParam &param, Entity *se
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620)
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620))
 			leaveScene(0);
 		break;
 	default:

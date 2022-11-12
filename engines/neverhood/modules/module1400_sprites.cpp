@@ -27,9 +27,9 @@ namespace Neverhood {
 AsScene1401Pipe::AsScene1401Pipe(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100), _countdown1(0), _countdown2(0) {
 
-	createSurface(900, 152, 147);
-	_x = 454;
-	_y = 217;
+	createSurface(900, UPSCALE(152, 152));
+	_x = UPSCALE_X(454);
+	_y = UPSCALE_Y(217);
 	startAnimation(0x4C210500, 0, -1);
 	SetUpdateHandler(&AsScene1401Pipe::update);
 	SetMessageHandler(&AsScene1401Pipe::handleMessage);
@@ -113,9 +113,9 @@ void AsScene1401Pipe::stSuckInProjector() {
 AsScene1401Mouse::AsScene1401Mouse(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100) {
 
-	createSurface(100, 71, 41);
-	_x = 478;
-	_y = 433;
+	createSurface(100, UPSCALE(71, 71));
+	_x = UPSCALE_X(478);
+	_y = UPSCALE_Y(433);
 	startAnimation(0xA282C472, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1401Mouse::handleMessage);
@@ -143,7 +143,7 @@ uint32 AsScene1401Mouse::handleMessage(int messageNum, const MessageParam &param
 
 void AsScene1401Mouse::suSuckedIn() {
 	AnimatedSprite::updateDeltaXY();
-	if (_collisionBounds.y1 <= 150) {
+	if (_collisionBounds.y1 <= UPSCALE_Y(150)) {
 		playSound(0, 0x0E32247F);
 		stopAnimation();
 		setVisible(false);
@@ -160,9 +160,9 @@ void AsScene1401Mouse::stSuckedIn() {
 AsScene1401Cheese::AsScene1401Cheese(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100) {
 
-	createSurface(200, 152, 147);
-	_x = 427;
-	_y = 433;
+	createSurface(200, UPSCALE(152, 152));
+	_x = UPSCALE_X(427);
+	_y = UPSCALE_Y(433);
 	startAnimation(0x461A1490, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1401Cheese::handleMessage);
@@ -182,7 +182,7 @@ uint32 AsScene1401Cheese::handleMessage(int messageNum, const MessageParam &para
 
 void AsScene1401Cheese::suSuckedIn() {
 	AnimatedSprite::updateDeltaXY();
-	if (_collisionBounds.y1 <= 150) {
+	if (_collisionBounds.y1 <= UPSCALE_Y(150)) {
 		playSound(0, 0x18020439);
 		stopAnimation();
 		setVisible(false);
@@ -199,8 +199,8 @@ void AsScene1401Cheese::stSuckedIn() {
 AsScene1401BackDoor::AsScene1401BackDoor(NeverhoodEngine *vm, Sprite *klaymen, bool isOpen)
 	: AnimatedSprite(vm, 1100), _klaymen(klaymen), _countdown(0), _isOpen(isOpen) {
 
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	createSurface1(0x04551900, 100);
 	if (isOpen) {
 		startAnimation(0x04551900, -1, -1);
@@ -277,7 +277,7 @@ AsCommonProjector::AsCommonProjector(NeverhoodEngine *vm, Scene *parentScene, Sp
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _klaymen(klaymen), _asPipe(asPipe) {
 
 	_asProjectorItem = &kAsCommonProjectorItems[getGlobalVar(V_PROJECTOR_LOCATION)];
-	createSurface(990, 101, 182);
+	createSurface(990, UPSCALE(101, 101));
 	startAnimation(0x10E3042B, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsCommonProjector::handleMessage);
@@ -342,8 +342,8 @@ uint32 AsCommonProjector::hmLockedInSlot(int messageNum, const MessageParam &par
 	uint32 messageResult = Sprite::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case 0x1011:
-		if (param.asPoint().x - _x >= 17 && param.asPoint().x - _x <= 56 &&
-			param.asPoint().y - _y >= -120 && param.asPoint().y - _y <= -82) {
+		if (param.asPoint().x - _x >= UPSCALE_X(17) && param.asPoint().x - _x <= UPSCALE_X(56) &&
+			param.asPoint().y - _y >= UPSCALE_X(-120) && param.asPoint().y - _y <= UPSCALE_X(-82)) {
 			sendMessage(_parentScene, 0x4826, 1);
 		} else
 			sendMessage(_parentScene, 0x4826, 0);
@@ -448,7 +448,7 @@ void AsCommonProjector::moveProjector() {
 
 void AsCommonProjector::stSuckedIn() {
 	AnimatedSprite::updateDeltaXY();
-	if (_collisionBounds.y1 <= 150) {
+	if (_collisionBounds.y1 <= UPSCALE_Y(150)) {
 		sendMessage(_asPipe, 0x483A, 0);
 		stopAnimation();
 		setVisible(false);
@@ -539,13 +539,13 @@ SsScene1402BridgePart::SsScene1402BridgePart(NeverhoodEngine *vm, uint32 fileHas
 AsScene1402PuzzleBox::AsScene1402PuzzleBox(NeverhoodEngine *vm, Scene *parentScene, int status)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(900, 347, 230);
+	createSurface(900, UPSCALE(347, 347));
 
 	SetFilterY(&Sprite::defFilterY);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1402PuzzleBox::handleMessage);
-	_x = 279;
-	_y = 270;
+	_x = UPSCALE_X(279);
+	_y = UPSCALE_Y(270);
 	if (status == 2) {
 		// Puzzle box after the puzzle was solved
 		startAnimation(0x20060259, 0, -1);
@@ -610,92 +610,92 @@ static const struct {
 	int16 sectionIndex;
 	int16 nextHoleIndex;
 } kScene1407MouseHoles[] = {
-	{125, 0,  0,  7},
-	{452, 7, 21,  0},
-	{337, 4, 11,  4},
-	{286, 6, 17,  6},
-	{348, 6, 17, 39},
-	{536, 6, 18, 42},
-	{111, 1,  3, 18},
-	{203, 1,  3, 38},
-	{270, 1,  3,  9},
-	{197, 5, 14,  3},
-	{252, 5, 14, 35},
-	{297, 5, 14,  7},
-	{359, 5, 14,  8},
-	{422, 4, 12, 26},
-	{467, 4, 12,  2},
-	{539, 4, 12, 40},
-	{111, 5, 13, 17},
-	{211, 0,  1, 20},
-	{258, 0,  1, 11},
-	{322, 0,  1, 16},
-	{ 99, 6, 16, 31},
-	{142, 6, 16, 27},
-	{194, 6, 16, 12},
-	{205, 2,  6, 45},
-	{264, 2,  6, 10},
-	{ 98, 4, 10,  2},
-	{152, 4, 10, 37},
-	{199, 4, 10, 13},
-	{258, 4, 10, 16},
-	{100, 7, 19, 43},
-	{168, 7, 19, 23},
-	{123, 3,  8, 14},
-	{181, 3,  8, 39},
-	{230, 3,  8, 28},
-	{292, 3,  8, 22},
-	{358, 3,  8, 36},
-	{505, 3,  9, 44},
-	{400, 2,  7, 34},
-	{454, 2,  7, 32},
-	{532, 2,  7, 46},
-	{484, 5, 15, 25},
-	{529, 5, 15, 30},
-	{251, 7, 20, 48},
-	{303, 7, 20, 21},
-	{360, 7, 20, 33},
-	{503, 0,  2,  5},
-	{459, 1,  4, 19},
-	{530, 1,  4, 42},
-	{111, 2,  5, 47},
-	{442, 6, 18,  1}
+	{UPSCALE_X(125), 0,  0,  7},
+	{UPSCALE_X(452), 7, 21,  0},
+	{UPSCALE_X(337), 4, 11,  4},
+	{UPSCALE_X(286), 6, 17,  6},
+	{UPSCALE_X(348), 6, 17, 39},
+	{UPSCALE_X(536), 6, 18, 42},
+	{UPSCALE_X(111), 1,  3, 18},
+	{UPSCALE_X(203), 1,  3, 38},
+	{UPSCALE_X(270), 1,  3,  9},
+	{UPSCALE_X(197), 5, 14,  3},
+	{UPSCALE_X(252), 5, 14, 35},
+	{UPSCALE_X(297), 5, 14,  7},
+	{UPSCALE_X(359), 5, 14,  8},
+	{UPSCALE_X(422), 4, 12, 26},
+	{UPSCALE_X(467), 4, 12,  2},
+	{UPSCALE_X(539), 4, 12, 40},
+	{UPSCALE_X(111), 5, 13, 17},
+	{UPSCALE_X(211), 0,  1, 20},
+	{UPSCALE_X(258), 0,  1, 11},
+	{UPSCALE_X(322), 0,  1, 16},
+	{UPSCALE_X( 99), 6, 16, 31},
+	{UPSCALE_X(142), 6, 16, 27},
+	{UPSCALE_X(194), 6, 16, 12},
+	{UPSCALE_X(205), 2,  6, 45},
+	{UPSCALE_X(264), 2,  6, 10},
+	{UPSCALE_X( 98), 4, 10,  2},
+	{UPSCALE_X(152), 4, 10, 37},
+	{UPSCALE_X(199), 4, 10, 13},
+	{UPSCALE_X(258), 4, 10, 16},
+	{UPSCALE_X(100), 7, 19, 43},
+	{UPSCALE_X(168), 7, 19, 23},
+	{UPSCALE_X(123), 3,  8, 14},
+	{UPSCALE_X(181), 3,  8, 39},
+	{UPSCALE_X(230), 3,  8, 28},
+	{UPSCALE_X(292), 3,  8, 22},
+	{UPSCALE_X(358), 3,  8, 36},
+	{UPSCALE_X(505), 3,  9, 44},
+	{UPSCALE_X(400), 2,  7, 34},
+	{UPSCALE_X(454), 2,  7, 32},
+	{UPSCALE_X(532), 2,  7, 46},
+	{UPSCALE_X(484), 5, 15, 25},
+	{UPSCALE_X(529), 5, 15, 30},
+	{UPSCALE_X(251), 7, 20, 48},
+	{UPSCALE_X(303), 7, 20, 21},
+	{UPSCALE_X(360), 7, 20, 33},
+	{UPSCALE_X(503), 0,  2,  5},
+	{UPSCALE_X(459), 1,  4, 19},
+	{UPSCALE_X(530), 1,  4, 42},
+	{UPSCALE_X(111), 2,  5, 47},
+	{UPSCALE_X(442), 6, 18,  1}
 };
 
 static const struct {
 	int16 x1, x2;
 	int16 goodHoleIndex;
 } kScene1407MouseSections[] = {
-	{100, 149,  0},
-	{182, 351, 17},
-	{430, 524, 45},
-	{ 89, 293,  7},
-	{407, 555, 47},
-	{ 89, 132, 48},
-	{178, 303, 23},
-	{367, 551, 38},
-	{105, 398, 31},
-	{480, 537, 36},
-	{ 84, 275, 27},
-	{318, 359,  2},
-	{402, 560, 15},
-	{ 91, 132, 16},
-	{179, 400, 10},
-	{461, 552, 41},
-	{ 86, 218, 21},
-	{267, 376,  4},
-	{420, 560, 49},
-	{ 77, 188, 30},
-	{237, 394, 44},
-	{438, 515,  5}
+	{UPSCALE_X(100), UPSCALE_X(149),  0},
+	{UPSCALE_X(182), UPSCALE_X(351), 17},
+	{UPSCALE_X(430), UPSCALE_X(524), 45},
+	{UPSCALE_X( 89), UPSCALE_X(293),  7},
+	{UPSCALE_X(407), UPSCALE_X(555), 47},
+	{UPSCALE_X( 89), UPSCALE_X(132), 48},
+	{UPSCALE_X(178), UPSCALE_X(303), 23},
+	{UPSCALE_X(367), UPSCALE_X(551), 38},
+	{UPSCALE_X(105), UPSCALE_X(398), 31},
+	{UPSCALE_X(480), UPSCALE_X(537), 36},
+	{UPSCALE_X( 84), UPSCALE_X(275), 27},
+	{UPSCALE_X(318), UPSCALE_X(359),  2},
+	{UPSCALE_X(402), UPSCALE_X(560), 15},
+	{UPSCALE_X( 91), UPSCALE_X(132), 16},
+	{UPSCALE_X(179), UPSCALE_X(400), 10},
+	{UPSCALE_X(461), UPSCALE_X(552), 41},
+	{UPSCALE_X( 86), UPSCALE_X(218), 21},
+	{UPSCALE_X(267), UPSCALE_X(376),  4},
+	{UPSCALE_X(420), UPSCALE_X(560), 49},
+	{UPSCALE_X( 77), UPSCALE_X(188), 30},
+	{UPSCALE_X(237), UPSCALE_X(394), 44},
+	{UPSCALE_X(438), UPSCALE_X(515),  5}
 };
 
 AsScene1407Mouse::AsScene1407Mouse(NeverhoodEngine *vm, Scene *parentScene)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _currSectionIndex(0) {
 
-	createSurface(100, 117, 45);
-	_x = 108;
-	_y = 106;
+	createSurface(100, UPSCALE(117, 45));
+	_x = UPSCALE_X(108);
+	_y = UPSCALE_Y(106);
 	stIdleLookAtGoodHole();
 	SetUpdateHandler(&AnimatedSprite::update);
 }
@@ -734,7 +734,7 @@ uint32 AsScene1407Mouse::handleMessage(int messageNum, const MessageParam &param
 			for (holeIndex = 0; holeIndex < 50; holeIndex++) {
 				int16 holeX = kScene1407MouseHoles[holeIndex].x;
 				int16 holeY = kScene1407MouseFloorY[kScene1407MouseHoles[holeIndex].floorIndex];
-				if (mouseX >= holeX - 14 && mouseX <= holeX + 14 && mouseY >= holeY - 36 && mouseY <= holeY)
+				if (mouseX >= holeX - UPSCALE_X(14) && mouseX <= holeX + UPSCALE_X(14) && mouseY >= holeY - UPSCALE_X(36) && mouseY <= holeY)
 					break;
 			}
 			if (holeIndex < 50 && kScene1407MouseHoles[holeIndex].sectionIndex == _currSectionIndex) {
@@ -951,7 +951,7 @@ uint32 KmScene1401::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x482E:
@@ -1141,7 +1141,7 @@ uint32 KmScene1404::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x483F:

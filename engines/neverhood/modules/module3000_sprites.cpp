@@ -194,7 +194,7 @@ SsScene3009SymbolArrow::SsScene3009SymbolArrow(NeverhoodEngine *vm, Sprite *asSy
 
 	_incrDecr = _index % 2;
 
-	createSurface(1200, 33, 31);
+	createSurface(1200, UPSCALE(33, 33));
 	loadSprite(kSsScene3009SymbolArrowFileHashes2[_index], kSLFDefPosition);
 	_drawOffset.set(0, 0, 33, 31);
 	_collisionBoundsOffset = _drawOffset;
@@ -239,8 +239,8 @@ uint32 SsScene3009SymbolArrow::handleMessage(int messageNum, const MessageParam 
 AsScene3009VerticalIndicator::AsScene3009VerticalIndicator(NeverhoodEngine *vm, Scene3009 *parentScene, int index)
 	: AnimatedSprite(vm, 1000), _parentScene(parentScene), _enabled(false) {
 
-	_x = 300;
-	_y = getGlobalVar(V_CANNON_RAISED) ? 52 : 266;
+	_x = UPSCALE_X(300);
+	_y = getGlobalVar(V_CANNON_RAISED) ? UPSCALE_Y(52) : UPSCALE_Y(266);
 	createSurface1(0xC2463913, 1200);
 	_needRefresh = true;
 	updatePosition();
@@ -275,7 +275,7 @@ AsScene3009HorizontalIndicator::AsScene3009HorizontalIndicator(NeverhoodEngine *
 	: AnimatedSprite(vm, 1000), _parentScene(parentScene), _enabled(false) {
 
 	_x = getGlobalVar(V_CANNON_TURNED) ? 533 : 92;
-	_y = 150;
+	_y = UPSCALE_Y(150);
 	createSurface1(0xC0C12954, 1200);
 	_needRefresh = true;
 	updatePosition();
@@ -284,7 +284,7 @@ AsScene3009HorizontalIndicator::AsScene3009HorizontalIndicator(NeverhoodEngine *
 	SetMessageHandler(&AsScene3009HorizontalIndicator::handleMessage);
 	if (cannonTargetStatus == kCTSRightRobotNoTarget || cannonTargetStatus == kCTSRightRobotIsTarget || cannonTargetStatus == kCTSRightNoRobot) {
 		SetSpriteUpdate(&AsScene3009HorizontalIndicator::suMoveRight);
-		_x = 280;
+		_x = UPSCALE_X(280);
 	}
 }
 
@@ -307,15 +307,15 @@ void AsScene3009HorizontalIndicator::suMoveLeft() {
 	_x -= 6;
 	if (_x < 92) {
 		SetSpriteUpdate(nullptr);
-		_x = 92;
+		_x = UPSCALE_X(92);
 	}
 }
 
 void AsScene3009HorizontalIndicator::suMoveRight() {
-	_x += 6;
-	if (_x > 533) {
+	_x += UPSCALE_X(6);
+	if (_x > UPSCALE_X(533)) {
 		SetSpriteUpdate(nullptr);
-		_x = 533;
+		_x = UPSCALE_X(533);
 	}
 }
 
@@ -327,12 +327,12 @@ void AsScene3009HorizontalIndicator::show() {
 }
 
 void AsScene3009HorizontalIndicator::stMoveLeft() {
-	_x = 533;
+	_x = UPSCALE_X(533);
 	SetSpriteUpdate(&AsScene3009HorizontalIndicator::suMoveLeft);
 }
 
 void AsScene3009HorizontalIndicator::stMoveRight() {
-	_x = 330;
+	_x = UPSCALE_X(330);
 	SetSpriteUpdate(&AsScene3009HorizontalIndicator::suMoveRight);
 }
 
@@ -434,7 +434,7 @@ SsScene3010DeadBoltButton::SsScene3010DeadBoltButton(NeverhoodEngine *vm, Scene 
 	: StaticSprite(vm, 900), _parentScene(parentScene), _buttonLocked(false), _countdown1(0), _countdown2(0), _buttonIndex(buttonIndex) {
 
 	_buttonEnabled = getSubVar(VA_LOCKS_DISABLED, kScene3010ButtonNameHashes[_buttonIndex]) != 0;
-	createSurface(400, 88, 95);
+	createSurface(400, UPSCALE(88, 88));
 	setSprite(kScene3010DeadBoltButtonFileHashes2[_buttonIndex]);
 	if (initDisabled)
 		disableButton();
@@ -685,16 +685,16 @@ AsScene3011Symbol::AsScene3011Symbol(NeverhoodEngine *vm, int symbolIndex, bool 
 	: AnimatedSprite(vm, 1000), _symbolIndex(symbolIndex), _largeSymbol(largeSymbol), _isNoisy(false) {
 
 	if (_largeSymbol) {
-		_x = 310;
-		_y = 200;
+		_x = UPSCALE_X(310);
+		_y = UPSCALE_Y(200);
 		createSurface1(kAsScene3011SymbolFileHashes[_symbolIndex], 1200);
 		loadSound(0, 0x6052C60F);
 		loadSound(1, 0x6890433B);
 	} else {
 		_symbolIndex = 12;
-		_x = symbolIndex * 39 + 96;
-		_y = 225;
-		createSurface(1200, 41, 48);
+		_x = symbolIndex * UPSCALE_Y(39) + UPSCALE_Y(96);
+		_y = UPSCALE_Y(225);
+		createSurface(1200, UPSCALE(41, 41));
 		loadSound(0, 0x64428609);
 		loadSound(1, 0x7080023B);
 	}

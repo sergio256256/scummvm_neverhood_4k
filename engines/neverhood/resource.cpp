@@ -138,7 +138,7 @@ void AnimResource::draw(uint frameIndex, Graphics::Surface *destSurface, bool fl
 	_width = frameInfo.drawOffset.width;
 	_height = frameInfo.drawOffset.height;
 
-	if (_resourceHandle.upscaledData(0))
+	if (_resourceHandle.upscaledData(frameIndex))
 		unpackSpriteUpscaled(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY);
 	else if (_replEnabled && _replOldColor != _replNewColor)
 		unpackSpriteRle(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY, _replOldColor, _replNewColor);
@@ -278,13 +278,13 @@ NDimensions AnimResource::loadSpriteDimensions(uint32 fileHash) {
 	_vm->_res->queryResource(fileHash, resourceHandle);
 	const byte *resDimensions = resourceHandle.extData();
 	if (resDimensions) {
-		dimensions.width = READ_LE_UINT16(resDimensions + 0);
-		dimensions.height = READ_LE_UINT16(resDimensions + 2);
+		dimensions.width = UPSCALE_X(READ_LE_UINT16(resDimensions + 0));
+		dimensions.height = UPSCALE_Y(READ_LE_UINT16(resDimensions + 2));
 
-		if (resourceHandle.upscaledData(0)) {
-			dimensions.width = resourceHandle.upscaledDataWidth(0);
-			dimensions.height = resourceHandle.upscaledDataHeight(0);
-		}
+		//if (resourceHandle.upscaledData(0)) {
+		//	dimensions.width = resourceHandle.upscaledDataWidth(0);
+		//	dimensions.height = resourceHandle.upscaledDataHeight(0);
+		//}
 
 	} else {
 		dimensions.width = 0;
@@ -423,8 +423,8 @@ void DataResource::load(uint32 fileHash) {
 				{
 					debug(3, "NPoint");
 					NPoint point;
-					point.x = dataS.readUint16LE();
-					point.y = dataS.readUint16LE();
+					point.x = UPSCALE_X(dataS.readUint16LE());
+					point.y = UPSCALE_Y(dataS.readUint16LE());
 					debug(3, "(%d, %d)", point.x, point.y);
 					drDirectoryItem.offset = _points.size();
 					_points.push_back(point);
@@ -437,8 +437,8 @@ void DataResource::load(uint32 fileHash) {
 					debug(3, "NPointArray; count = %d", count);
 					for (uint j = 0; j < count; j++) {
 						NPoint point;
-						point.x = dataS.readUint16LE();
-						point.y = dataS.readUint16LE();
+						point.x = UPSCALE_X(dataS.readUint16LE());
+						point.y = UPSCALE_Y(dataS.readUint16LE());
 						debug(3, "(%d, %d)", point.x, point.y);
 						pointArray->push_back(point);
 					}

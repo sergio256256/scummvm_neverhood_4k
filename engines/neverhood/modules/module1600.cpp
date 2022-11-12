@@ -197,7 +197,7 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	SetMessageHandler(&Scene1608::hmLowerFloor);
 
-	_asKey = insertSprite<AsCommonKey>(this, 1, 1100, 198, 220);
+	_asKey = insertSprite<AsCommonKey>(this, 1, 1100, UPSCALE(198, 220));
 	addCollisionSprite(_asKey);
 
 	if (which < 0) {
@@ -208,16 +208,16 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 		else {
 			// Klaymen is standing around
 			setRectList(0x004B47D0);
-			insertKlaymen<KmScene1608>(380, 438);
+			insertKlaymen<KmScene1608>(UPSCALE(380, 438));
 			_kmScene1608 = _klaymen;
 			_klaymenInCar = false;
 			_sprite1 = insertStaticSprite(0x7D0404E8, 1100);
 			setMessageList(0x004B46A8);
 			setBackground(0x10080E01);
 			setPalette(0x10080E01);
-			_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, 412, 443, 0x9148A011);
+			_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, UPSCALE(412, 443), 0x9148A011);
 			addCollisionSprite(_asTape);
-			_klaymen->setClipRect(_sprite1->getDrawRect().x, 0, 640, 480);
+			_klaymen->setClipRect(_sprite1->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 			SetUpdateHandler(&Scene1608::upLowerFloor);
 			insertScreenMouse(0x80E05108);
 			insertStaticSprite(0x4B18F868, 1200);
@@ -227,17 +227,17 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 		playSound(0, calcHash("fxDoorOpen23"));
 		_vm->gameState().which = 0;
 		setRectList(0x004B47D0);
-		insertKlaymen<KmScene1608>(0, 438);
+		insertKlaymen<KmScene1608>(UPSCALE(0, 438));
 		_kmScene1608 = _klaymen;
 		_klaymenInCar = false;
 		setMessageList(0x004B46B0);
 		setBackground(0x10080E01);
 		setPalette(0x10080E01);
-		_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, 412, 443, 0x9148A011);
+		_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, UPSCALE(412, 443), 0x9148A011);
 		addCollisionSprite(_asTape);
 		insertScreenMouse(0x80E05108);
 		_sprite1 = insertStaticSprite(0x7D0404E8, 1100);
-		_klaymen->setClipRect(_sprite1->getDrawRect().x, 0, 640, 480);
+		_klaymen->setClipRect(_sprite1->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 		SetUpdateHandler(&Scene1608::upLowerFloor);
 		insertStaticSprite(0x4B18F868, 1200);
 	} else if (which == 2) {
@@ -250,30 +250,30 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 		_palette->addPalette("paPodRed", 65, 31, 65);
 		insertScreenMouse(0x01600988);
 		_sprite2 = insertStaticSprite(0x491F38A8, 1100);
-		_asCar = createSprite<AsCommonCar>(this, 375, 227); // Create but don't add to the sprite list yet
-		_asIdleCarLower = insertSprite<AsCommonIdleCarLower>(375, 227);
-		_asIdleCarFull = insertSprite<AsCommonIdleCarFull>(375, 227);
+		_asCar = createSprite<AsCommonCar>(this, UPSCALE(375, 227)); // Create but don't add to the sprite list yet
+		_asIdleCarLower = insertSprite<AsCommonIdleCarLower>(UPSCALE(375, 227));
+		_asIdleCarFull = insertSprite<AsCommonIdleCarFull>(UPSCALE(375, 227));
 		_asCar->setVisible(false);
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X)) {
-			insertKlaymen<KmScene1608>(373, 220);
+			insertKlaymen<KmScene1608>(UPSCALE(373, 220));
 			_klaymen->setDoDeltaX(1);
 		} else
-			insertKlaymen<KmScene1608>(283, 220);
+			insertKlaymen<KmScene1608>(UPSCALE(283, 220));
 		_kmScene1608 = _klaymen;
 		setMessageList(0x004B47A8);
 		SetMessageHandler(&Scene1608::hmUpperFloor);
 		SetUpdateHandler(&Scene1608::upUpperFloor);
 		sendMessage(_asCar, NM_POSITION_CHANGE, _roomPathPoints->size() - 1);
 		_sprite3 = insertStaticSprite(0xB47026B0, 1100);
-		_clipRect1.set(_sprite3->getDrawRect().x, _sprite3->getDrawRect().y, 640, _sprite2->getDrawRect().y2());
-		_clipRect3.set(_sprite2->getDrawRect().x, _sprite3->getDrawRect().y, 640, _sprite2->getDrawRect().y2());
+		_clipRect1.set(_sprite3->getDrawRect().x, _sprite3->getDrawRect().y, UPSCALE_X(640), _sprite2->getDrawRect().y2());
+		_clipRect3.set(_sprite2->getDrawRect().x, _sprite3->getDrawRect().y, UPSCALE_X(640), _sprite2->getDrawRect().y2());
 		_clipRect2 = _clipRect1;
-		_clipRect2.y2 = 215;
+		_clipRect2.y2 = UPSCALE_Y(215);
 		_klaymen->setClipRect(_clipRect1);
 		_asCar->setClipRect(_clipRect1);
 		_asIdleCarLower->setClipRect(_clipRect1);
 		_asIdleCarFull->setClipRect(_clipRect1);
-		_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, 412, 443, 0x9148A011);
+		_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, UPSCALE(412, 443), 0x9148A011);
 		addCollisionSprite(_asTape);
 		insertSprite<AsCommonCarConnector>(_asCar)->setClipRect(_clipRect1);
 		_klaymenInCar = false;
@@ -292,11 +292,11 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 		setPalette(0x98001604);
 		_palette->addPalette("paPodRed", 65, 31, 65);
 		insertScreenMouse(0x01600988);
-		_asCar = insertSprite<AsCommonCar>(this, 375, 227);
-		_asIdleCarLower = insertSprite<AsCommonIdleCarLower>(375, 227);
-		_asIdleCarFull = insertSprite<AsCommonIdleCarFull>(375, 227);
+		_asCar = insertSprite<AsCommonCar>(this, UPSCALE(375, 227));
+		_asIdleCarLower = insertSprite<AsCommonIdleCarLower>(UPSCALE(375, 227));
+		_asIdleCarFull = insertSprite<AsCommonIdleCarFull>(UPSCALE(375, 227));
 		_sprite2 = insertStaticSprite(0x491F38A8, 1100);
-		_kmScene1608 = createSprite<KmScene1608>(this, 439, 220);
+		_kmScene1608 = createSprite<KmScene1608>(this, UPSCALE(439, 220));
 		sendMessage(_kmScene1608, 0x2032, 1);
 		_kmScene1608->setDoDeltaX(1);
 		SetMessageHandler(&Scene1608::hmRidingCar);
@@ -306,15 +306,15 @@ Scene1608::Scene1608(NeverhoodEngine *vm, Module *parentModule, int which)
 		sendMessage(_asCar, NM_POSITION_CHANGE, 0);
 		sendMessage(_asCar, NM_CAR_MOVE_TO_NEXT_POINT, 90);
 		_sprite3 = insertStaticSprite(0xB47026B0, 1100);
-		_clipRect1.set(_sprite3->getDrawRect().x, _sprite3->getDrawRect().y, 640, _sprite2->getDrawRect().y2());
-		_clipRect3.set(_sprite2->getDrawRect().x, _sprite3->getDrawRect().y, 640, _sprite2->getDrawRect().y2());
+		_clipRect1.set(_sprite3->getDrawRect().x, _sprite3->getDrawRect().y, UPSCALE_X(640), _sprite2->getDrawRect().y2());
+		_clipRect3.set(_sprite2->getDrawRect().x, _sprite3->getDrawRect().y, UPSCALE_X(640), _sprite2->getDrawRect().y2());
 		_clipRect2 = _clipRect1;
-		_clipRect2.y2 = 215;
+		_clipRect2.y2 = UPSCALE_Y(215);
 		_kmScene1608->setClipRect(_clipRect1);
 		_asCar->setClipRect(_clipRect3);
 		_asIdleCarLower->setClipRect(_clipRect1);
 		_asIdleCarFull->setClipRect(_clipRect1);
-		_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, 412, 443, 0x9148A011);
+		_asTape = insertSprite<AsScene1201Tape>(this, 13, 1100, UPSCALE(412, 443), 0x9148A011);
 		// ... addCollisionSprite(_asTape);
 		insertSprite<AsCommonCarConnector>(_asCar)->setClipRect(_clipRect1);
 		_klaymenInCar = true;
@@ -364,7 +364,7 @@ void Scene1608::upUpperFloor() {
 void Scene1608::upCarAtHome() {
 	Scene::update();
 	if (_mouseClicked) {
-		if (_mouseClickPos.x <= 329 && _asCar->getX() == 375 && _asCar->getY() == 227) {
+		if (_mouseClickPos.x <= UPSCALE_X(329) && DOWNSCALE_X(_asCar->getX()) == 375 && DOWNSCALE_Y(_asCar->getY()) == 227) {
 			sendMessage(_asCar, NM_CAR_LEAVE, 0);
 			SetUpdateHandler(&Scene1608::upGettingOutOfCar);
 		} else {
@@ -505,7 +505,7 @@ uint32 Scene1608::hmCarAtHome(int messageNum, const MessageParam &param, Entity 
 }
 
 void Scene1608::updateKlaymenCliprect() {
-	if (_kmScene1608->getX() <= 375)
+	if (_kmScene1608->getX() <= UPSCALE_X(375))
 		_kmScene1608->setClipRect(_clipRect1);
 	else
 		_kmScene1608->setClipRect(_clipRect2);
@@ -522,7 +522,7 @@ Scene1609::Scene1609(NeverhoodEngine *vm, Module *parentModule)
 
 	setBackground(0x92124A14);
 	setPalette(0x92124A14);
-	insertPuzzleMouse(0x24A10929, 20, 620);
+	insertPuzzleMouse(0x24A10929, UPSCALE_X(20), UPSCALE_X(620));
 
 	for (int symbolPosition = 0; symbolPosition < 12; symbolPosition++)
 		_asSymbols[symbolPosition] = insertSprite<AsScene3011Symbol>(symbolPosition, false);
@@ -557,7 +557,7 @@ uint32 Scene1609::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620)
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620))
 			leaveScene(0);
 		break;
 	case NM_ANIMATION_UPDATE:

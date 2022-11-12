@@ -435,7 +435,7 @@ Scene3009::Scene3009(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	setBackground(0xD000420C);
 	setPalette(0xD000420C);
-	insertPuzzleMouse(0x04208D08, 20, 620);
+	insertPuzzleMouse(0x04208D08, UPSCALE_X(20), UPSCALE_X(620));
 
 	_ssFireCannonButton = insertSprite<SsScene3009FireCannonButton>(this);
 	addCollisionSprite(_ssFireCannonButton);
@@ -560,7 +560,7 @@ uint32 Scene3009::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if ((param.asPoint().x <= 20 || param.asPoint().x >= 620) && !getGlobalVar(V_CANNON_RAISED)) {
+		if ((param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) && !getGlobalVar(V_CANNON_RAISED)) {
 			setGlobalVar(V_CANNON_TARGET_STATUS, 0);
 			leaveScene(0);
 		}
@@ -695,7 +695,7 @@ Scene3010::Scene3010(NeverhoodEngine *vm, Module *parentModule, int which)
 	}
 
 	if (which == 0) {
-		insertPuzzleMouse(0x02622800, 20, 620);
+		insertPuzzleMouse(0x02622800, UPSCALE_X(20), UPSCALE_X(620));
 	}
 
 	loadSound(0, 0x68E25540);
@@ -729,7 +729,7 @@ uint32 Scene3010::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if ((param.asPoint().x <= 20 || param.asPoint().x >= 620) && _countdown == 0 && !_checkUnlocked) {
+		if ((param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) && _countdown == 0 && !_checkUnlocked) {
 			if (!_boltUnlocking[0] && !_boltUnlocking[1] && !_boltUnlocking[2]) {
 				showMouse(false);
 				if (!_boltUnlocked[0] && !_boltUnlocked[1] && !_boltUnlocked[2]) {
@@ -793,7 +793,7 @@ Scene3011::Scene3011(NeverhoodEngine *vm, Module *parentModule, int which)
 	setPalette(0xA4070114);
 	addEntity(_palette);
 
-	insertPuzzleMouse(0x24A00929, 20, 620);
+	insertPuzzleMouse(0x24A00929, UPSCALE_X(20), UPSCALE_X(620));
 
 	for (int symbolIndex = 0; symbolIndex < 12; symbolIndex++)
 		_asSymbols[symbolIndex] = insertSprite<AsScene3011Symbol>(symbolIndex, true);
@@ -855,7 +855,7 @@ uint32 Scene3011::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620) {
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) {
 			leaveScene(0);
 		}
 		break;

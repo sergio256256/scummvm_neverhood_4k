@@ -80,11 +80,11 @@ uint32 SsScene2609Button::handleMessage(int messageNum, const MessageParam &para
 AsScene2609Water::AsScene2609Water(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1000) {
 
-	_x = 240;
-	_y = 420;
+	_x = UPSCALE_X(240);
+	_y = UPSCALE_Y(420);
 	setDoDeltaX(1);
 	createSurface1(0x9C210C90, 1200);
-	setClipRect(260, 260, 400, 368);
+	setClipRect(UPSCALE(260, 260), UPSCALE(400, 368));
 	_vm->_soundMan->addSound(0x08526C36, 0xDC2769B0);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2609Water::handleMessage);

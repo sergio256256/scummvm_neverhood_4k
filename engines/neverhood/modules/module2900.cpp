@@ -176,7 +176,7 @@ Scene2901::Scene2901(NeverhoodEngine *vm, Module *parentModule, int which)
 	_ssBigButton = insertSprite<SsScene2901BigButton>(this, _currLocationButtonNum);
 	addCollisionSprite(_ssBigButton);
 
-	insertPuzzleMouse(kScene2901FileHashes2[_currLocationButtonNum], 20, 620);
+	insertPuzzleMouse(kScene2901FileHashes2[_currLocationButtonNum], UPSCALE_X(20), UPSCALE_X(620));
 
 	SetUpdateHandler(&Scene2901::update);
 	SetMessageHandler(&Scene2901::handleMessage);
@@ -217,7 +217,7 @@ uint32 Scene2901::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620)
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620))
 			leaveScene((uint32)-1);
 		break;
 	case NM_ANIMATION_UPDATE:

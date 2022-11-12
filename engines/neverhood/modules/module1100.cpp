@@ -286,7 +286,7 @@ Scene1105::Scene1105(NeverhoodEngine *vm, Module *parentModule)
 	_asTeddyBear = insertSprite<AsScene1105TeddyBear>(this);
 	ssOpenButton = insertSprite<SsScene1105OpenButton>(this);
 	addCollisionSprite(ssOpenButton);
-	insertPuzzleMouse(0x10006208, 20, 620);
+	insertPuzzleMouse(0x10006208, UPSCALE_X(20), UPSCALE_X(620));
 
 	loadSound(0, 0x48442057);
 	loadSound(1, 0xC025014F);
@@ -299,7 +299,7 @@ uint32 Scene1105::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620) {
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) {
 			if (!_isActionButtonClicked && _backgroundIndex == 0) {
 				if (_isPanelOpen) {
 					_isPanelOpen = false;
@@ -389,34 +389,34 @@ uint32 Scene1105::handleMessage(int messageNum, const MessageParam &param, Entit
 }
 
 void Scene1105::createObjects() {
-	_ssSymbols[0] = insertSprite<SsScene1105Symbol>(kScene1105FileHashes[getSubVar(VA_DICE_MEMORY_SYMBOLS, 0)], 161, 304);
-	_ssSymbols[1] = insertSprite<SsScene1105Symbol>(kScene1105FileHashes[getSubVar(VA_DICE_MEMORY_SYMBOLS, 1)], 294, 304);
-	_ssSymbols[2] = insertSprite<SsScene1105Symbol>(kScene1105FileHashes[getSubVar(VA_DICE_MEMORY_SYMBOLS, 2)], 440, 304);
+	_ssSymbols[0] = insertSprite<SsScene1105Symbol>(kScene1105FileHashes[getSubVar(VA_DICE_MEMORY_SYMBOLS, 0)], UPSCALE(161, 304));
+	_ssSymbols[1] = insertSprite<SsScene1105Symbol>(kScene1105FileHashes[getSubVar(VA_DICE_MEMORY_SYMBOLS, 1)], UPSCALE(294, 304));
+	_ssSymbols[2] = insertSprite<SsScene1105Symbol>(kScene1105FileHashes[getSubVar(VA_DICE_MEMORY_SYMBOLS, 2)], UPSCALE(440, 304));
 
-	_ssSymbolDice[0] = insertSprite<SsScene1105SymbolDie>(0, 206, 304);
-	_ssSymbolDice[1] = insertSprite<SsScene1105SymbolDie>(1, 339, 304);
-	_ssSymbolDice[2] = insertSprite<SsScene1105SymbolDie>(2, 485, 304);
+	_ssSymbolDice[0] = insertSprite<SsScene1105SymbolDie>(0, UPSCALE(206, 304));
+	_ssSymbolDice[1] = insertSprite<SsScene1105SymbolDie>(1, UPSCALE(339, 304));
+	_ssSymbolDice[2] = insertSprite<SsScene1105SymbolDie>(2, UPSCALE(485, 304));
 
-	_ssSymbol1UpButton = insertSprite<SsScene1105Button>(this, 0x08002860, NRect::make(146, 362, 192, 403));
+	_ssSymbol1UpButton = insertSprite<SsScene1105Button>(this, 0x08002860, NRect::make(UPSCALE(146, 362), UPSCALE(192, 403)));
 	addCollisionSprite(_ssSymbol1UpButton);
-	_ssSymbol1DownButton = insertSprite<SsScene1105Button>(this, 0x42012460, NRect::make(147, 404, 191, 442));
+	_ssSymbol1DownButton = insertSprite<SsScene1105Button>(this, 0x42012460, NRect::make(UPSCALE(147, 404), UPSCALE(191, 442)));
 	addCollisionSprite(_ssSymbol1DownButton);
-	_ssSymbol2UpButton = insertSprite<SsScene1105Button>(this, 0x100030A0, NRect::make(308, 361, 355, 402));
+	_ssSymbol2UpButton = insertSprite<SsScene1105Button>(this, 0x100030A0, NRect::make(UPSCALE(308, 361), UPSCALE(355, 402)));
 	addCollisionSprite(_ssSymbol2UpButton);
-	_ssSymbol2DownButton = insertSprite<SsScene1105Button>(this, 0x840228A0, NRect::make(306, 406, 352, 445));
+	_ssSymbol2DownButton = insertSprite<SsScene1105Button>(this, 0x840228A0, NRect::make(UPSCALE(306, 406), UPSCALE(352, 445)));
 	addCollisionSprite(_ssSymbol2DownButton);
-	_ssSymbol3UpButton = insertSprite<SsScene1105Button>(this, 0x20000120, NRect::make(476, 358, 509, 394));
+	_ssSymbol3UpButton = insertSprite<SsScene1105Button>(this, 0x20000120, NRect::make(UPSCALE(476, 358), UPSCALE(509, 394)));
 	addCollisionSprite(_ssSymbol3UpButton);
-	_ssSymbol3DownButton = insertSprite<SsScene1105Button>(this, 0x08043121, NRect::make(463, 401, 508, 438));
+	_ssSymbol3DownButton = insertSprite<SsScene1105Button>(this, 0x08043121, NRect::make(UPSCALE(463, 401), UPSCALE(508, 438)));
 	addCollisionSprite(_ssSymbol3DownButton);
-	_ssActionButton = insertSprite<SsScene1105Button>(this, 0x8248AD35, NRect::make(280, 170, 354, 245));
+	_ssActionButton = insertSprite<SsScene1105Button>(this, 0x8248AD35, NRect::make(UPSCALE(280, 170), UPSCALE(354, 245)));
 	addCollisionSprite(_ssActionButton);
 
 	_isPanelOpen = true;
 
 	_asTeddyBear->show();
 
-	insertPuzzleMouse(0x18666208, 20, 620);
+	insertPuzzleMouse(0x18666208, UPSCALE_X(20), UPSCALE_X(620));
 
 }
 
@@ -492,35 +492,35 @@ Scene1109::Scene1109(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene1109>(140, 436);
+		insertKlaymen<KmScene1109>(UPSCALE(140, 436));
 		setMessageList(0x004B6260);
 		sendMessage(this, 0x2000, 0);
 	} else if (which == 1) {
 		// Klaymen teleporting in
-		insertKlaymen<KmScene1109>(450, 436);
+		insertKlaymen<KmScene1109>(UPSCALE(450, 436));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B6268, false);
 		sendMessage(this, 0x2000, 1);
 	} else if (which == 2) {
 		// Klaymen teleporting out
-		insertKlaymen<KmScene1109>(450, 436);
+		insertKlaymen<KmScene1109>(UPSCALE(450, 436));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B6318, false);
 		sendMessage(this, 0x2000, 1);
 	} else if (which == 3) {
 		// Klaymen returning from teleporter console
-		insertKlaymen<KmScene1109>(450, 436);
+		insertKlaymen<KmScene1109>(UPSCALE(450, 436));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B6278, false);
 		sendMessage(this, 0x2000, 1);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene1109>(0, 436);
+		insertKlaymen<KmScene1109>(UPSCALE(0, 436));
 		setMessageList(0x004B6258);
 		sendMessage(this, 0x2000, 0);
 	}
 
-	_klaymen->setClipRect(0, 0, _sprite1->getDrawRect().x2(), 480);
+	_klaymen->setClipRect(UPSCALE(0, 0), _sprite1->getDrawRect().x2(), UPSCALE_Y(480));
 
 }
 

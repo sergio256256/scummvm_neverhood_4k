@@ -34,13 +34,23 @@
 #include "neverhood/console.h"
 #include "neverhood/messages.h"
 
-#define UPSCALE_X(x) /* (x) */ ((x)*9 / 2)
-#define UPSCALE_Y(y) /*(y)*/  ((y)*9 / 2)
+#define UPSCALE_X(x) ((x)*9 / 2)
+#define UPSCALE_Y(y)  ((y)*9 / 2)
 #define UPSCALE(x, y) UPSCALE_X(x), UPSCALE_Y(y)
 
-#define DOWNSCALE_X(x) /*(x)*/  ((x)*2 / 9) 
-#define DOWNSCALE_Y(y) /*(y)*/  ((y)*2 / 9) 
+#define DOWNSCALE_X(x) ((x)*2 / 9) 
+#define DOWNSCALE_Y(y) ((y)*2 / 9) 
 #define DOWNSCALE(x, y) DOWNSCALE_X(x), DOWNSCALE_Y(y)
+
+
+
+// #define UPSCALE_X(x) (x)
+// #define UPSCALE_Y(y) (y)
+// #define UPSCALE(x, y) UPSCALE_X(x), UPSCALE_Y(y)
+// 
+// #define DOWNSCALE_X(x) (x)
+// #define DOWNSCALE_Y(y) (y)
+// #define DOWNSCALE(x, y) DOWNSCALE_X(x), DOWNSCALE_Y(y)
 
 #define DBG_HEX 0xDB9
 

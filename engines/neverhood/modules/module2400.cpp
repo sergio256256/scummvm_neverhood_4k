@@ -157,8 +157,8 @@ void Module2400::updateScene() {
 }
 
 static const NPoint kScene2401Points[] = {
-	{384, 389}, {406, 389}, {429, 389},
-	{453, 389}, {477, 389}
+	{UPSCALE(384, 389)}, {UPSCALE(406, 389)}, {UPSCALE(429, 389)},
+	{UPSCALE(453, 389)}, {UPSCALE(477, 389)}
 };
 
 static const uint32 kScene2401FileHashes1[] = {
@@ -218,19 +218,19 @@ Scene2401::Scene2401(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2401>(200, 447);
+		insertKlaymen<KmScene2401>(UPSCALE(200, 447));
 		setMessageList(0x004B2F70);
 		_asDoor = insertSprite<AsScene2401Door>(false);
 	} else if (which == 1) {
 		// Klaymen entering from the back
-		insertKlaymen<KmScene2401>(280, 413);
+		insertKlaymen<KmScene2401>(UPSCALE(280, 413));
 		setMessageList(0x004B2F80);
 		_palette->addBasePalette(0xB103B604, 0, 65, 0);
 		_palette->addPalette(0xB103B604, 0, 65, 0);
 		_asDoor = insertSprite<AsScene2401Door>(true);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene2401>(-20, 447);
+		insertKlaymen<KmScene2401>(UPSCALE(-20, 447));
 		setMessageList(0x004B2F78);
 		_asDoor = insertSprite<AsScene2401Door>(false);
 	}
@@ -374,32 +374,32 @@ Scene2402::Scene2402(NeverhoodEngine *vm, Module *parentModule, int which)
 	setBackground(0x81660220);
 	setPalette(0x81660220);
 	insertScreenMouse(0x6022481E);
-	_asTape = insertSprite<AsScene1201Tape>(this, 9, 1100, 286, 409, 0x9148A011);
+	_asTape = insertSprite<AsScene1201Tape>(this, 9, 1100, UPSCALE(286, 409), 0x9148A011);
 	addCollisionSprite(_asTape);
 	_ssButton = insertSprite<SsCommonButtonSprite>(this, 0x15288120, 100, 0);
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2402>(198, 404);
+		insertKlaymen<KmScene2402>(UPSCALE(198, 404));
 		setMessageList(0x004AF7C8);
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmScene2402>(660, 404);
+		insertKlaymen<KmScene2402>(UPSCALE(660, 404));
 		setMessageList(0x004AF7D8);
 	} else if (which == 2) {
 		// Klaymen returning from looking through the window
-		insertKlaymen<KmScene2402>(409, 404);
+		insertKlaymen<KmScene2402>(UPSCALE(409, 404));
 		_klaymen->setDoDeltaX(getGlobalVar(V_KLAYMEN_IS_DELTA_X) ? 1 : 0);
 		setMessageList(0x004AF888);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene2402>(0, 404);
+		insertKlaymen<KmScene2402>(UPSCALE(0, 404));
 		setMessageList(0x004AF7D0);
 	}
 
 	tempSprite = insertStaticSprite(0x081A60A8, 1100);
 	_ssDoorFrame = (StaticSprite*)insertStaticSprite(0x406C0AE0, 1100);
-	_klaymen->setClipRect(_ssDoorFrame->getDrawRect().x, 0, 639, tempSprite->getDrawRect().y2());
+	_klaymen->setClipRect(_ssDoorFrame->getDrawRect().x, UPSCALE_Y(0), UPSCALE_X(639), tempSprite->getDrawRect().y2());
 	_asDoor = insertSprite<AsScene2402Door>(this, which == 0);
 	insertSprite<AsScene2402TV>(_klaymen);
 	insertStaticSprite(0x3A01A020, 200);
@@ -476,34 +476,34 @@ Scene2403::Scene2403(NeverhoodEngine *vm, Module *parentModule, int which)
 	setPalette(0x0C05060C);
 	_palette->addPalette(0x414364B0, 0, 65, 0);
 	insertScreenMouse(0x506080C8);
-	_asTape = insertSprite<AsScene1201Tape>(this, 2, 1100, 480, 454, 0x9148A011);
+	_asTape = insertSprite<AsScene1201Tape>(this, 2, 1100, UPSCALE(480, 454), 0x9148A011);
 	addCollisionSprite(_asTape);
 	_asLightCord = insertSprite<AsScene2803LightCord>(this, 0xA1095A10, 0x836D3813, 368, 200);
-	_asLightCord->setClipRect(0, 25, 640, 480);
+	_asLightCord->setClipRect(UPSCALE(0, 25), UPSCALE(640, 480));
 
 	if (which < 0) {
 		// Restoring game
 		_isClimbingLadder = false;
-		insertKlaymen<KmScene2403>(220, 449);
+		insertKlaymen<KmScene2403>(UPSCALE(220, 449));
 		setMessageList(0x004B5C98);
 		setRectList(0x004B5E18);
 	} else if (which == 1) {
 		// Klaymen returning from looking through the window
 		_isClimbingLadder = false;
-		insertKlaymen<KmScene2403>(433, 449);
+		insertKlaymen<KmScene2403>(UPSCALE(433, 449));
 		setMessageList(0x004B5D70);
 		setRectList(0x004B5E18);
 	} else if (which == 2) {
 		// Klaymen standing around after the critter video
 		_isClimbingLadder = false;
-		insertKlaymen<KmScene2403>(440, 449);
+		insertKlaymen<KmScene2403>(UPSCALE(440, 449));
 		_klaymen->setDoDeltaX(1);
 		setMessageList(0x004B5C98);
 		setRectList(0x004B5E18);
 	} else {
 		// Klaymen coming up from ladder
 		_isClimbingLadder = true;
-		insertKlaymen<KmScene2403>(122, 599);
+		insertKlaymen<KmScene2403>(UPSCALE(122, 599));
 		setMessageList(0x004B5CA0);
 		setRectList(0x004B5E28);
 	}
@@ -512,8 +512,8 @@ Scene2403::Scene2403(NeverhoodEngine *vm, Module *parentModule, int which)
 	tempSprite1 = insertStaticSprite(0x20C24220, 1100);
 	tempSprite2 = insertStaticSprite(0x03080900, 1300);
 	tempSprite3 = insertSprite<AsScene1002KlaymenLadderHands>(_klaymen);
-	tempSprite3->setClipRect(tempSprite1->getDrawRect().x, 0, 640, tempSprite2->getDrawRect().y2());
-	_klaymen->setClipRect(tempSprite1->getDrawRect().x, 0, 640, tempSprite2->getDrawRect().y2());
+	tempSprite3->setClipRect(tempSprite1->getDrawRect().x, UPSCALE_Y(0), UPSCALE_X(640), tempSprite2->getDrawRect().y2());
+	_klaymen->setClipRect(tempSprite1->getDrawRect().x, UPSCALE_Y(0), UPSCALE_X(640), tempSprite2->getDrawRect().y2());
 	loadSound(1, calcHash("fxFogHornSoft"));
 }
 
@@ -575,17 +575,17 @@ Scene2406::Scene2406(NeverhoodEngine *vm, Module *parentModule, int which)
 	insertScreenMouse(0xB03001A8);
 
 	if (getGlobalVar(V_KEY3_LOCATION) == 2) {
-		_asKey = insertSprite<AsCommonKey>(this, 2, 1100, 560, 409);
+		_asKey = insertSprite<AsCommonKey>(this, 2, 1100, UPSCALE(560, 409));
 		addCollisionSprite(_asKey);
 	}
 
-	_asTape = insertSprite<AsScene1201Tape>(this, 5, 1100, 456, 409, 0x9148A011);
+	_asTape = insertSprite<AsScene1201Tape>(this, 5, 1100, UPSCALE(456, 409), 0x9148A011);
 	addCollisionSprite(_asTape);
 	tempSprite2 = insertStaticSprite(0x19625293, 1100);
-	_clipRects[0].x1 = 0;
-	_clipRects[0].y1 = 0;
+	_clipRects[0].x1 = UPSCALE_X(0);
+	_clipRects[0].y1 = UPSCALE_Y(0);
 	_clipRects[0].x2 = tempSprite2->getDrawRect().x2();
-	_clipRects[0].y2 = 480;
+	_clipRects[0].y2 = UPSCALE_Y(480);
 
 	if (getGlobalVar(V_SPIKES_RETRACTED)) {
 		setBackground(0x1A0B0304);
@@ -600,37 +600,37 @@ Scene2406::Scene2406(NeverhoodEngine *vm, Module *parentModule, int which)
 	tempSprite2 = insertStaticSprite(0x22300924, 1300);
 	_clipRects[1].x1 = tempSprite1->getDrawRect().x;
 	_clipRects[1].y1 = tempSprite2->getDrawRect().y;
-	_clipRects[1].x2 = 640;
-	_clipRects[1].y2 = 480;
+	_clipRects[1].x2 = UPSCALE_X(640);
+	_clipRects[1].y2 = UPSCALE_Y(480);
 
 	if (which < 0) {
 		// Restoring game
 		_isClimbingLadder = false;
-		insertKlaymen<KmScene2406>(307, 404, _clipRects, 2);
+		insertKlaymen<KmScene2406>(UPSCALE(307, 404), _clipRects, 2);
 		setMessageList(0x004B76C8);
 		setRectList(0x004B78C8);
 	} else if (which == 1) {
 		// Klaymen coming down the ladder
 		_isClimbingLadder = true;
-		insertKlaymen<KmScene2406>(253, -16, _clipRects, 2);
+		insertKlaymen<KmScene2406>(UPSCALE(253, -16), _clipRects, 2);
 		setMessageList(0x004B76D8);
 		setRectList(0x004B78D8);
 	} else if (which == 2) {
 		// Klaymen returning from the diskplayer
 		_isClimbingLadder = false;
-		insertKlaymen<KmScene2406>(480, 404, _clipRects, 2);
+		insertKlaymen<KmScene2406>(UPSCALE(480, 404), _clipRects, 2);
 		setMessageList(0x004B77C0);
 		setRectList(0x004B78C8);
 	} else if (which == 3) {
 		// Klaymen returning from looking through the window
 		_isClimbingLadder = false;
-		insertKlaymen<KmScene2406>(387, 404, _clipRects, 2);
+		insertKlaymen<KmScene2406>(UPSCALE(387, 404), _clipRects, 2);
 		setMessageList(0x004B7810);
 		setRectList(0x004B78C8);
 	} else {
 		// Klaymen entering from the left
 		_isClimbingLadder = false;
-		insertKlaymen<KmScene2406>(0, 404, _clipRects, 2);
+		insertKlaymen<KmScene2406>(UPSCALE(0, 404), _clipRects, 2);
 		setMessageList(0x004B76D0);
 		setRectList(0x004B78C8);
 	}

@@ -29,16 +29,16 @@ BaseSurface::BaseSurface(NeverhoodEngine *vm, int priority, int16 width, int16 h
 	: _vm(vm), _priority(priority), _visible(true), _transparent(true),
 	_clipRects(nullptr), _clipRectsCount(0), _version(0), _name(name) {
 
-	_drawRect.x = 0;
-	_drawRect.y = 0;
+	_drawRect.x = UPSCALE_X(0);
+	_drawRect.y = UPSCALE_Y(0);
 	_drawRect.width = width;
 	_drawRect.height = height;
-	_sysRect.x = 0;
-	_sysRect.y = 0;
+	_sysRect.x = UPSCALE_X(0);
+	_sysRect.y = UPSCALE_Y(0);
 	_sysRect.width = (width + 3) & 0xFFFC; // align by 4 bytes
 	_sysRect.height = height;
-	_clipRect.x1 = 0;
-	_clipRect.y1 = 0;
+	_clipRect.x1 = UPSCALE_X(0);
+	_clipRect.y1 = UPSCALE_Y(0);
 	_clipRect.x2 = UPSCALE_X(640);
 	_clipRect.y2 = UPSCALE_Y(480);
 	_surface = new Graphics::Surface();

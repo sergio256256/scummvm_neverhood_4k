@@ -46,11 +46,11 @@ SsScene1201Tnt::SsScene1201Tnt(NeverhoodEngine *vm, uint32 elemIndex, uint32 poi
 
 	int16 x = kScene1201PointArray[pointIndex].x;
 	int16 y = kScene1201PointArray[pointIndex].y;
-	if (x < 300)
+	if (x < UPSCALE_X(300))
 		loadSprite(kScene1201TntFileHashList1[elemIndex], kSLFDefDrawOffset | kSLFDefPosition, 50);
 	else
-		loadSprite(kScene1201TntFileHashList2[elemIndex], kSLFCenteredDrawOffset | kSLFSetPosition, 50, x, y - 20);
-	setClipRect(0, 0, 640, clipY2);
+		loadSprite(kScene1201TntFileHashList2[elemIndex], kSLFCenteredDrawOffset | kSLFSetPosition, 50, x, y - UPSCALE_Y(20));
+	setClipRect(UPSCALE(0, 0), UPSCALE_X(640), clipY2);
 }
 
 AsScene1201Tape::AsScene1201Tape(NeverhoodEngine *vm, Scene *parentScene, uint32 nameHash, int surfacePriority, int16 x, int16 y, uint32 fileHash)
@@ -87,9 +87,9 @@ AsScene1201TntManRope::AsScene1201TntManRope(NeverhoodEngine *vm, bool isDummyHa
 
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1201TntManRope::handleMessage);
-	createSurface(10, 34, 149);
-	_x = 202;
-	_y = -32;
+	createSurface(10, UPSCALE(34, 149));
+	_x = UPSCALE_X(202);
+	_y = UPSCALE_Y(-32);
 	if (isDummyHanging) {
 		startAnimation(0x928F0C10, 15, -1);
 		_newStickFrameIndex = STICK_LAST_FRAME;
@@ -120,8 +120,8 @@ AsScene1201RightDoor::AsScene1201RightDoor(NeverhoodEngine *vm, Sprite *klaymen,
 	: AnimatedSprite(vm, 1100), _klaymen(klaymen), _countdown(0) {
 
 	createSurface1(0xD088AC30, 100);
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	SetUpdateHandler(&AsScene1201RightDoor::update);
 	SetMessageHandler(&AsScene1201RightDoor::handleMessage);
 	_newStickFrameIndex = STICK_LAST_FRAME;
@@ -179,7 +179,7 @@ void AsScene1201RightDoor::stCloseDoorDone() {
 AsScene1201KlaymenHead::AsScene1201KlaymenHead(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1200) {
 
-	createSurface(1200, 69, 98);
+	createSurface(1200, UPSCALE(69, 98));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1201KlaymenHead::handleMessage);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
@@ -190,8 +190,8 @@ uint32 AsScene1201KlaymenHead::handleMessage(int messageNum, const MessageParam 
 	uint32 messageResult = Sprite::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_KLAYMEN_STOP_CLIMBING:
-		_x = 436;
-		_y = 339;
+		_x = UPSCALE_X(436);
+		_y = UPSCALE_Y(339);
 		startAnimation(0xA060C599, 0, -1);
 		setVisible(true);
 		break;
@@ -212,13 +212,13 @@ AsScene1201TntMan::AsScene1201TntMan(NeverhoodEngine *vm, Scene *parentScene, Sp
 
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1201TntMan::handleMessage);
-	createSurface(990, 106, 181);
-	_x = 201;
+	createSurface(990, UPSCALE(106, 181));
+	_x = UPSCALE_X(201);
 	if (isComingDown) {
-		_y = 297;
+		_y = UPSCALE_Y(297);
 		stComingDown();
 	} else {
-		_y = 334;
+		_y = UPSCALE_Y(334);
 		stStanding();
 	}
 }
@@ -266,7 +266,7 @@ uint32 AsScene1201TntMan::hmComingDown(int messageNum, const MessageParam &param
 }
 
 void AsScene1201TntMan::suMoving() {
-	_x = _sprite->getX() + 100;
+	_x = _sprite->getX() + UPSCALE_X(100);
 }
 
 void AsScene1201TntMan::stStanding() {
@@ -318,35 +318,35 @@ void AsScene1201TntManFlame::update() {
 }
 
 void AsScene1201TntManFlame::suUpdate() {
-	_x = _asTntMan->getX() - 18;
-	_y = _asTntMan->getY() - 158;
+	_x = _asTntMan->getX() - UPSCALE_X(18);
+	_y = _asTntMan->getY() - UPSCALE_X(158);
 }
 
 AsScene1201Match::AsScene1201Match(NeverhoodEngine *vm, Scene *parentScene)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _countdown(0) {
 
-	createSurface(1100, 57, 60);
+	createSurface(1100, UPSCALE(57, 60));
 	SetUpdateHandler(&AsScene1201Match::update);
 	SetMessageHandler(&AsScene1201Match::hmOnDoorFrameAboutToMove);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
 	switch (getGlobalVar(V_MATCH_STATUS)) {
 	case 0:
-		_x = 521;
-		_y = 112;
+		_x = UPSCALE_X(521);
+		_y = UPSCALE_Y(112);
 		_status = 0;
 		stIdleOnDoorFrame();
 		break;
 	case 1:
-		_x = 521;
-		_y = 112;
+		_x = UPSCALE_X(521);
+		_y = UPSCALE_Y(112);
 		_status = 2;
 		stOnDoorFrameAboutToMove();
 		loadSound(0, 0xD00230CD);
 		break;
 	case 2:
 		setDoDeltaX(1);
-		_x = 403;
-		_y = 337;
+		_x = UPSCALE_X(403);
+		_y = UPSCALE_Y(337);
 		_status = 0;
 		stIdleOnFloor();
 		break;
@@ -417,8 +417,8 @@ void AsScene1201Match::stOnDoorFrameMoving() {
 
 void AsScene1201Match::stFallingFromDoorFrame() {
 	setGlobalVar(V_MATCH_STATUS, 2);
-	_x -= 199;
-	_y += 119;
+	_x -= UPSCALE_X(199);
+	_y += UPSCALE_Y(119);
 	startAnimation(0x018D0240, 0, -1);
 	SetMessageHandler(&AsScene1201Match::hmOnDoorFrameMoving);
 	NextState(&AsScene1201Match::stIdleOnFloor);
@@ -443,8 +443,8 @@ void AsScene1201Match::stIdleOnDoorFrame() {
 
 void AsScene1201Match::stIdleOnFloor() {
 	setDoDeltaX(1);
-	_x = 403;
-	_y = 337;
+	_x = UPSCALE_X(403);
+	_y = UPSCALE_Y(337);
 	startAnimation(0x00842374, 0, -1);
 	SetMessageHandler(&AsScene1201Match::hmIdle);
 	_newStickFrameIndex = 0;
@@ -455,17 +455,17 @@ AsScene1201Creature::AsScene1201Creature(NeverhoodEngine *vm, Scene *parentScene
 
 	// NOTE: _countdown2 and _countdown3 were unused/without effect and thus removed
 
-	createSurface(1100, 203, 199);
+	createSurface(1100, UPSCALE(203, 199));
 	SetUpdateHandler(&AsScene1201Creature::update);
 	SetMessageHandler(&AsScene1201Creature::hmWaiting);
-	_x = 540;
-	_y = 320;
+	_x = UPSCALE_X(540);
+	_y = UPSCALE_Y(320);
 	stWaiting();
 }
 
 void AsScene1201Creature::update() {
 	bool oldKlaymenTooClose = _klaymenTooClose;
-	_klaymenTooClose = _klaymen->getX() >= 385;
+	_klaymenTooClose = _klaymen->getX() >= UPSCALE_X(385);
 	if (_klaymenTooClose != oldKlaymenTooClose)
 		stWaiting();
 	if (_countdown != 0 && (--_countdown == 0))
@@ -563,9 +563,9 @@ void AsScene1201Creature::stPincerSnapKlaymen() {
 AsScene1201LeftDoor::AsScene1201LeftDoor(NeverhoodEngine *vm, Sprite *klaymen)
 	: AnimatedSprite(vm, 1100), _klaymen(klaymen) {
 
-	_x = 320;
-	_y = 240;
-	createSurface(800, 55, 199);
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
+	createSurface(800, UPSCALE(55, 199));
 	if (_klaymen->getX() < 100) {
 		startAnimation(0x508A111B, 0, -1);
 		_newStickFrameIndex = STICK_LAST_FRAME;
@@ -597,12 +597,12 @@ void AsScene1201LeftDoor::stCloseDoor() {
 }
 
 static const NPoint kScene1202Points[] = {
-	{203, 140}, {316, 212}, {277, 264},
-	{176, 196}, {275, 159}, {366, 212},
-	{230, 195}, {412, 212}, {368, 263},
-	{204, 192}, {365, 164}, {316, 262},
-	{191, 255}, {280, 213}, {406, 266},
-	{214, 254}, {316, 158}, {402, 161}
+	{UPSCALE(203, 140)}, {UPSCALE(316, 212)}, {UPSCALE(277, 264)},
+	{UPSCALE(176, 196)}, {UPSCALE(275, 159)}, {UPSCALE(366, 212)},
+	{UPSCALE(230, 195)}, {UPSCALE(412, 212)}, {UPSCALE(368, 263)},
+	{UPSCALE(204, 192)}, {UPSCALE(365, 164)}, {UPSCALE(316, 262)},
+	{UPSCALE(191, 255)}, {UPSCALE(280, 213)}, {UPSCALE(406, 266)},
+	{UPSCALE(214, 254)}, {UPSCALE(316, 158)}, {UPSCALE(402, 161)}
 };
 
 static const uint32 kScene1202FileHashes[] = {
@@ -622,7 +622,7 @@ AsScene1202TntItem::AsScene1202TntItem(NeverhoodEngine *vm, Scene *parentScene, 
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1202TntItem::hmShowIdle);
 	positionIndex = getSubVar(VA_TNT_POSITIONS, _itemIndex);
-	createSurface(900, 37, 67);
+	createSurface(900, UPSCALE(37, 67));
 	_x = kScene1202Points[positionIndex].x;
 	_y = kScene1202Points[positionIndex].y;
 	stShowIdle();
@@ -744,7 +744,7 @@ uint32 KmScene1201::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x483F:

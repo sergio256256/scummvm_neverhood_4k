@@ -157,8 +157,8 @@ AsDiskplayerSceneKey::AsDiskplayerSceneKey(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1100) {
 
 	createSurface1(0x100B90B4, 1200);
-	_x = 211;
-	_y = 195;
+	_x = UPSCALE_X(211);
+	_y = UPSCALE_Y(195);
 	startAnimation(0x100B90B4, 0, -1);
 	_newStickFrameIndex = 0;
 	_needRefresh = true;
@@ -355,7 +355,7 @@ DiskplayerScene::DiskplayerScene(NeverhoodEngine *vm, Module *parentModule, int 
 	_finalDiskSlot = new DiskplayerSlot(_vm, this, 20, false);
 	addEntity(_finalDiskSlot);
 
-	insertPuzzleMouse(0x000408A8, 20, 620);
+	insertPuzzleMouse(0x000408A8, UPSCALE_X(20), UPSCALE_X(620));
 	showMouse(false);
 
 	_diskSmackerPlayer = addSmackerPlayer(new SmackerPlayer(_vm, this, 0x08288103, false, true));
@@ -447,14 +447,14 @@ uint32 DiskplayerScene::handleMessage(int messageNum, const MessageParam &param,
 	if (!_inputDisabled) {
 		switch (messageNum) {
 		case NM_MOUSE_CLICK:
-			if (param.asPoint().x <= 20 || param.asPoint().x >= 620) {
+			if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620)) {
 				sendMessage(_parentModule, 0x1009, 0);
 			} else if (!_dropKey &&
-				param.asPoint().x > 38 && param.asPoint().x < 598 &&
-				param.asPoint().y > 400 && param.asPoint().y < 460) {
+				param.asPoint().x > UPSCALE_X(38) && param.asPoint().x < UPSCALE_X(598) &&
+				param.asPoint().y > UPSCALE_Y(400) && param.asPoint().y < UPSCALE_Y(460)) {
 
 				_diskSlots[_diskIndex]->stop();
-				_diskIndex = (param.asPoint().x - 38) / 28;
+				_diskIndex = (DOWNSCALE_X(param.asPoint().x) - 38) / 28;
 				_diskSlots[_diskIndex]->activate();
 				if (_updateStatus == kUSPlaying) {
 					if (_diskAvailable[_diskIndex])

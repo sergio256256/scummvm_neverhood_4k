@@ -203,7 +203,7 @@ void Screen::drawSurface2(const Graphics::Surface *surface, NDrawRect &drawRect,
 		ddRect.x1 = clipRect.x1 - drawRect.x;
 	} else {
 		destX = drawRect.x;
-		ddRect.x1 = 0;
+		ddRect.x1 = UPSCALE_X(0);
 	}
 
 	if (drawRect.y + drawRect.height >= clipRect.y2)
@@ -216,7 +216,7 @@ void Screen::drawSurface2(const Graphics::Surface *surface, NDrawRect &drawRect,
 		ddRect.y1 = clipRect.y1 - drawRect.y;
 	} else {
 		destY = drawRect.y;
-		ddRect.y1 = 0;
+		ddRect.y1 = UPSCALE_Y(0);
 	}
 
 	queueBlit(surface, destX, destY, ddRect, transparent, version, shadowSurface);
@@ -424,8 +424,6 @@ void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &cl
 		while (height--) {
 			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel)
 				blendColor(dest + xc, shadowSource + xc, bytes_per_pixel);
-				//if (source[getAlphaOffset(xc)] > 127)
-				//	memcpy(dest + xc, shadowSource + xc, bytes_per_pixel);
 			source += surface->pitch;
 			shadowSource += shadowSurface->pitch;
 			dest += _backScreen->pitch;
@@ -440,8 +438,6 @@ void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &cl
 		while (height--) {
 			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel)
 				blendColor(dest + xc, source + xc, bytes_per_pixel);
-				//if (source[getAlphaOffset(xc)] > 127)
-				//	memcpy(dest + xc, source + xc, bytes_per_pixel);
 			source += surface->pitch;
 			dest += _backScreen->pitch;
 		}

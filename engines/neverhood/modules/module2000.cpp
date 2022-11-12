@@ -113,36 +113,36 @@ Scene2001::Scene2001(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2001>(300, 345);
+		insertKlaymen<KmScene2001>(UPSCALE(300, 345));
 		setMessageList(0x004B3538);
 		sendMessage(this, 0x2000, 0);
 	} else if (which == 1) {
 		// Klaymen teleporting in
-		insertKlaymen<KmScene2001>(116, 345);
+		insertKlaymen<KmScene2001>(UPSCALE(116, 345));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B3540, false);
 		sendMessage(this, 0x2000, 1);
 	} else if (which == 2) {
 		// Klaymen teleporting out
-		insertKlaymen<KmScene2001>(116, 345);
+		insertKlaymen<KmScene2001>(UPSCALE(116, 345));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B35F0, false);
 		sendMessage(this, 0x2000, 1);
 	} else if (which == 3) {
 		// Klaymen returning from teleporter console
-		insertKlaymen<KmScene2001>(116, 345);
+		insertKlaymen<KmScene2001>(UPSCALE(116, 345));
 		sendMessage(_klaymen, 0x2000, 1);
 		setMessageList(0x004B3550, false);
 		sendMessage(this, 0x2000, 1);
 	} else {
 		// Klaymen standing around
-		insertKlaymen<KmScene2001>(390, 345);
+		insertKlaymen<KmScene2001>(UPSCALE(390, 345));
 		setMessageList(0x004B3530);
 		sendMessage(this, 0x2000, 0);
 		_klaymen->setDoDeltaX(1);
 	}
 
-	_klaymen->setClipRect(tempSprite->getDrawRect().x, 0, 640, 480);
+	_klaymen->setClipRect(tempSprite->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 
 }
 

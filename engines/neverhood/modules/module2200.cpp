@@ -481,7 +481,7 @@ Scene2201::Scene2201(NeverhoodEngine *vm, Module *parentModule, int which)
 	setPalette(0x40008208);
 	insertScreenMouse(0x0820C408);
 
-	_asTape = insertSprite<AsScene1201Tape>(this, 7, 1100, 459, 432, 0x9148A011);
+	_asTape = insertSprite<AsScene1201Tape>(this, 7, 1100, UPSCALE(459, 432), 0x9148A011);
 	addCollisionSprite(_asTape);
 	_ssDoorButton = insertSprite<SsCommonPressButton>(this, 0xE4A43E29, 0xE4A43E29, 100, 0);
 
@@ -489,10 +489,10 @@ Scene2201::Scene2201(NeverhoodEngine *vm, Module *parentModule, int which)
 		if ((int16)getSubVar(VA_CUBE_POSITIONS, cubeIndex) >= 0)
 			insertSprite<SsScene2201PuzzleCube>(cubeIndex, (int16)getSubVar(VA_CUBE_POSITIONS, cubeIndex));
 
-	_clipRects[0].y1 = 0;
-	_clipRects[0].x2 = 640;
-	_clipRects[1].x2 = 640;
-	_clipRects[1].y2 = 480;
+	_clipRects[0].y1 = UPSCALE_Y(0);
+	_clipRects[0].x2 = UPSCALE_X(640);
+	_clipRects[1].x2 = UPSCALE_X(640);
+	_clipRects[1].y2 = UPSCALE_Y(480);
 
 	if (!getGlobalVar(V_TILE_PUZZLE_SOLVED))
 		insertStaticSprite(0x00026027, 900);
@@ -509,21 +509,21 @@ Scene2201::Scene2201(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2201>(300, 427, _clipRects, 2);
+		insertKlaymen<KmScene2201>(UPSCALE(300, 427), _clipRects, 2);
 		setMessageList(0x004B8118);
 		_asDoor = insertSprite<AsScene2201Door>(_klaymen, _ssDoorLight, false);
 	} else if (which == 1) {
 		// Klaymen entering from the back
-		insertKlaymen<KmScene2201>(412, 393, _clipRects, 2);
+		insertKlaymen<KmScene2201>(UPSCALE(412, 393), _clipRects, 2);
 		setMessageList(0x004B8130);
 		_asDoor = insertSprite<AsScene2201Door>(_klaymen, _ssDoorLight, false);
 	} else if (which == 2) {
 		// Klaymen returning from the puzzle
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X)) {
-			insertKlaymen<KmScene2201>(379, 427, _clipRects, 2);
+			insertKlaymen<KmScene2201>(UPSCALE(379, 427), _clipRects, 2);
 			_klaymen->setDoDeltaX(1);
 		} else
-			insertKlaymen<KmScene2201>(261, 427, _clipRects, 2);
+			insertKlaymen<KmScene2201>(UPSCALE(261, 427), _clipRects, 2);
 		setMessageList(0x004B8178);
 		_asDoor = insertSprite<AsScene2201Door>(_klaymen, _ssDoorLight, false);
 	} else {
@@ -606,7 +606,7 @@ Scene2202::Scene2202(NeverhoodEngine *vm, Module *parentModule, int which)
 	setBackground(0x08100A0C);
 	setPalette(0x08100A0C);
 	addEntity(_palette);
-	insertPuzzleMouse(0x00A08089, 20, 620);
+	insertPuzzleMouse(0x00A08089, UPSCALE_X(20), UPSCALE_X(620));
 
 	for (uint32 cubePosition = 0; cubePosition < 9; cubePosition++) {
 		int16 cubeSymbol = (int16)getSubVar(VA_CUBE_POSITIONS, cubePosition);
@@ -670,7 +670,7 @@ uint32 Scene2202::handleMessage(int messageNum, const MessageParam &param, Entit
 	Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 20 || param.asPoint().x >= 620)
+		if (param.asPoint().x <= UPSCALE_X(20) || param.asPoint().x >= UPSCALE_X(620))
 			leaveScene(0);
 		break;
 	case NM_ANIMATION_UPDATE:
@@ -732,18 +732,18 @@ Scene2203::Scene2203(NeverhoodEngine *vm, Module *parentModule, int which)
 	setRectList(0x004B8420);
 
 	if (getGlobalVar(V_KEY3_LOCATION) == 1) {
-		_asKey = insertSprite<AsCommonKey>(this, 2, 1100, 282, 432);
+		_asKey = insertSprite<AsCommonKey>(this, 2, 1100, UPSCALE(282, 432));
 		addCollisionSprite(_asKey);
 	}
 
-	_asTape = insertSprite<AsScene1201Tape>(this, 1, 1100, 435, 432, 0x9148A011);
+	_asTape = insertSprite<AsScene1201Tape>(this, 1, 1100, UPSCALE(435, 432), 0x9148A011);
 	addCollisionSprite(_asTape);
 	_asLeftDoor = insertSprite<AsScene2203Door>(this, 0);
 	_asRightDoor = insertSprite<AsScene2203Door>(this, 1);
 	_ssSmallLeftDoor = insertStaticSprite(0x542CC072, 1100);
 	_ssSmallRightDoor = insertStaticSprite(0x0A2C0432, 1100);
-	_leftDoorClipRect.set(_ssSmallLeftDoor->getDrawRect().x, 0, 640, 480);
-	_rightDoorClipRect.set(0, 0, _ssSmallRightDoor->getDrawRect().x2(), 480);
+	_leftDoorClipRect.set(_ssSmallLeftDoor->getDrawRect().x, 0, UPSCALE(640, 480));
+	_rightDoorClipRect.set(0, 0, _ssSmallRightDoor->getDrawRect().x2(), UPSCALE_Y(480));
 	sendEntityMessage(_asLeftDoor, 0x2000, _asRightDoor);
 	sendEntityMessage(_asRightDoor, 0x2000, _asLeftDoor);
 	addCollisionSprite(_asLeftDoor);
@@ -751,23 +751,23 @@ Scene2203::Scene2203(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2203>(200, 427);
+		insertKlaymen<KmScene2203>(UPSCALE(200, 427));
 		setMessageList(0x004B8340);
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmScene2203>(640, 427);
+		insertKlaymen<KmScene2203>(UPSCALE(640, 427));
 		setMessageList(0x004B8350);
 	} else if (which == 2) {
 		// Klaymen returning from the displayer
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X)) {
-			insertKlaymen<KmScene2203>(362, 427);
+			insertKlaymen<KmScene2203>(UPSCALE(362, 427));
 			_klaymen->setDoDeltaX(1);
 		} else
-			insertKlaymen<KmScene2203>(202, 427);
+			insertKlaymen<KmScene2203>(UPSCALE(202, 427));
 		setMessageList(0x004B8358);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene2203>(0, 427);
+		insertKlaymen<KmScene2203>(UPSCALE(0, 427));
 		setMessageList(0x004B8348);
 	}
 
@@ -858,26 +858,26 @@ Scene2205::Scene2205(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2205>(320, 417);
+		insertKlaymen<KmScene2205>(UPSCALE(320, 417));
 		setMessageList(0x004B0658);
 		if (!getGlobalVar(V_LIGHTS_ON))
 			_palette->addPalette(0x68033B1C, 0, 65, 0);
 		_isKlaymenInLight = false;
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmScene2205>(640, 417);
+		insertKlaymen<KmScene2205>(UPSCALE(640, 417));
 		setMessageList(0x004B0648);
 		if (!getGlobalVar(V_LIGHTS_ON))
 			_palette->addPalette(0x68033B1C, 0, 65, 0);
 		_isKlaymenInLight = false;
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene2205>(0, 417);
+		insertKlaymen<KmScene2205>(UPSCALE(0, 417));
 		setMessageList(0x004B0640);
 		_isKlaymenInLight = true;
 	}
 
-	_klaymen->setClipRect(_ssDoorFrame->getDrawRect().x, 0, 640, 480);
+	_klaymen->setClipRect(_ssDoorFrame->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 	_klaymen->setSoundFlag(true);
 
 	loadDataResource(0x00144822);
@@ -900,18 +900,18 @@ void Scene2205::update() {
 		sendMessage(_ssDoorFrame, 0x2000, 0);
 		changeMouseCursor(0xA0289D08);
 		_isKlaymenInLight = true;
-		if (_klaymen->getX() > 85) {
+		if (_klaymen->getX() > UPSCALE_X(85)) {
 			_palette->addPalette(0x68033B1C, 0, 65, 0);
 			_isKlaymenInLight = false;
 		}
 		_isLightOn = false;
 	}
 	if (!getGlobalVar(V_LIGHTS_ON)) {
-		if (_isKlaymenInLight && _klaymen->getX() > 85) {
+		if (_isKlaymenInLight && _klaymen->getX() > UPSCALE_X(85)) {
 			_palette->addBasePalette(0x68033B1C, 0, 65, 0);
 			_palette->startFadeToPalette(12);
 			_isKlaymenInLight = false;
-		} else if (!_isKlaymenInLight && _klaymen->getX() <= 85) {
+		} else if (!_isKlaymenInLight && _klaymen->getX() <= UPSCALE_X(85)) {
 			_palette->addBasePalette(0xD00A028D, 0, 65, 0);
 			_palette->startFadeToPalette(12);
 			_isKlaymenInLight = true;
@@ -940,7 +940,7 @@ uint32 Scene2205::handleMessage(int messageNum, const MessageParam &param, Entit
 }
 
 static const int16 kScene2206XPositions[] = {
-	384, 480, 572
+	UPSCALE_X(384), UPSCALE_X(480), UPSCALE_X(572)
 };
 
 Scene2206::Scene2206(NeverhoodEngine *vm, Module *parentModule, int which)
@@ -957,7 +957,7 @@ Scene2206::Scene2206(NeverhoodEngine *vm, Module *parentModule, int which)
 		_sprite2 = insertStaticSprite(0x3406A333, 300);
 		_sprite3 = insertStaticSprite(0x24A223A2, 100);
 		_asDoorSpikes = insertSprite<AsScene2206DoorSpikes>(0x26133023);
-		_asDoorSpikes->setClipRect(_sprite2->getDrawRect().x, 0, 640, 480);
+		_asDoorSpikes->setClipRect(_sprite2->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 		setRectList(0x004B8AF8);
 		_ssButton = insertSprite<SsCommonButtonSprite>(this, 0x0E038022, 100, 0);
 		insertScreenMouse(0x83212411);
@@ -969,7 +969,7 @@ Scene2206::Scene2206(NeverhoodEngine *vm, Module *parentModule, int which)
 		_sprite2 = insertStaticSprite(0x020462E0, 300);
 		_sprite3 = insertStaticSprite(0x900626A2, 100);
 		_asDoorSpikes = insertSprite<AsScene2206DoorSpikes>(0x544822A8);
-		_asDoorSpikes->setClipRect(_sprite2->getDrawRect().x, 0, 640, 480);
+		_asDoorSpikes->setClipRect(_sprite2->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 		setRectList(0x004B8B58);
 		_ssButton = insertSprite<SsCommonButtonSprite>(this, 0x16882608, 100, 0);
 		insertScreenMouse(0x02A41E09);
@@ -977,7 +977,7 @@ Scene2206::Scene2206(NeverhoodEngine *vm, Module *parentModule, int which)
 		_asPlatform = insertSprite<AsScene2206Platform>(0x317831A0);
 	}
 
-	_asPlatform->setClipRect(_sprite2->getDrawRect().x, 0, _sprite3->getDrawRect().x2(), _sprite1->getDrawRect().y2());
+	_asPlatform->setClipRect(_sprite2->getDrawRect().x, UPSCALE_Y(0), _sprite3->getDrawRect().x2(), _sprite1->getDrawRect().y2());
 	setBackground(fileHash);
 	setPalette(fileHash);
 	addEntity(_palette);
@@ -988,28 +988,28 @@ Scene2206::Scene2206(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2206>(200, 430);
+		insertKlaymen<KmScene2206>(UPSCALE(200, 430));
 		setMessageList(0x004B88A8);
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmScene2206>(640, 430);
+		insertKlaymen<KmScene2206>(UPSCALE(640, 430));
 		setMessageList(0x004B88B8);
 	} else if (which == 2) {
 		// Klaymen entering from the back
-		insertKlaymen<KmScene2206>(205, 396);
+		insertKlaymen<KmScene2206>(UPSCALE(205, 396));
 		setMessageList(0x004B88C8);
 		_palette->addPalette(getGlobalVar(V_LIGHTS_ON) ? 0xB103B604 : 0x0263D144, 0, 65, 0);
 		klaymenBehindSpikes();
 		playSound(0, 0x53B8284A);
 	} else if (which == 3) {
 		// Klaymen entering from reading a text column
-		insertKlaymen<KmScene2206>(kScene2206XPositions[getGlobalVar(V_CLICKED_COLUMN_INDEX)], 430);
+		insertKlaymen<KmScene2206>(UPSCALE(kScene2206XPositions[getGlobalVar(V_CLICKED_COLUMN_INDEX)], 430));
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X))
 			_klaymen->setDoDeltaX(1);
 		setMessageList(0x004B8A70);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene2206>(0, 430);
+		insertKlaymen<KmScene2206>(UPSCALE(0, 430));
 		setMessageList(0x004B88B0);
 	}
 
@@ -1074,7 +1074,7 @@ void Scene2206::klaymenInFrontSpikes() {
 	setSurfacePriority(_sprite2->getSurface(), 300);
 	setSurfacePriority(_sprite3->getSurface(), 100);
 	setSurfacePriority(_asDoorSpikes->getSurface(), 200);
-	_klaymen->setClipRect(0, 0, 640, 480);
+	_klaymen->setClipRect(UPSCALE(0, 0), UPSCALE(640, 480));
 }
 
 void Scene2206::klaymenBehindSpikes() {
@@ -1086,7 +1086,7 @@ void Scene2206::klaymenBehindSpikes() {
 	setSurfacePriority(_sprite2->getSurface(), 1300);
 	setSurfacePriority(_sprite3->getSurface(), 1100);
 	setSurfacePriority(_asDoorSpikes->getSurface(), 1200);
-	_klaymen->setClipRect(_sprite2->getDrawRect().x, 0, _sprite3->getDrawRect().x2(), _sprite1->getDrawRect().y2());
+	_klaymen->setClipRect(_sprite2->getDrawRect().x, UPSCALE_Y(0), _sprite3->getDrawRect().x2(), _sprite1->getDrawRect().y2());
 }
 
 static const uint32 kScene2206MessageIds1[] = {
@@ -1098,13 +1098,13 @@ static const uint32 kScene2206MessageIds2[] = {
 };
 
 void Scene2206::readClickedColumn() {
-	setGlobalVar(V_CLICKED_COLUMN_INDEX, (_mouseClickPos.x - 354) / 96);
+	setGlobalVar(V_CLICKED_COLUMN_INDEX, (DOWNSCALE_X(_mouseClickPos.x) - 354) / 96);
 	if (getGlobalVar(V_CLICKED_COLUMN_INDEX) > 2)
 		setGlobalVar(V_CLICKED_COLUMN_INDEX, 2);
-	setGlobalVar(V_CLICKED_COLUMN_ROW, (_mouseClickPos.y - 183) / 7);
+	setGlobalVar(V_CLICKED_COLUMN_ROW, (DOWNSCALE_Y(_mouseClickPos.y) - 183) / 7);
 	setGlobalVar(V_COLUMN_TEXT_NAME, calcHash("stLineagex"));
 	setGlobalVar(V_COLUMN_BACK_NAME, 0);
-	if (ABS(kScene2206XPositions[getGlobalVar(V_CLICKED_COLUMN_INDEX)] - _klaymen->getX()) >= 144)
+	if (ABS(kScene2206XPositions[getGlobalVar(V_CLICKED_COLUMN_INDEX)] - _klaymen->getX()) >= UPSCALE_X(144))
 		setMessageList2(kScene2206MessageIds1[getGlobalVar(V_CLICKED_COLUMN_INDEX)]);
 	else
 		setMessageList2(kScene2206MessageIds2[getGlobalVar(V_CLICKED_COLUMN_INDEX)]);
@@ -1128,7 +1128,7 @@ Scene2207::Scene2207(NeverhoodEngine *vm, Module *parentModule)
 	SetMessageHandler(&Scene2207::handleMessage);
 	SetUpdateHandler(&Scene2207::update);
 
-	insertKlaymen<KmScene2207>(0, 0);
+	insertKlaymen<KmScene2207>(UPSCALE(0, 0));
 	_klaymen->setRepl(64, 0);
 	setMessageList(0x004B38E8);
 	_asElevator = insertSprite<AsScene2207Elevator>(this);
@@ -1140,18 +1140,18 @@ Scene2207::Scene2207(NeverhoodEngine *vm, Module *parentModule)
 		_ssMaskPart1 = insertStaticSprite(0xE20A28A0, 1200);
 		_ssMaskPart2 = insertStaticSprite(0x688F62A5, 1100);
 		_ssMaskPart3 = insertStaticSprite(0x0043B038, 1100);
-		_asTape = insertSprite<AsScene1201Tape>(this, 4, 1100, 277, 428, 0x9148A011);
+		_asTape = insertSprite<AsScene1201Tape>(this, 4, 1100, UPSCALE(277, 428), 0x9148A011);
 		addCollisionSprite(_asTape);
-		_asLever = insertSprite<AsScene2207Lever>(this, 527, 333, 0);
+		_asLever = insertSprite<AsScene2207Lever>(this, UPSCALE(527, 333), 0);
 		addCollisionSprite(_asLever);
 		_asWallRobotAnimation = insertSprite<AsScene2207WallRobotAnimation>(this);
 		_asWallCannonAnimation = insertSprite<AsScene2207WallCannonAnimation>();
 		_asWallRobotAnimation->setVisible(false);
 		_asWallCannonAnimation->setVisible(false);
 		_ssButton = insertSprite<SsCommonButtonSprite>(this, 0x2C4061C4, 100, 0);
-		_asLever->setClipRect(0, 0, _ssMaskPart3->getDrawRect().x2(), 480);
-		_klaymen->setClipRect(0, _ssMaskPart1->getDrawRect().y, 640, _ssMaskPart2->getDrawRect().y2());
-		_asElevator->setClipRect(0, _ssMaskPart1->getDrawRect().y, 640, _ssMaskPart2->getDrawRect().y2());
+		_asLever->setClipRect(UPSCALE(0, 0), _ssMaskPart3->getDrawRect().x2(), UPSCALE_Y(480));
+		_klaymen->setClipRect(UPSCALE_X(0), _ssMaskPart1->getDrawRect().y, UPSCALE_X(640), _ssMaskPart2->getDrawRect().y2());
+		_asElevator->setClipRect(UPSCALE_X(0), _ssMaskPart1->getDrawRect().y, UPSCALE_X(640), _ssMaskPart2->getDrawRect().y2());
 	} else {
 		setGlobalVar(V_SEEN_SYMBOLS_NO_LIGHT, 1);
 		setBackground(0x05C02A55);
@@ -1166,8 +1166,8 @@ Scene2207::Scene2207(NeverhoodEngine *vm, Module *parentModule)
 		_asWallRobotAnimation = nullptr;
 		_asWallCannonAnimation = nullptr;
 		_ssButton = nullptr;
-		_klaymen->setClipRect(0, _ssMaskPart1->getDrawRect().y, 640, 480);
-		_asElevator->setClipRect(0, _ssMaskPart1->getDrawRect().y, 640, 480);
+		_klaymen->setClipRect(UPSCALE_X(0), _ssMaskPart1->getDrawRect().y, UPSCALE(640, 480));
+		_asElevator->setClipRect(UPSCALE_X(0), _ssMaskPart1->getDrawRect().y, UPSCALE(640, 480));
 	}
 
 	_dataResource.load(0x00524846);
@@ -1175,7 +1175,7 @@ Scene2207::Scene2207(NeverhoodEngine *vm, Module *parentModule)
 
 	sendEntityMessage(_klaymen, 0x1014, _asElevator);
 	sendMessage(_klaymen, 0x2001, 0);
-	sendMessage(_asElevator, 0x2000, 480);
+	sendMessage(_asElevator, 0x2000, UPSCALE_Y(480));
 
 	loadSound(1, calcHash("fxFogHornSoft"));
 
@@ -1187,8 +1187,8 @@ void Scene2207::update() {
 		setSurfacePriority(_asElevator->getSurface(), _elevatorSurfacePriority);
 		_elevatorSurfacePriority = 0;
 	}
-	if (_klaymen->getY() == 423)
-		_klaymenAtElevator = _klaymen->getX() > 459 && _klaymen->getX() < 525;
+	if (DOWNSCALE_Y(_klaymen->getY()) == 423)
+		_klaymenAtElevator = _klaymen->getX() > UPSCALE_X(459) && _klaymen->getX() < UPSCALE_X(525);
 }
 
 uint32 Scene2207::handleMessage(int messageNum, const MessageParam &param, Entity *sender) {
@@ -1325,26 +1325,26 @@ Scene2208::Scene2208(NeverhoodEngine *vm, Module *parentModule, int which)
 	_maxRowIndex = 8 + 10 * (3 - (getGlobalVar(V_COLUMN_TEXT_NAME) == calcHash("stLineagex") ? 1 : 0));
 
 	_background = new Background(_vm, 0);
-	_background->createSurface(0, 640, 528);
+	_background->createSurface(0, UPSCALE(640, 640));
 	_background->getSpriteResource().getPosition().y = 480;
 	addBackground(_background);
 	setPalette(0x08100289);
 	addEntity(_palette);
-	insertPuzzleMouse(0x0028D089, 40, 600);
+	insertPuzzleMouse(0x0028D089, UPSCALE_X(40), UPSCALE_X(600));
 
 	_fontSurface = FontSurface::createFontSurface(_vm, 0x0800090C);
 
-	_backgroundSurface = new BaseSurface(_vm, 0, 640, 480, "background");
+	_backgroundSurface = new BaseSurface(_vm, 0, UPSCALE(640, 480), "background");
 	spriteResource.load(0x08100289, true);
 	_backgroundSurface->drawSpriteResourceEx(spriteResource, false, false, 0, 0);
 
-	_topBackgroundSurface = new BaseSurface(_vm, 0, 640, 192, "top background");
+	_topBackgroundSurface = new BaseSurface(_vm, 0, UPSCALE(640, 480), "top background");
 	spriteResource.load(!getGlobalVar(V_COLUMN_BACK_NAME)
 		? kScene2208FileHashes1[getGlobalVar(V_CLICKED_COLUMN_INDEX) % 6]
 		: getGlobalVar(V_COLUMN_BACK_NAME), true);
 	_topBackgroundSurface->drawSpriteResourceEx(spriteResource, false, false, 0, 0);
 
-	_bottomBackgroundSurface = new BaseSurface(_vm, 0, 640, 192, "bottom background");
+	_bottomBackgroundSurface = new BaseSurface(_vm, 0, UPSCALE(640, 480), "bottom background");
 	spriteResource.load(kScene2208FileHashes2[getGlobalVar(V_CLICKED_COLUMN_INDEX) % 6], true);
 	_bottomBackgroundSurface->drawSpriteResourceEx(spriteResource, false, false, 0, 0);
 
@@ -1358,7 +1358,7 @@ Scene2208::Scene2208(NeverhoodEngine *vm, Module *parentModule, int which)
 	if (_newRowIndex < 6)
 		_newRowIndex = 0;
 	_rowScrollY = 0;
-	_backgroundScrollY = 48 * _newRowIndex;
+	_backgroundScrollY = UPSCALE_Y(48) * _newRowIndex;
 	_currRowIndex = _newRowIndex;
 
 	for (int16 rowIndex = 0; rowIndex < _visibleRowsCount; rowIndex++)
@@ -1379,10 +1379,10 @@ void Scene2208::update() {
 
 	int16 mouseY = _vm->getMouseY();
 
-	if (mouseY < 48) {
+	if (mouseY < UPSCALE_Y(48)) {
 		if (_currRowIndex > 0)
 			_newRowIndex = _currRowIndex - 1;
-	} else if (mouseY > 432) {
+	} else if (mouseY > UPSCALE_Y(432)) {
 		if (_currRowIndex < _maxRowIndex - _visibleRowsCount)
 			_newRowIndex = _currRowIndex + 1;
 	} else {
@@ -1420,7 +1420,7 @@ uint32 Scene2208::handleMessage(int messageNum, const MessageParam &param, Entit
 	uint32 messageResult = Scene::handleMessage(messageNum, param, sender);
 	switch (messageNum) {
 	case NM_MOUSE_CLICK:
-		if (param.asPoint().x <= 40 || param.asPoint().x >= 600)
+		if (param.asPoint().x <= UPSCALE_X(40) || param.asPoint().x >= UPSCALE_X(600))
 			leaveScene(0);
 		break;
 	default:
@@ -1459,7 +1459,7 @@ void Scene2208::drawRow(int16 rowIndex) {
 }
 
 static const int16 kScene2242XPositions[] = {
-	68, 158
+	UPSCALE_X(68), UPSCALE_X(158)
 };
 
 static const uint32 kScene2242MessageListIds2[] = {
@@ -1491,26 +1491,26 @@ Scene2242::Scene2242(NeverhoodEngine *vm, Module *parentModule, int which)
 		setRectList(0x004B3E18);
 	}
 
-	_asTape = insertSprite<AsScene1201Tape>(this, 10, 1100, 464, 435, 0x9148A011);
+	_asTape = insertSprite<AsScene1201Tape>(this, 10, 1100, UPSCALE(464, 435), 0x9148A011);
 	addCollisionSprite(_asTape);
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2242>(200, 430);
+		insertKlaymen<KmScene2242>(UPSCALE(200, 430));
 		setMessageList(0x004B3C18);
 	} else if (which == 1) {
 		// Klaymen entering from looking through the window
-		insertKlaymen<KmScene2242>(530, 430);
+		insertKlaymen<KmScene2242>(UPSCALE(530, 430));
 		setMessageList(0x004B3D60);
 	} else if (which == 2) {
 		// Klaymen returning from reading a text column
-		insertKlaymen<KmScene2242>(kScene2242XPositions[!getGlobalVar(V_CLICKED_COLUMN_INDEX) ? 0 : 1], 430);
+		insertKlaymen<KmScene2242>(UPSCALE(kScene2242XPositions[!getGlobalVar(V_CLICKED_COLUMN_INDEX) ? 0 : 1], 430));
 		setMessageList(0x004B3D48);
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X))
 			_klaymen->setDoDeltaX(1);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene2242>(0, 430);
+		insertKlaymen<KmScene2242>(UPSCALE(0, 430));
 		setMessageList(0x004B3C20);
 	}
 
@@ -1524,11 +1524,11 @@ Scene2242::~Scene2242() {
 
 void Scene2242::update() {
 	if (!getGlobalVar(V_LIGHTS_ON)) {
-		if (_isKlaymenInLight && _klaymen->getX() < 440) {
+		if (_isKlaymenInLight && _klaymen->getX() < UPSCALE_X(440)) {
 			_palette->addBasePalette(0x68033B1C, 0, 65, 0);
 			_palette->startFadeToPalette(12);
 			_isKlaymenInLight = false;
-		} else if (!_isKlaymenInLight && _klaymen->getX() >= 440) {
+		} else if (!_isKlaymenInLight && _klaymen->getX() >= UPSCALE_X(440)) {
 			_palette->addBasePalette(0x25848E24, 0, 65, 0);
 			_palette->startFadeToPalette(12);
 			_isKlaymenInLight = true;
@@ -1558,7 +1558,7 @@ uint32 Scene2242::handleMessage(int messageNum, const MessageParam &param, Entit
 
 void Scene2242::readClickedColumn() {
 	int index;
-	if (_mouseClickPos.x < 108) {
+	if (DOWNSCALE_X(_mouseClickPos.x) < 108) {
 		setGlobalVar(V_COLUMN_TEXT_NAME, 0x04290188);
 		setGlobalVar(V_CLICKED_COLUMN_INDEX, 42);
 		setGlobalVar(V_COLUMN_BACK_NAME, calcHash("bgRecPanelStart1"));
@@ -1569,16 +1569,16 @@ void Scene2242::readClickedColumn() {
 		setGlobalVar(V_COLUMN_BACK_NAME, calcHash("bgRecPanelStart2"));
 		index = 1;
 	}
-	setGlobalVar(V_CLICKED_COLUMN_ROW, (_mouseClickPos.y - 100) / 7);
-	if (ABS(_klaymen->getX() - kScene2242XPositions[index]) < 133)
+	setGlobalVar(V_CLICKED_COLUMN_ROW, (DOWNSCALE_Y(_mouseClickPos.y) - 100) / 7);
+	if (ABS(_klaymen->getX() - kScene2242XPositions[index]) < UPSCALE_X(133))
 		setMessageList2(kScene2242MessageListIds1[index]);
 	else
 		setMessageList2(kScene2242MessageListIds2[index]);
 }
 
 static const int16 kHallOfRecordsKlaymenXPos[] = {
-	 68, 157, 246, 335,
-	424, 513, 602
+	 UPSCALE_X(68), UPSCALE_X(157), UPSCALE_X(246), UPSCALE_X(335),
+	UPSCALE_X(424), UPSCALE_X(513), UPSCALE_X(602)
 };
 
 static const uint32 kHallOfRecordsSceneMessageListIds2[] = {
@@ -1613,21 +1613,21 @@ HallOfRecordsScene::HallOfRecordsScene(NeverhoodEngine *vm, Module *parentModule
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmHallOfRecords>(200, 430);
+		insertKlaymen<KmHallOfRecords>(UPSCALE(200, 430));
 		setMessageList(0x004B2900);
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmHallOfRecords>(640, 430);
+		insertKlaymen<KmHallOfRecords>(UPSCALE(640, 430));
 		setMessageList(0x004B2910);
 	} else if (which == 2) {
 		// Klaymen returning from reading a text column
-		insertKlaymen<KmHallOfRecords>(kHallOfRecordsKlaymenXPos[getGlobalVar(V_CLICKED_COLUMN_INDEX) - _hallOfRecordsInfo->xPosIndex], 430);
+		insertKlaymen<KmHallOfRecords>(UPSCALE(kHallOfRecordsKlaymenXPos[getGlobalVar(V_CLICKED_COLUMN_INDEX) - _hallOfRecordsInfo->xPosIndex], 430));
 		setMessageList(0x004B2B70);
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X))
 			_klaymen->setDoDeltaX(1);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmHallOfRecords>(0, 430);
+		insertKlaymen<KmHallOfRecords>(UPSCALE(0, 430));
 		setMessageList(0x004B2908);
 	}
 
@@ -1654,18 +1654,18 @@ uint32 HallOfRecordsScene::handleMessage(int messageNum, const MessageParam &par
 }
 
 void HallOfRecordsScene::readClickedColumn() {
-	int16 index = (_mouseClickPos.x - 23) / 89;
+	int16 index = (DOWNSCALE_X(_mouseClickPos.x) - 23) / 89;
 	if (index >= _hallOfRecordsInfo->count)
 		setMessageList2(0x004B2920);
 	else {
 		setGlobalVar(V_CLICKED_COLUMN_INDEX, _hallOfRecordsInfo->xPosIndex + index);
-		setGlobalVar(V_CLICKED_COLUMN_ROW, (_mouseClickPos.y - 100) / 7);
+		setGlobalVar(V_CLICKED_COLUMN_ROW, (DOWNSCALE_Y(_mouseClickPos.y) - 100) / 7);
 		setGlobalVar(V_COLUMN_TEXT_NAME, _hallOfRecordsInfo->txFilename);
 		if (index == 0 && _hallOfRecordsInfo->bgFilename3)
 			setGlobalVar(V_COLUMN_BACK_NAME, _hallOfRecordsInfo->bgFilename3);
 		else
 			setGlobalVar(V_COLUMN_BACK_NAME, 0);
-		if (ABS(_klaymen->getX() - kHallOfRecordsKlaymenXPos[index]) < 133)
+		if (ABS(_klaymen->getX() - kHallOfRecordsKlaymenXPos[index]) < UPSCALE_X(133))
 			setMessageList2(kHallOfRecordsSceneMessageListIds1[index]);
 		else
 			setMessageList2(kHallOfRecordsSceneMessageListIds2[index]);
@@ -1704,21 +1704,21 @@ Scene2247::Scene2247(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	if (which < 0) {
 		// Restoring game
-		insertKlaymen<KmScene2247>(200, 430);
+		insertKlaymen<KmScene2247>(UPSCALE(200, 430));
 		setMessageList(0x004B5428);
 	} else if (which == 1) {
 		// Klaymen entering from the right
-		insertKlaymen<KmScene2247>(640, 430);
+		insertKlaymen<KmScene2247>(UPSCALE(640, 430));
 		setMessageList(0x004B5438);
 	} else if (which == 2) {
 		// Klaymen returning from reading a text column
-		insertKlaymen<KmScene2247>(kScene2247XPositions[getGlobalVar(V_COLUMN_TEXT_NAME) == 0x0008E486 ? 0 : 1], 430);
+		insertKlaymen<KmScene2247>(UPSCALE(kScene2247XPositions[getGlobalVar(V_COLUMN_TEXT_NAME) == 0x0008E486 ? 0 : 1], 430));
 		if (getGlobalVar(V_KLAYMEN_IS_DELTA_X))
 			_klaymen->setDoDeltaX(1);
 		setMessageList(0x004B5530);
 	} else {
 		// Klaymen entering from the left
-		insertKlaymen<KmScene2247>(0, 430);
+		insertKlaymen<KmScene2247>(UPSCALE(0, 430));
 		setMessageList(0x004B5430);
 	}
 
@@ -1745,7 +1745,7 @@ uint32 Scene2247::handleMessage(int messageNum, const MessageParam &param, Entit
 
 void Scene2247::readClickedColumn() {
 	int index;
-	if (_mouseClickPos.x < 553) {
+	if (_mouseClickPos.x < UPSCALE_X(553)) {
 		setGlobalVar(V_COLUMN_TEXT_NAME, 0x0008E486);
 		setGlobalVar(V_COLUMN_BACK_NAME, calcHash("bgFatherHeader"));
 		index = 0;
@@ -1755,8 +1755,8 @@ void Scene2247::readClickedColumn() {
 		index = 1;
 	}
 	setGlobalVar(V_CLICKED_COLUMN_INDEX, 0);
-	setGlobalVar(V_CLICKED_COLUMN_ROW, (_mouseClickPos.y - 100) / 7);
-	if (ABS(_klaymen->getX() - kScene2247XPositions[index]) < 133)
+	setGlobalVar(V_CLICKED_COLUMN_ROW, (DOWNSCALE_Y(_mouseClickPos.y) - 100) / 7);
+	if (ABS(_klaymen->getX() - kScene2247XPositions[index]) < UPSCALE_X(133))
 		setMessageList2(kScene2247MessageListIds1[index]);
 	else
 		setMessageList2(kScene2247MessageListIds2[index]);

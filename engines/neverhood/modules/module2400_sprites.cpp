@@ -36,9 +36,9 @@ static const uint32 kAsScene2401WaterSpitFileHashes1[] = {
 AsScene2401WaterSpit::AsScene2401WaterSpit(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1200) {
 
-	_x = 240;
-	_y = 447;
-	createSurface(100, 146, 74);
+	_x = UPSCALE_X(240);
+	_y = UPSCALE_Y(447);
+	createSurface(100, UPSCALE(146, 74));
 	setVisible(false);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2401WaterSpit::handleMessage);
@@ -53,8 +53,8 @@ uint32 AsScene2401WaterSpit::handleMessage(int messageNum, const MessageParam &p
 			playSound(0, kAsScene2401WaterSpitFileHashes1[_soundIndex]);
 		break;
 	case NM_ANIMATION_UPDATE:
-		_x = 240;
-		_y = 447;
+		_x = UPSCALE_X(240);
+		_y = UPSCALE_Y(447);
 		_soundIndex = getSubVar(VA_CURR_WATER_PIPES_LEVEL, param.asInteger());
 		startAnimation(kAsScene2401WaterSpitFileHashes2[param.asInteger()], 0, -1);
 		setVisible(true);
@@ -73,8 +73,8 @@ uint32 AsScene2401WaterSpit::handleMessage(int messageNum, const MessageParam &p
 AsScene2401FlowingWater::AsScene2401FlowingWater(NeverhoodEngine *vm)
 	: AnimatedSprite(vm, 1200), _isWaterFlowing(false) {
 
-	_x = 88;
-	_y = 421;
+	_x = UPSCALE_X(88);
+	_y = UPSCALE_Y(421);
 	createSurface1(0x10203116, 100);
 	setVisible(false);
 	SetUpdateHandler(&AnimatedSprite::update);
@@ -163,8 +163,8 @@ uint32 AsScene2401WaterFlushing::handleMessage(int messageNum, const MessagePara
 AsScene2401Door::AsScene2401Door(NeverhoodEngine *vm, bool isOpen)
 	: AnimatedSprite(vm, 1100), _countdown(0), _isOpen(isOpen) {
 
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	createSurface1(0x44687810, 100);
 	_newStickFrameIndex = STICK_LAST_FRAME;
 	if (_isOpen) {
@@ -226,8 +226,8 @@ void AsScene2401Door::stDoorOpenFinished() {
 AsScene2402Door::AsScene2402Door(NeverhoodEngine *vm, Scene *parentScene, bool isOpen)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _isOpen(isOpen), _countdown(0) {
 
-	_x = 320;
-	_y = 240;
+	_x = UPSCALE_X(320);
+	_y = UPSCALE_Y(240);
 	createSurface1(0x80495831, 100);
 	if (_isOpen) {
 		startAnimation(0x80495831, -1, -1);
@@ -286,9 +286,9 @@ void AsScene2402Door::stDoorClosingFinished() {
 AsScene2402TV::AsScene2402TV(NeverhoodEngine *vm, Klaymen *klaymen)
 	: AnimatedSprite(vm, 1100), _klaymen(klaymen), _countdown1(0), _countdown2(0) {
 
-	_x = 260;
-	_y = 210;
-	createSurface(100, 127, 90);
+	_x = UPSCALE_X(260);
+	_y = UPSCALE_Y(210);
+	createSurface(100, UPSCALE(127, 90));
 	setDoDeltaX(1);
 	SetMessageHandler(&Sprite::handleMessage);
 	if (!getGlobalVar(V_TV_JOKE_TOLD)) {
@@ -299,9 +299,9 @@ AsScene2402TV::AsScene2402TV(NeverhoodEngine *vm, Klaymen *klaymen)
 		SetUpdateHandler(&AsScene2402TV::upWait);
 	} else {
 		int16 frameIndex;
-		if (_klaymen->getX() > 320)
+		if (_klaymen->getX() > UPSCALE_X(320))
 			_currFrameIndex = 29;
-		frameIndex = CLIP<int16>((_klaymen->getX() - _x + 150) / 10, 0, 29);
+		frameIndex = CLIP<int16>((_klaymen->getX() - _x + UPSCALE_X(150)) / 10, 0, 29);
 		startAnimation(0x050A0103, frameIndex, -1);
 		_newStickFrameIndex = frameIndex;
 		_countdown1 = 0;
@@ -323,7 +323,7 @@ void AsScene2402TV::upWait() {
 }
 
 void AsScene2402TV::upFocusKlaymen() {
-	int16 frameIndex = CLIP<int16>((_klaymen->getX() - _x + 150) / 10, 0, 29);
+	int16 frameIndex = CLIP<int16>((_klaymen->getX() - _x + UPSCALE_X(150)) / 10, 0, 29);
 	if (frameIndex != _currFrameIndex) {
 		if (frameIndex > _currFrameIndex)
 			_currFrameIndex++;
@@ -409,7 +409,7 @@ uint32 KmScene2401::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > (int16)param.asInteger() ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > (int16)param.asInteger() ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x482E:
@@ -652,7 +652,7 @@ uint32 KmScene2403::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stClimbLadderHalf);
 		break;
 	case 0x482D:
-		setDoDeltaX(_x > UPSCALE_X((int16)param.asInteger()) ? 1 : 0);
+		setDoDeltaX(DOWNSCALE_X(_x) > UPSCALE_X((int16)param.asInteger()) ? 1 : 0);
 		gotoNextStateExt();
 		break;
 	case 0x483F:
