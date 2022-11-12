@@ -113,9 +113,9 @@ SsScene2201PuzzleCube::SsScene2201PuzzleCube(NeverhoodEngine *vm, uint32 positio
 }
 
 static const NPoint kSsScene2202PuzzleCubePoints[] = {
-	{196, 105}, {323, 102}, {445, 106},
-	{192, 216}, {319, 220}, {446, 216},
-	{188, 320}, {319, 319}, {443, 322}
+	{UPSCALE(196, 105)}, {UPSCALE(323, 102)}, {UPSCALE(445, 106)},
+	{UPSCALE(192, 216)}, {UPSCALE(319, 220)}, {UPSCALE(446, 216)},
+	{UPSCALE(188, 320)}, {UPSCALE(319, 319)}, {UPSCALE(443, 322)}
 };
 
 static const uint32 kSsScene2202PuzzleCubeFileHashes1[] = {
@@ -946,10 +946,10 @@ uint32 KmScene2201::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stTurnToBack);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -1018,10 +1018,10 @@ uint32 KmScene2203::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -1092,10 +1092,10 @@ uint32 KmScene2205::xHandleMessage(int messageNum, const MessageParam &param) {
 		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -1193,10 +1193,10 @@ uint32 KmScene2206::xHandleMessage(int messageNum, const MessageParam &param) {
 		stopWalking();
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -1279,10 +1279,10 @@ uint32 KmScene2207::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;

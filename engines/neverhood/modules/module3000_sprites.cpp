@@ -56,12 +56,12 @@ static const uint32 kSsScene3009TargetLineFileHashes[] = {
 };
 
 static const NPoint kAsScene3009SymbolPoints[] = {
-	{289, 338},
-	{285, 375},
-	{284, 419},
-	{456, 372},
-	{498, 372},
-	{541, 372}
+	{UPSCALE(289, 338)},
+	{UPSCALE(285, 375)},
+	{UPSCALE(284, 419)},
+	{UPSCALE(456, 372)},
+	{UPSCALE(498, 372)},
+	{UPSCALE(541, 372)}
 };
 
 static const uint32 kAsScene3009SymbolFileHashes[] = {
@@ -196,7 +196,7 @@ SsScene3009SymbolArrow::SsScene3009SymbolArrow(NeverhoodEngine *vm, Sprite *asSy
 
 	createSurface(1200, UPSCALE(33, 33));
 	loadSprite(kSsScene3009SymbolArrowFileHashes2[_index], kSLFDefPosition);
-	_drawOffset.set(0, 0, 33, 31);
+	_drawOffset.set(UPSCALE(0, 0), UPSCALE(33, 31));
 	_collisionBoundsOffset = _drawOffset;
 	updateBounds();
 	_needRefresh = true;
@@ -413,9 +413,9 @@ static const uint32 kScene3010DeadBoltButtonFileHashes2[] = {
 };
 
 static const NPoint kAsScene3010DeadBoltPoints[] = {
-	{550, 307},
-	{564, 415},
-	{560, 514}
+	{UPSCALE(550, 307)},
+	{UPSCALE(564, 415)},
+	{UPSCALE(560, 514)}
 };
 
 static const uint32 kAsScene3010DeadBoltFileHashes2[] = {

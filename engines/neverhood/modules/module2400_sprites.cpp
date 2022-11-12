@@ -436,10 +436,10 @@ uint32 KmScene2401::xHandleMessage(int messageNum, const MessageParam &param) {
 		}
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -570,10 +570,10 @@ uint32 KmScene2402::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -656,10 +656,10 @@ uint32 KmScene2403::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -748,10 +748,10 @@ uint32 KmScene2406::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stClimbLadderHalf);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;

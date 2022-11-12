@@ -832,18 +832,18 @@ void AsScene1407Mouse::stArriveAtHole() {
 }
 
 static const NPoint kAsScene1405TileItemPositions[] = {
-	{100,  80}, {162,  78}, {222,  76}, {292,  76},
-	{356,  82}, {422,  84}, {488,  86}, {550,  90},
-	{102, 134}, {164, 132}, {224, 136},	{294, 136},
-	{360, 136},	{422, 138},	{484, 144},	{548, 146},
-	{ 98, 196},	{160, 200},	{228, 200},	{294, 202},
-	{360, 198},	{424, 200},	{482, 202},	{548, 206},
-	{ 98, 260},	{160, 264},	{226, 260},	{296, 262},
-	{358, 260},	{424, 262},	{486, 264},	{550, 266},
-	{ 94, 322},	{160, 316},	{226, 316},	{296, 320},
-	{358, 322},	{422, 324},	{488, 322},	{550, 322},
-	{ 98, 380},	{160, 376},	{226, 376},	{294, 378},
-	{356, 380},	{420, 380},	{490, 378},	{552, 376}
+	{UPSCALE(100,  80)}, {UPSCALE(162,  78)}, {UPSCALE(222,  76)}, {UPSCALE(292,  76)},
+	{UPSCALE(356,  82)}, {UPSCALE(422,  84)}, {UPSCALE(488,  86)}, {UPSCALE(550,  90)},
+	{UPSCALE(102, 134)}, {UPSCALE(164, 132)}, {UPSCALE(224, 136)}, {UPSCALE(294, 136)},
+	{UPSCALE(360, 136)}, {UPSCALE(422, 138)}, {UPSCALE(484, 144)}, {UPSCALE(548, 146)},
+	{UPSCALE( 98, 196)}, {UPSCALE(160, 200)}, {UPSCALE(228, 200)}, {UPSCALE(294, 202)},
+	{UPSCALE(360, 198)}, {UPSCALE(424, 200)}, {UPSCALE(482, 202)}, {UPSCALE(548, 206)},
+	{UPSCALE( 98, 260)}, {UPSCALE(160, 264)}, {UPSCALE(226, 260)}, {UPSCALE(296, 262)},
+	{UPSCALE(358, 260)}, {UPSCALE(424, 262)}, {UPSCALE(486, 264)}, {UPSCALE(550, 266)},
+	{UPSCALE( 94, 322)}, {UPSCALE(160, 316)}, {UPSCALE(226, 316)}, {UPSCALE(296, 320)},
+	{UPSCALE(358, 322)}, {UPSCALE(422, 324)}, {UPSCALE(488, 322)}, {UPSCALE(550, 322)},
+	{UPSCALE( 98, 380)}, {UPSCALE(160, 376)}, {UPSCALE(226, 376)}, {UPSCALE(294, 378)},
+	{UPSCALE(356, 380)}, {UPSCALE(420, 380)}, {UPSCALE(490, 378)}, {UPSCALE(552, 376)}
 };
 
 AsScene1405Tile::AsScene1405Tile(NeverhoodEngine *vm, Scene1405 *parentScene, uint32 tileIndex)
@@ -1067,10 +1067,10 @@ uint32 KmScene1403::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stReleaseLever);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -1145,10 +1145,10 @@ uint32 KmScene1404::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;

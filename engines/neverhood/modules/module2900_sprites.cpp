@@ -63,8 +63,8 @@ static const uint32 kSsScene2901LocationButtonFileHashes[] = {
 };
 
 static const NPoint kSsScene2901LocationButtonPoints[] = {
-	{525, 120}, {576, 149}, {587, 205},
-	{538, 232}, {484, 205}, {479, 153}
+	{UPSCALE(525, 120)}, {UPSCALE(576, 149)}, {UPSCALE(587, 205)},
+	{UPSCALE(538, 232)}, {UPSCALE(484, 205)}, {UPSCALE(479, 153)}
 };
 
 static const uint32 kSsScene2901LocationButtonLightFileHashes1[] = {
@@ -139,7 +139,7 @@ SsScene2901LocationButton::SsScene2901LocationButton(NeverhoodEngine *vm, Scene 
 	const NPoint &pt = kSsScene2901LocationButtonPoints[_index];
 
 	loadSprite(kSsScene2901LocationButtonFileHashes[which * 6 + index], kSLFDefDrawOffset | kSLFDefPosition, 800);
-	_collisionBounds.set(pt.x - 25, pt.y - 25, pt.x + 25, pt.y + 25);
+	_collisionBounds.set(pt.x - UPSCALE_X(25), pt.y - UPSCALE_Y(25), pt.x + UPSCALE_X(25), pt.y + UPSCALE_Y(25));
 	setVisible(false);
 	loadSound(0, 0x440430C0);
 	SetUpdateHandler(&SsScene2901LocationButton::update);
@@ -200,7 +200,7 @@ SsScene2901BigButton::SsScene2901BigButton(NeverhoodEngine *vm, Scene *parentSce
 	: StaticSprite(vm, 900), _parentScene(parentScene), _which(which), _countdown1(0) {
 
 	loadSprite(kSsScene2901BigButtonFileHashes[which], kSLFDefDrawOffset | kSLFDefPosition, 400);
-	_collisionBounds.set(62, 94, 322, 350);
+	_collisionBounds.set(UPSCALE(62, 94), UPSCALE(322, 350));
 	setVisible(false);
 	loadSound(0, 0xF3D420C8);
 	SetUpdateHandler(&SsScene2901BigButton::update);

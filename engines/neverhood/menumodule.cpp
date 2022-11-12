@@ -584,7 +584,7 @@ void TextLabelWidget::drawString(int maxStringLength) {
 }
 
 void TextLabelWidget::clear() {
-	_collisionBoundsOffset.set(0, 0, 0, 0);
+	_collisionBoundsOffset.set(UPSCALE(0, 0), UPSCALE(0, 0));
 	updateBounds();
 }
 

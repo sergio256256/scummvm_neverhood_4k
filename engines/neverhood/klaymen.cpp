@@ -1029,11 +1029,11 @@ void Klaymen::startSpecialWalkRight(int16 x) {
 		gotoState(nullptr);
 		gotoNextStateExt();
 	} else if (_x < x) {
-		startWalkToX(x, false);
+		startWalkToX(DOWNSCALE_X(x), false);
 	} else if (_x - x <= UPSCALE_X(105)) {
-		startWalkToXExt(x);
+		startWalkToXExt(DOWNSCALE_X(x));
 	} else {
-		startWalkToX(x, false);
+		startWalkToX(DOWNSCALE_X(x), false);
 	}
 }
 
@@ -1043,11 +1043,11 @@ void Klaymen::startSpecialWalkLeft(int16 x) {
 		gotoState(nullptr);
 		gotoNextStateExt();
 	} else if (x < _x) {
-		startWalkToX(x, false);
+		startWalkToX(DOWNSCALE_X(x), false);
 	} else if (x - _x <= UPSCALE_X(105)) {
-		startWalkToXExt(x);
+		startWalkToXExt(DOWNSCALE_X(x));
 	} else {
-		startWalkToX(x, false);
+		startWalkToX(DOWNSCALE_X(x), false);
 	}
 }
 

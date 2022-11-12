@@ -30,9 +30,9 @@
 namespace Neverhood {
 
 static const NPoint kSsScene2201PuzzleCubePoints[] = {
-	{305, 305},	{321, 305},	{336, 305},	{305, 319},
-	{321, 319},	{336, 319},	{305, 332},	{321, 332},
-	{336, 333}
+	{UPSCALE(305, 305)},	{UPSCALE(321, 305)},	{UPSCALE(336, 305)},	{UPSCALE(305, 319)},
+	{UPSCALE(321, 319)},	{UPSCALE(336, 319)},	{UPSCALE(305, 332)},	{UPSCALE(321, 332)},
+	{UPSCALE(336, 333)}
 };
 
 static const uint32 kSsScene2201PuzzleCubeFileHashes[] = {

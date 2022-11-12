@@ -748,10 +748,10 @@ uint32 KmScene1201::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;

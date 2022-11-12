@@ -89,7 +89,7 @@ AsScene1907Symbol::AsScene1907Symbol(NeverhoodEngine *vm, Scene1907 *parentScene
 		startAnimation(kAsScene1907SymbolFileHashes[_elementIndex], 0, -1);
 		_newStickFrameIndex = 0;
 	}
-	_collisionBoundsOffset.set(0, 0, 80, 80);
+	_collisionBoundsOffset.set(UPSCALE(0, 0), UPSCALE(80, 80));
 	Sprite::updateBounds();
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene1907Symbol::handleMessage);
@@ -452,10 +452,10 @@ uint32 KmScene1901::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;

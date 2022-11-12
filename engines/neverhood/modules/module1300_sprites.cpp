@@ -713,10 +713,10 @@ uint32 KmScene1304::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stWonderAbout);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -880,10 +880,10 @@ uint32 KmScene1306::xHandleMessage(int messageNum, const MessageParam &param) {
 		teleporterDisappear(0xB86A4274);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -952,10 +952,10 @@ uint32 KmScene1308::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stStepOver);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;

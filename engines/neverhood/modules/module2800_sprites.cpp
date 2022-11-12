@@ -296,10 +296,10 @@ AsScene2804CrystalWaves::AsScene2804CrystalWaves(NeverhoodEngine *vm, uint cryst
 	: AnimatedSprite(vm, 1100), _crystalIndex(crystalIndex) {
 
 	static const NPoint kAsScene2804CrystalWavesPoints[] = {
-		{323, 245},
-		{387, 76},
-		{454, 260},
-		{527, 70}
+		{UPSCALE(323, 245)},
+		{UPSCALE(387, 76)},
+		{UPSCALE(454, 260)},
+		{UPSCALE(527, 70)}
 	};
 
 	_x = kAsScene2804CrystalWavesPoints[crystalIndex].x;
@@ -339,11 +339,11 @@ AsScene2804Crystal::AsScene2804Crystal(NeverhoodEngine *vm, AsScene2804CrystalWa
 	: AnimatedSprite(vm, 1100), _asCrystalWaves(asCrystalWaves), _crystalIndex(crystalIndex), _isShowing(false) {
 
 	static const NPoint kAsScene2804CrystalPoints[] = {
-		{204, 196},
-		{272, 316},
-		{334, 206},
-		{410, 334},
-		{470, 180}
+		{UPSCALE(204, 196)},
+		{UPSCALE(272, 316)},
+		{UPSCALE(334, 206)},
+		{UPSCALE(410, 334)},
+		{UPSCALE(470, 180)}
 	};
 
 	_colorNum = (int16)getSubVar(VA_CURR_CRYSTAL_COLORS, crystalIndex);
@@ -1669,10 +1669,10 @@ uint32 KmScene2812::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stTurnToBack);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;

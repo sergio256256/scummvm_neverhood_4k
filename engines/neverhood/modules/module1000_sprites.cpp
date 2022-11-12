@@ -1088,10 +1088,10 @@ uint32 KmScene1001::xHandleMessage(int messageNum, const MessageParam &param) {
 		}
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -1263,10 +1263,10 @@ uint32 KmScene1002::xHandleMessage(int messageNum, const MessageParam &param) {
 			GotoState(&Klaymen::stTurnToBack);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
@@ -1667,10 +1667,10 @@ uint32 KmScene1004::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stTurnToBackToUse);
 		break;
 	case 0x483F:
-		startSpecialWalkRight(param.asInteger());
+		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
 		break;
 	case 0x4840:
-		startSpecialWalkLeft(param.asInteger());
+		startSpecialWalkLeft(UPSCALE_X(param.asInteger()));
 		break;
 	default:
 		break;
