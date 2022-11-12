@@ -163,7 +163,7 @@ void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fi
 	unloadUpscaledResource(resourceHandle);
 
 	Common::Array<Common::String> fnames;
-	Common::String folder = "4k_32b";
+	Common::String folder = ConfigData::get()->looseDataFolder;
 	Common::String fname = Common::String::format("%08X", fileHash);
 
 	if (!isAnimation) {

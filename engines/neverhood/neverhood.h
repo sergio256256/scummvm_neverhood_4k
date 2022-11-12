@@ -34,23 +34,13 @@
 #include "neverhood/console.h"
 #include "neverhood/messages.h"
 
-#define UPSCALE_X(x) ((x)*9 / 2)
-#define UPSCALE_Y(y)  ((y)*9 / 2)
+#define UPSCALE_X(x) ((x) * ConfigData::get()->upscaleDividend / ConfigData::get()->upscaleDivisor)
+#define UPSCALE_Y(y) ((y) * ConfigData::get()->upscaleDividend / ConfigData::get()->upscaleDivisor)
 #define UPSCALE(x, y) UPSCALE_X(x), UPSCALE_Y(y)
 
-#define DOWNSCALE_X(x) ((x)*2 / 9) 
-#define DOWNSCALE_Y(y) ((y)*2 / 9) 
+#define DOWNSCALE_X(x) ((x) * ConfigData::get()->upscaleDivisor / ConfigData::get()->upscaleDividend)
+#define DOWNSCALE_Y(y) ((y) * ConfigData::get()->upscaleDivisor / ConfigData::get()->upscaleDividend)
 #define DOWNSCALE(x, y) DOWNSCALE_X(x), DOWNSCALE_Y(y)
-
-
-
-// #define UPSCALE_X(x) (x)
-// #define UPSCALE_Y(y) (y)
-// #define UPSCALE(x, y) UPSCALE_X(x), UPSCALE_Y(y)
-// 
-// #define DOWNSCALE_X(x) (x)
-// #define DOWNSCALE_Y(y) (y)
-// #define DOWNSCALE(x, y) DOWNSCALE_X(x), DOWNSCALE_Y(y)
 
 #define DBG_HEX 0xDB9
 
@@ -70,6 +60,31 @@ struct NPoint;
 struct GameState {
 	int sceneNum;
 	int which;
+};
+
+class ConfigData {
+public:
+	const char* section = "Config";
+	int16 upscaleDividend = 9;
+	int16 upscaleDivisor = 2;
+	bool isLooseData = true;
+	Common::String looseDataFolder = "loose_4k";
+
+	void load(const Common::String& filename);
+	void save(const Common::String &filename);
+	static ConfigData *get()
+	{
+		if (!_singleton)
+			_singleton = new ConfigData();
+		return _singleton;
+	}
+
+	static void free() {
+		delete _singleton;
+	}
+
+private:
+	static ConfigData* _singleton;
 };
 
 class NeverhoodEngine : public ::Engine {

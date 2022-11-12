@@ -22,6 +22,7 @@
 #include "common/file.h"
 #include "common/config-manager.h"
 #include "common/textconsole.h"
+#include "common/ini-file.h"
 
 #include "audio/mixer.h"
 
@@ -46,6 +47,8 @@
 
 namespace Neverhood {
 
+ConfigData* ConfigData::_singleton = nullptr;
+
 NeverhoodEngine::NeverhoodEngine(OSystem *syst, const ADGameDescription *gameDesc) :
 		Engine(syst), _gameDescription(gameDesc) {
 	// Setup mixer
@@ -62,6 +65,7 @@ NeverhoodEngine::NeverhoodEngine(OSystem *syst, const ADGameDescription *gameDes
 
 NeverhoodEngine::~NeverhoodEngine() {
 	delete _rnd;
+	ConfigData::free();
 }
 
 Common::Error NeverhoodEngine::run() {
@@ -70,6 +74,8 @@ Common::Error NeverhoodEngine::run() {
 	const Common::FSNode gameDataDir(ConfMan.get("path"));
 
 	SearchMan.addSubDirectoryMatching(gameDataDir, "data");
+
+	ConfigData::get()->load(gameDataDir.getPath() + "neverhood.ini");
 
 	_isSaveAllowed = false;
 
@@ -85,6 +91,7 @@ Common::Error NeverhoodEngine::run() {
 	_screen = new Screen(this);
 	_res = new ResourceMan();
 	setDebugger(new Console(this));
+
 
 	if (isDemo()) {
 		_res->addArchive("a.blb");
@@ -202,6 +209,47 @@ NPoint NeverhoodEngine::getMousePos() {
 	pt.x = _mouseX;
 	pt.y = _mouseY;
 	return pt;
+}
+
+void ConfigData::load(const Common::String& filename) {
+	Common::INIFile inifile;
+	if (inifile.loadFromFile(filename)) {
+
+		Common::String temp;
+
+		if (inifile.getKey("upscaleDividend", section, temp)) {
+			upscaleDividend = atoi(temp.c_str());
+		}
+
+		if (inifile.getKey("upscaleDivisor", section, temp)) {
+			upscaleDivisor = atoi(temp.c_str());
+		}
+
+		if (inifile.getKey("isLooseData", section, temp)) {
+			isLooseData = atoi(temp.c_str()) != 0;
+		}
+
+		if (inifile.getKey("looseDataFolder", section, temp)) {
+			looseDataFolder = temp;
+		}
+	} else {
+		save(filename);
+	}
+
+}
+
+
+void ConfigData::save(const Common::String &filename) {
+	char temp[16] = {};
+
+	Common::INIFile inifile;
+	inifile.addSection(section);
+	inifile.setKey("upscaleDividend", section, itoa(upscaleDividend, temp, 10));
+	inifile.setKey("upscaleDivisor", section, itoa(upscaleDivisor, temp, 10));
+	inifile.setKey("isLooseData", section, isLooseData ? "1" : "0");
+	inifile.setKey("looseDataFolder", section, looseDataFolder);
+
+	inifile.saveToFile(filename);
 }
 
 } // End of namespace Neverhood
