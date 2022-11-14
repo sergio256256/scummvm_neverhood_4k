@@ -167,12 +167,12 @@ void AsScene1907Symbol::suFallOffHitGround() {
 		_y -= _someY;
 	}
 
-	if (_currStep < UPSCALE_Y(8)) {
+	if (_currStep < 8) {
 		_y -= _yAccel;
 		_yAccel -= UPSCALE_Y(4);
 		if (_yAccel < UPSCALE_Y(0))
 			_yAccel = UPSCALE_Y(0);
-	} else if (_currStep < UPSCALE_Y(15)) {
+	} else if (_currStep < 15) {
 		_y += _yAccel;
 		_yAccel += UPSCALE_Y(4);
 	} else {

@@ -277,7 +277,7 @@ AsCommonProjector::AsCommonProjector(NeverhoodEngine *vm, Scene *parentScene, Sp
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene), _klaymen(klaymen), _asPipe(asPipe) {
 
 	_asProjectorItem = &kAsCommonProjectorItems[getGlobalVar(V_PROJECTOR_LOCATION)];
-	createSurface(990, UPSCALE(101, 101));
+	createSurface(990, UPSCALE(101, 182));
 	startAnimation(0x10E3042B, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsCommonProjector::handleMessage);
@@ -539,7 +539,7 @@ SsScene1402BridgePart::SsScene1402BridgePart(NeverhoodEngine *vm, uint32 fileHas
 AsScene1402PuzzleBox::AsScene1402PuzzleBox(NeverhoodEngine *vm, Scene *parentScene, int status)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(900, UPSCALE(347, 347));
+	createSurface(900, UPSCALE(347, 230));
 
 	SetFilterY(&Sprite::defFilterY);
 	SetUpdateHandler(&AnimatedSprite::update);

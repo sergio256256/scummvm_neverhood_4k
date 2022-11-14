@@ -347,7 +347,7 @@ uint32 GameModule::handleMessage(int messageNum, const MessageParam &param, Enti
 void GameModule::startup() {
 #if 1
 	// Logos and intro video // Real game start
-	createModule(2200, 0);
+	createModule(2100, 0);
 #else
 	// DEBUG>>>
 	/*
@@ -469,7 +469,6 @@ void GameModule::iterateAllModulesAndScenes() {
 	modules[3000] = {1, 12, 1001, 1006, 1008};
 
 	for (auto &module : modules) {
-		int moduleNum = module._key;
 		auto &&sceneNums = module._value;
 
 		if (sceneNums.size() > 1) {

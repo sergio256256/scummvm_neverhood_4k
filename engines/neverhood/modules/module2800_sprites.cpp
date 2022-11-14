@@ -125,7 +125,7 @@ uint32 AsScene2803TestTubeOne::handleMessage(int messageNum, const MessageParam 
 AsScene2803Rope::AsScene2803Rope(NeverhoodEngine *vm, Scene *parentScene, int16 x)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(990, UPSCALE(68, 68));
+	createSurface(990, UPSCALE(68, 476));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
 	SetMessageHandler(&AsScene2803Rope::handleMessage);
@@ -918,7 +918,7 @@ uint32 AsScene2809Spew::handleMessage(int messageNum, const MessageParam &param,
 AsScene2810Rope::AsScene2810Rope(NeverhoodEngine *vm, Scene *parentScene, int16 x)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(990, UPSCALE(68, 68));
+	createSurface(990, UPSCALE(68, 476));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2810Rope::handleMessage);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);
@@ -981,7 +981,7 @@ uint32 AsScene2812Winch::handleMessage(int messageNum, const MessageParam &param
 AsScene2812Rope::AsScene2812Rope(NeverhoodEngine *vm, Scene *parentScene)
 	: AnimatedSprite(vm, 1100), _parentScene(parentScene) {
 
-	createSurface(990, UPSCALE(68, 68));
+	createSurface(990, UPSCALE(68, 476));
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2812Rope::handleMessage);
 	SetSpriteUpdate(&AnimatedSprite::updateDeltaXY);

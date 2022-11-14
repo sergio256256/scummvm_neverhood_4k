@@ -434,7 +434,7 @@ SsScene3010DeadBoltButton::SsScene3010DeadBoltButton(NeverhoodEngine *vm, Scene 
 	: StaticSprite(vm, 900), _parentScene(parentScene), _buttonLocked(false), _countdown1(0), _countdown2(0), _buttonIndex(buttonIndex) {
 
 	_buttonEnabled = getSubVar(VA_LOCKS_DISABLED, kScene3010ButtonNameHashes[_buttonIndex]) != 0;
-	createSurface(400, UPSCALE(88, 88));
+	createSurface(400, UPSCALE(88, 95));
 	setSprite(kScene3010DeadBoltButtonFileHashes2[_buttonIndex]);
 	if (initDisabled)
 		disableButton();
@@ -694,7 +694,7 @@ AsScene3011Symbol::AsScene3011Symbol(NeverhoodEngine *vm, int symbolIndex, bool 
 		_symbolIndex = 12;
 		_x = symbolIndex * UPSCALE_Y(39) + UPSCALE_Y(96);
 		_y = UPSCALE_Y(225);
-		createSurface(1200, UPSCALE(41, 41));
+		createSurface(1200, UPSCALE(41, 48));
 		loadSound(0, 0x64428609);
 		loadSound(1, 0x7080023B);
 	}

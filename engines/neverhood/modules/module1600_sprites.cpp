@@ -26,7 +26,7 @@ namespace Neverhood {
 AsCommonCar::AsCommonCar(NeverhoodEngine *vm, Scene *parentScene, int16 x, int16 y)
 	: AnimatedSprite(vm, 1000), _parentScene(parentScene) {
 
-	createSurface(200, UPSCALE(556, 556));
+	createSurface(200, UPSCALE(556, 328));
 	_x = x;
 	_y = y;
 	_destX = x;

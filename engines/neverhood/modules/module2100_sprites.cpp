@@ -26,7 +26,7 @@ namespace Neverhood {
 AsScene2101Door::AsScene2101Door(NeverhoodEngine *vm, bool isOpen)
 	: AnimatedSprite(vm, 1100) {
 
-	createSurface(100, UPSCALE(328, 328));
+	createSurface(100, UPSCALE(328, 347));
 	_x = UPSCALE_X(320);
 	_y = UPSCALE_Y(240);
 	SetUpdateHandler(&AnimatedSprite::update);
@@ -81,7 +81,7 @@ AsScene2101HitByDoorEffect::AsScene2101HitByDoorEffect(NeverhoodEngine *vm, Spri
 
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsScene2101HitByDoorEffect::handleMessage);
-	createSurface(1200, UPSCALE(88, 88));
+	createSurface(1200, UPSCALE(88, 165));
 	setVisible(false);
 }
 
@@ -90,7 +90,7 @@ uint32 AsScene2101HitByDoorEffect::handleMessage(int messageNum, const MessagePa
 	switch (messageNum) {
 	case 0x2001:
 		_x = _klaymen->getX();
-		_y = _klaymen->getY() - 132;
+		_y = _klaymen->getY() - UPSCALE_Y(132);
 		startAnimation(0x0422255A, 0, -1);
 		setVisible(true);
 		break;
@@ -112,7 +112,7 @@ SsCommonFloorButton::SsCommonFloorButton(NeverhoodEngine *vm, Scene *parentScene
 	SetMessageHandler(&SsCommonFloorButton::handleMessage);
 	if (_soundFileHash == 0)
 		_soundFileHash = 0x44141000;
-	createSurface(1010, UPSCALE(61, 61));
+	createSurface(1010, UPSCALE(61, 30));
 	if (_fileHash1)
 		loadSprite(_fileHash1, kSLFDefDrawOffset | kSLFDefPosition);
 	else
