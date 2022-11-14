@@ -28,7 +28,7 @@ AsScene2201CeilingFan::AsScene2201CeilingFan(NeverhoodEngine *vm)
 
 	_x = UPSCALE_X(403);
 	_y = UPSCALE_Y(259);
-	createSurface(100, UPSCALE(233, 233));
+	createSurface(100, UPSCALE(233, 96));
 	startAnimation(0x8600866, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 }
@@ -38,7 +38,7 @@ AsScene2201Door::AsScene2201Door(NeverhoodEngine *vm, Klaymen *klaymen, Sprite *
 
 	_x = UPSCALE_X(408);
 	_y = UPSCALE_Y(290);
-	createSurface(900, UPSCALE(63, 63));
+	createSurface(900, UPSCALE(63, 266));
 	SetUpdateHandler(&AsScene2201Door::update);
 	SetMessageHandler(&AsScene2201Door::handleMessage);
 	if (_isOpen) {
@@ -185,7 +185,7 @@ void SsScene2202PuzzleCube::suMoveCubeX() {
 			_counter += 2;
 	}
 
-	for (int16 i = 0; i < _counter; i++) {
+	for (int16 i = 0; i < _counter * UPSCALE_X(1); i++) {
 		_x += _xIncr;
 		_errValue += _yDelta;
 		if (_errValue >= _xDelta) {
@@ -219,7 +219,7 @@ void SsScene2202PuzzleCube::suMoveCubeY() {
 			_counter += 2;
 	}
 
-	for (int16 i = 0; i < _counter; i++) {
+	for (int16 i = 0; i < _counter * UPSCALE_Y(1); i++) {
 		_y += _yIncr;
 		_errValue += _xDelta;
 		if (_errValue >= _yDelta) {
@@ -262,25 +262,25 @@ void SsScene2202PuzzleCube::moveCube(int16 newCubePosition) {
 		if (_y <= _newY) {
 			_xDelta = _newX - _x;
 			_yDelta = _newY - _y;
-			_xIncr = 1;
-			_yIncr = 1;
+			_xIncr = 1; // @@sergio256256 for loop counter is multiplied instead
+			_yIncr = 1; // @@sergio256256 for loop counter is multiplied instead
 		} else {
 			_xDelta = _newX - _x;
 			_yDelta = _y - _newY;
-			_xIncr = 1;
-			_yIncr = -1;
+			_xIncr = 1; // @@sergio256256 for loop counter is multiplied instead
+			_yIncr = -1; // @@sergio256256 for loop counter is multiplied instead
 		}
 	} else {
 		if (_y <= _newY) {
 			_xDelta = _x - _newX;
 			_yDelta = _newY - _y;
-			_xIncr = -1;
-			_yIncr = 1;
+			_xIncr = -1; // @@sergio256256 for loop counter is multiplied instead
+			_yIncr = 1; // @@sergio256256 for loop counter is multiplied instead
 		} else {
 			_xDelta = _x - _newX;
 			_yDelta = _y - _newY;
-			_xIncr = -1;
-			_yIncr = -1;
+			_xIncr = -1; // @@sergio256256 for loop counter is multiplied instead
+			_yIncr = -1; // @@sergio256256 for loop counter is multiplied instead
 		}
 	}
 
@@ -300,7 +300,7 @@ void SsScene2202PuzzleCube::moveCube(int16 newCubePosition) {
 		playSound(0);
 	} else {
 		SetSpriteUpdate(&SsScene2202PuzzleCube::suMoveCubeY);
-		if (_yIncr > UPSCALE_Y(0)) {
+		if (_yIncr > 0) {
 			if (_newY - _y >= UPSCALE_Y(180))
 				_xFlagPos = _newY - UPSCALE_Y(90);
 			else
@@ -426,7 +426,7 @@ SsScene2205DoorFrame::SsScene2205DoorFrame(NeverhoodEngine *vm)
 	: StaticSprite(vm, 900) {
 
 	SetMessageHandler(&SsScene2205DoorFrame::handleMessage);
-	createSurface(1100, UPSCALE(45, 45));
+	createSurface(1100, UPSCALE(45, 206));
 	loadSprite(getGlobalVar(V_LIGHTS_ON) ? 0x24306227 : 0xD90032A0, kSLFDefDrawOffset | kSLFDefPosition);
 }
 
@@ -443,18 +443,18 @@ uint32 SsScene2205DoorFrame::handleMessage(int messageNum, const MessageParam &p
 }
 
 static const int16 kAsScene2206DoorSpikesXDeltasOpen[] = {
-	-24, -28, -18, 6, 9, -8
+	UPSCALE_X(-24), UPSCALE_X(-28), UPSCALE_X(-18), UPSCALE_X(6), UPSCALE_X(9), UPSCALE_X(-8)
 };
 
 static const int16 kAsScene2206DoorSpikesXDeltasClose[] = {
-	-8, 7, 11, 26, 13, 14
+	UPSCALE_X(-8), UPSCALE_X(7), UPSCALE_X(11), UPSCALE_X(26), UPSCALE_X(13), UPSCALE_X(14)
 };
 
 AsScene2206DoorSpikes::AsScene2206DoorSpikes(NeverhoodEngine *vm, uint32 fileHash)
 	: StaticSprite(vm, fileHash, 200) {
 
 	if (getGlobalVar(V_SPIKES_RETRACTED))
-		_x -= 63;
+		_x -= UPSCALE_X(63);
 	SetUpdateHandler(&AsScene2206DoorSpikes::update);
 	SetMessageHandler(&AsScene2206DoorSpikes::handleMessage);
 	SetSpriteUpdate(nullptr);
@@ -578,7 +578,7 @@ AsScene2207Elevator::AsScene2207Elevator(NeverhoodEngine *vm, Scene *parentScene
 	pt = _dataResource.getPoint(0x403A82B1);
 	_x = pt.x;
 	_y = pt.y;
-	createSurface(1100, UPSCALE(129, 129));
+	createSurface(1100, UPSCALE(129, 103));
 	startAnimation(getGlobalVar(V_LIGHTS_ON) ? 0xC858CC19 : 0x294B3377, 0, 0);
 	_newStickFrameIndex = 0;
 	SetUpdateHandler(&AsScene2207Elevator::update);
@@ -638,7 +638,7 @@ void AsScene2207Elevator::update() {
 
 void AsScene2207Elevator::suSetPosition() {
 	_x = (*_pointArray)[_pointIndex].x;
-	_y = (*_pointArray)[_pointIndex].y - 60;
+	_y = (*_pointArray)[_pointIndex].y - UPSCALE_Y(60);
 	updateBounds();
 }
 
@@ -655,7 +655,7 @@ uint32 AsScene2207Elevator::handleMessage(int messageNum, const MessageParam &pa
 }
 
 void AsScene2207Elevator::moveToY(int16 y) {
-	int16 minDistance = 480;
+	int16 minDistance = UPSCALE_X(480);
 
 	if (!_pointArray || _pointArray->size() == 0)
 		return;
@@ -688,7 +688,7 @@ AsScene2207Lever::AsScene2207Lever(NeverhoodEngine *vm, Scene *parentScene, int1
 
 	_x = x;
 	_y = y;
-	createSurface(1010, UPSCALE(71, 71));
+	createSurface(1010, UPSCALE(71, 73));
 	setDoDeltaX(doDeltaX);
 	startAnimation(0x80880090, 0, -1);
 	_newStickFrameIndex = 0;
@@ -915,7 +915,7 @@ uint32 KmScene2201::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case 0x481B:
 		if (param.asPoint().y != 0)
@@ -993,7 +993,7 @@ uint32 KmScene2203::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case 0x4819:
 		GotoState(&KmScene2203::stClayDoorOpen);
@@ -1089,7 +1089,7 @@ uint32 KmScene2205::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case 0x483F:
 		startSpecialWalkRight(UPSCALE_X(param.asInteger()));
@@ -1205,7 +1205,7 @@ uint32 KmScene2206::xHandleMessage(int messageNum, const MessageParam &param) {
 }
 
 void KmScene2206::suRidePlatformDown() {
-	_platformDeltaY++;
+	_platformDeltaY += UPSCALE_Y(1) ;
 	_y += _platformDeltaY;
 	if (_y > UPSCALE_Y(600))
 		sendMessage(this, NM_SCENE_LEAVE, 0);

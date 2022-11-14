@@ -34,12 +34,12 @@
 #include "neverhood/console.h"
 #include "neverhood/messages.h"
 
-#define UPSCALE_X(x) ((x) * ConfigData::get()->upscaleDividend / ConfigData::get()->upscaleDivisor)
-#define UPSCALE_Y(y) ((y) * ConfigData::get()->upscaleDividend / ConfigData::get()->upscaleDivisor)
+#define UPSCALE_X(x) ((int16)(x) * ConfigData::get()->upscaleDividend / ConfigData::get()->upscaleDivisor)
+#define UPSCALE_Y(y) ((int16)(y) * ConfigData::get()->upscaleDividend / ConfigData::get()->upscaleDivisor)
 #define UPSCALE(x, y) UPSCALE_X(x), UPSCALE_Y(y)
 
-#define DOWNSCALE_X(x) ((x) * ConfigData::get()->upscaleDivisor / ConfigData::get()->upscaleDividend)
-#define DOWNSCALE_Y(y) ((y) * ConfigData::get()->upscaleDivisor / ConfigData::get()->upscaleDividend)
+#define DOWNSCALE_X(x) ((int16)(x)*ConfigData::get()->upscaleDivisor / ConfigData::get()->upscaleDividend)
+#define DOWNSCALE_Y(y) ((int16)(y)*ConfigData::get()->upscaleDivisor / ConfigData::get()->upscaleDividend)
 #define DOWNSCALE(x, y) DOWNSCALE_X(x), DOWNSCALE_Y(y)
 
 #define DBG_HEX 0xDB9

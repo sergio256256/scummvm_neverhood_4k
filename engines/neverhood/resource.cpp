@@ -453,10 +453,10 @@ void DataResource::load(uint32 fileHash) {
 					debug(3, "HitRectList; count = %d", count);
 					for (uint j = 0; j < count; j++) {
 						HitRect hitRect;
-						hitRect.rect.x1 = dataS.readUint16LE();
-						hitRect.rect.y1 = dataS.readUint16LE();
-						hitRect.rect.x2 = dataS.readUint16LE();
-						hitRect.rect.y2 = dataS.readUint16LE();
+						hitRect.rect.x1 = UPSCALE_X(dataS.readUint16LE());
+						hitRect.rect.y1 = UPSCALE_Y(dataS.readUint16LE());
+						hitRect.rect.x2 = UPSCALE_X(dataS.readUint16LE());
+						hitRect.rect.y2 = UPSCALE_Y(dataS.readUint16LE());
 						hitRect.type = dataS.readUint16LE() + 0x5001;
 						debug(3, "(%d, %d, %d, %d) -> %04d", hitRect.rect.x1, hitRect.rect.y1, hitRect.rect.x2, hitRect.rect.y2, hitRect.type);
 						hitRectList->push_back(hitRect);
@@ -488,10 +488,10 @@ void DataResource::load(uint32 fileHash) {
 					debug(3, "SubRectList; count = %d", count);
 					for (uint j = 0; j < count; j++) {
 						DRSubRect drSubRect;
-						drSubRect.rect.x1 = dataS.readUint16LE();
-						drSubRect.rect.y1 = dataS.readUint16LE();
-						drSubRect.rect.x2 = dataS.readUint16LE();
-						drSubRect.rect.y2 = dataS.readUint16LE();
+						drSubRect.rect.x1 = UPSCALE_X(dataS.readUint16LE());
+						drSubRect.rect.y1 = UPSCALE_Y(dataS.readUint16LE());
+						drSubRect.rect.x2 = UPSCALE_X(dataS.readUint16LE());
+						drSubRect.rect.y2 = UPSCALE_Y(dataS.readUint16LE());
 						drSubRect.messageListHash = dataS.readUint32LE();
 						drSubRect.messageListItemIndex = dataS.readUint16LE();
 						debug(3, "(%d, %d, %d, %d) -> %08X (%d)", drSubRect.rect.x1, drSubRect.rect.y1, drSubRect.rect.x2, drSubRect.rect.y2, drSubRect.messageListHash, drSubRect.messageListItemIndex);
@@ -504,10 +504,10 @@ void DataResource::load(uint32 fileHash) {
 			case 6:
 				{
 					DRRect drRect;
-					drRect.rect.x1 = dataS.readUint16LE();
-					drRect.rect.y1 = dataS.readUint16LE();
-					drRect.rect.x2 = dataS.readUint16LE();
-					drRect.rect.y2 = dataS.readUint16LE();
+					drRect.rect.x1 = UPSCALE_X(dataS.readUint16LE());
+					drRect.rect.y1 = UPSCALE_Y(dataS.readUint16LE());
+					drRect.rect.x2 = UPSCALE_X(dataS.readUint16LE());
+					drRect.rect.y2 = UPSCALE_Y(dataS.readUint16LE());
 					drRect.subRectIndex = dataS.readUint16LE();
 					debug(3, "(%d, %d, %d, %d) -> %d", drRect.rect.x1, drRect.rect.y1, drRect.rect.x2, drRect.rect.y2, drRect.subRectIndex);
 					drDirectoryItem.offset = _drRects.size();
@@ -521,10 +521,10 @@ void DataResource::load(uint32 fileHash) {
 					debug(3, "NRectArray; count = %d", count);
 					for (uint j = 0; j < count; j++) {
 						NRect rect;
-						rect.x1 = dataS.readUint16LE();
-						rect.y1 = dataS.readUint16LE();
-						rect.x2 = dataS.readUint16LE();
-						rect.y2 = dataS.readUint16LE();
+						rect.x1 = UPSCALE_X(dataS.readUint16LE());
+						rect.y1 = UPSCALE_Y(dataS.readUint16LE());
+						rect.x2 = UPSCALE_X(dataS.readUint16LE());
+						rect.y2 = UPSCALE_Y(dataS.readUint16LE());
 						debug(3, "(%d, %d, %d, %d)", rect.x1, rect.y1, rect.x2, rect.y2);
 						rectArray->push_back(rect);
 					}

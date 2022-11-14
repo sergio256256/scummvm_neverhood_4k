@@ -80,7 +80,7 @@ uint32 Klaymen::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stTryStandIdle);
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	default:
 		break;
@@ -907,9 +907,9 @@ void Klaymen::suWalkingTestExit() {
 				_y = xdelta < 0 ? hitRectPrev->rect.y2 : hitRectPrev->rect.y1;
 			} else if (_doYHitIncr && xdelta != 0) {
 				if (hitRectNext->type == 0x5000) {
-					_y++;
+					_y += UPSCALE_Y(1);
 				} else if (hitRectNext->type == 0x5001 && _y > hitRectNext->rect.y1) {
-					_y--;
+					_y -= UPSCALE_Y(1);
 				}
 			}
 		}

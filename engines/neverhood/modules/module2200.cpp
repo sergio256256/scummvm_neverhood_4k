@@ -742,8 +742,8 @@ Scene2203::Scene2203(NeverhoodEngine *vm, Module *parentModule, int which)
 	_asRightDoor = insertSprite<AsScene2203Door>(this, 1);
 	_ssSmallLeftDoor = insertStaticSprite(0x542CC072, 1100);
 	_ssSmallRightDoor = insertStaticSprite(0x0A2C0432, 1100);
-	_leftDoorClipRect.set(_ssSmallLeftDoor->getDrawRect().x, 0, UPSCALE(640, 480));
-	_rightDoorClipRect.set(0, 0, _ssSmallRightDoor->getDrawRect().x2(), UPSCALE_Y(480));
+	_leftDoorClipRect.set(_ssSmallLeftDoor->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
+	_rightDoorClipRect.set(UPSCALE(0, 0), _ssSmallRightDoor->getDrawRect().x2(), UPSCALE_Y(480));
 	sendEntityMessage(_asLeftDoor, 0x2000, _asRightDoor);
 	sendEntityMessage(_asRightDoor, 0x2000, _asLeftDoor);
 	addCollisionSprite(_asLeftDoor);
@@ -1212,7 +1212,7 @@ uint32 Scene2207::handleMessage(int messageNum, const MessageParam &param, Entit
 				cancelMessageList();
 		} else if (param.asInteger() == 0x4054C877) {
 			if (_klaymenAtElevator) {
-				sendMessage(_asElevator, 0x2000, 480);
+				sendMessage(_asElevator, 0x2000, UPSCALE_Y(480));
 				sendEntityMessage(_klaymen, 0x1014, _asElevator);
 				sendMessage(_klaymen, 0x2001, 0);
 			} else
@@ -1326,7 +1326,7 @@ Scene2208::Scene2208(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	_background = new Background(_vm, 0);
 	_background->createSurface(0, UPSCALE(640, 640));
-	_background->getSpriteResource().getPosition().y = 480;
+	_background->getSpriteResource().getPosition().y = UPSCALE_Y(480);
 	addBackground(_background);
 	setPalette(0x08100289);
 	addEntity(_palette);
@@ -1357,7 +1357,7 @@ Scene2208::Scene2208(NeverhoodEngine *vm, Module *parentModule, int which)
 		_newRowIndex = _maxRowIndex - _visibleRowsCount;
 	if (_newRowIndex < 6)
 		_newRowIndex = 0;
-	_rowScrollY = 0;
+	_rowScrollY = UPSCALE_Y(0);
 	_backgroundScrollY = UPSCALE_Y(48) * _newRowIndex;
 	_currRowIndex = _newRowIndex;
 
@@ -1393,22 +1393,22 @@ void Scene2208::update() {
 	if (_currRowIndex < _newRowIndex) {
 		if (_rowScrollY == 0)
 			drawRow(_currRowIndex + _visibleRowsCount);
-		_backgroundScrollY += 4;
-		_rowScrollY += 4;
-		if (_rowScrollY == 48) {
-			_rowScrollY = 0;
+		_backgroundScrollY += UPSCALE_Y(4);
+		_rowScrollY += UPSCALE_Y(4);
+		if (_rowScrollY == UPSCALE_Y(48)) {
+			_rowScrollY = UPSCALE_Y(0);
 			_currRowIndex++;
 		}
 		_background->getSurface()->getSysRect().y = _backgroundScrollY;
-	} else if (_currRowIndex > _newRowIndex || _rowScrollY > 0) {
-		if (_rowScrollY == 0) {
+	} else if (_currRowIndex > _newRowIndex || _rowScrollY > UPSCALE_Y(0)) {
+		if (_rowScrollY == UPSCALE_Y(0)) {
 			drawRow(_currRowIndex - 1);
 			_currRowIndex--;
 		}
-		_backgroundScrollY -= 4;
-		if (_rowScrollY == 0)
-			_rowScrollY = 48;
-		_rowScrollY -= 4;
+		_backgroundScrollY -= UPSCALE_Y(4);
+		if (_rowScrollY == UPSCALE_Y(0))
+			_rowScrollY = UPSCALE_Y(48);
+		_rowScrollY -= UPSCALE_Y(4);
 		_background->getSurface()->getSysRect().y = _backgroundScrollY;
 	}
 
@@ -1431,29 +1431,29 @@ uint32 Scene2208::handleMessage(int messageNum, const MessageParam &param, Entit
 
 void Scene2208::drawRow(int16 rowIndex) {
 	NDrawRect sourceRect;
-	int16 y = (rowIndex * 48) % 528;
+	int16 y = UPSCALE_Y((rowIndex * 48) % 528);
 	if (rowIndex < 4) {
-		sourceRect.x = 0;
+		sourceRect.x = UPSCALE_X(0);
 		sourceRect.y = y;
-		sourceRect.width = 640;
-		sourceRect.height = 48;
-		_background->getSurface()->copyFrom(_topBackgroundSurface->getSurface(), 0, y, sourceRect);
+		sourceRect.width = UPSCALE_X(640);
+		sourceRect.height = UPSCALE_Y(48);
+		_background->getSurface()->copyFrom(_topBackgroundSurface->getSurface(), UPSCALE_X(0), y, sourceRect);
 	} else if (rowIndex > _maxRowIndex - 5) {
-		sourceRect.x = 0;
-		sourceRect.y = (rowIndex - _maxRowIndex + 4) * 48;
-		sourceRect.width = 640;
-		sourceRect.height = 48;
-		_background->getSurface()->copyFrom(_bottomBackgroundSurface->getSurface(), 0, y, sourceRect);
+		sourceRect.x = UPSCALE_X(0);
+		sourceRect.y = UPSCALE_Y((rowIndex - _maxRowIndex + 4) * 48);
+		sourceRect.width = UPSCALE_X(640);
+		sourceRect.height = UPSCALE_Y(48);
+		_background->getSurface()->copyFrom(_bottomBackgroundSurface->getSurface(), UPSCALE_X(0), y, sourceRect);
 	} else {
 		rowIndex -= 4;
-		sourceRect.x = 0;
-		sourceRect.y = (rowIndex * 48) % 480;
-		sourceRect.width = 640;
-		sourceRect.height = 48;
-		_background->getSurface()->copyFrom(_backgroundSurface->getSurface(), 0, y, sourceRect);
+		sourceRect.x = UPSCALE_X(0);
+		sourceRect.y = UPSCALE_Y((rowIndex * 48) % 480);
+		sourceRect.width = UPSCALE_X(640);
+		sourceRect.height = UPSCALE_Y(48);
+		_background->getSurface()->copyFrom(_backgroundSurface->getSurface(), UPSCALE_X(0), y, sourceRect);
 		if (rowIndex < (int)_strings.size()) {
 			const char *text = _strings[rowIndex];
-			_fontSurface->drawString(_background->getSurface(), 95, y, (const byte*)text);
+			_fontSurface->drawString(_background->getSurface(), UPSCALE_X(95), y, (const byte*)text);
 		}
 	}
 }

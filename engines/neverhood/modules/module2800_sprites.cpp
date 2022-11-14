@@ -1151,7 +1151,7 @@ uint32 KmScene2803::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case NM_KLAYMEN_TURN_TO_USE:
 		GotoState(&Klaymen::stTurnToUse);
@@ -1352,7 +1352,7 @@ uint32 KmScene2806::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stTryStandIdle);
 		break;
 	case 0x4804:
-		startWalkToX(440, true);
+		startWalkToX(UPSCALE_X(440), true);
 		break;
 	case 0x480D:
 		GotoState(&Klaymen::stPullCord);
@@ -1366,7 +1366,7 @@ uint32 KmScene2806::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case 0x4831:
 		GotoState(&Klaymen::stGrow);
@@ -1412,7 +1412,7 @@ uint32 KmScene2809::xHandleMessage(int messageNum, const MessageParam &param) {
 		GotoState(&Klaymen::stTryStandIdle);
 		break;
 	case 0x4804:
-		startWalkToX(226, true);
+		startWalkToX(UPSCALE_X(226), true);
 		break;
 	case 0x480D:
 		GotoState(&Klaymen::stPullCord);
@@ -1426,7 +1426,7 @@ uint32 KmScene2809::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case 0x4831:
 		GotoState(&Klaymen::stGrow);
@@ -1525,7 +1525,7 @@ uint32 KmScene2810::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case 0x481B:
 		if (param.asPoint().y != 0)

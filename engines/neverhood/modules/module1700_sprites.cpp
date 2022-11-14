@@ -41,10 +41,10 @@ SsScene1705Tape::SsScene1705Tape(NeverhoodEngine *vm, Scene *parentScene, uint32
 		SetMessageHandler(nullptr);
 	}
 	_collisionBoundsOffset = _drawOffset;
-	_collisionBoundsOffset.x -= 4;
-	_collisionBoundsOffset.y -= 8;
-	_collisionBoundsOffset.width += 8;
-	_collisionBoundsOffset.height += 16;
+	_collisionBoundsOffset.x -= UPSCALE_X(4);
+	_collisionBoundsOffset.y -= UPSCALE_Y(8);
+	_collisionBoundsOffset.width += UPSCALE_X(8);
+	_collisionBoundsOffset.height += UPSCALE_Y(16);
 	Sprite::updateBounds();
 }
 

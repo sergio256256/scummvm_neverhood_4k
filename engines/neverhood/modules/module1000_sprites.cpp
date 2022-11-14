@@ -1630,7 +1630,7 @@ uint32 KmScene1004::xHandleMessage(int messageNum, const MessageParam &param) {
 		gotoNextStateExt();
 		break;
 	case 0x4818:
-		startWalkToX(_dataResource.getPoint(param.asInteger()).x, false);
+		startWalkToX(DOWNSCALE_X(_dataResource.getPoint(param.asInteger()).x), false);
 		break;
 	case NM_KLAYMEN_RETURN_FROM_USE:
 		GotoState(&KmScene1004::stReadNote);
