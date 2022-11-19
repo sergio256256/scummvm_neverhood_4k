@@ -93,13 +93,13 @@ public:
 	void draw(uint frameIndex, Graphics::Surface *destSurface, bool flipX, bool flipY);
 	bool load(uint32 fileHash);
 	void unload();
-	void clear();
 	uint getFrameCount() const { return _frames.size(); }
 	const AnimFrameInfo& getFrameInfo(int16 index) const { return _frames[index]; }
 	int16 getFrameIndex(uint32 frameHash);
 	void setReplEnabled(bool value) { _replEnabled = value; }
 	void setRepl(byte oldColor, byte newColor);
 	NDimensions loadSpriteDimensions(uint32 fileHash);
+	uint32 getFileHash() const { return _fileHash; }
 protected:
 	NeverhoodEngine *_vm;
 	ResourceHandle _resourceHandle;
@@ -166,6 +166,8 @@ public:
 	NRectArray *getRectArray(uint32 nameHash);
 	HitRectList *getHitRectList();
 	MessageList *getMessageListAtPos(int16 klaymenX, int16 klaymenY, int16 mouseX, int16 mouseY);
+	uint32 getFileHash() const { return _fileHash; }
+
 protected:
 
 	struct DRDirectoryItem {
@@ -196,7 +198,8 @@ protected:
 	Common::Array<HitRectList*> _hitRectLists;
 	Common::Array<MessageList*> _messageLists;
 	Common::Array<DRRect> _drRects;
-	Common::Array<DRSubRectList*> _drSubRectLists;
+	Common::Array<DRSubRectList *> _drSubRectLists;
+	uint32 _fileHash;
 	DataResource::DRDirectoryItem *findDRDirectoryItem(uint32 nameHash, uint16 type);
 };
 

@@ -213,7 +213,7 @@ NPoint NeverhoodEngine::getMousePos() {
 
 void ConfigData::load(const Common::String& filename) {
 	Common::INIFile inifile;
-	if (inifile.loadFromFile(filename)) {
+	if (inifile.loadFromFile(filename.substr(filename.rfind('\\') + 1))) {
 
 		Common::String temp;
 

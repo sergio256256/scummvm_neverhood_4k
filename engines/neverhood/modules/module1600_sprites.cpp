@@ -64,6 +64,10 @@ AsCommonCar::~AsCommonCar() {
 		setGlobalVar(V_CAR_DELTA_X, !getGlobalVar(V_CAR_DELTA_X));
 }
 
+void AsCommonCar::setPathPoints(NPointArray *pathPoints) {
+	_pathPoints = pathPoints;
+}
+
 void AsCommonCar::update() {
 	if (_newDeltaXType >= 0) {
 		setDoDeltaX(_newDeltaXType);
@@ -179,14 +183,14 @@ uint32 AsCommonCar::handleMessage(int messageNum, const MessageParam &param, Ent
 		_yMoveTotalSteps = param.asInteger();
 		_steps = 0;
 		_isBraking = false;
-		_lastDistance = 640;
+		_lastDistance = UPSCALE_X(640);
 		SetSpriteUpdate(&AsCommonCar::suMoveToPrevPoint);
 		break;
 	case NM_CAR_MOVE_TO_NEXT_POINT:
 		_yMoveTotalSteps = param.asInteger();
 		_steps = 0;
 		_isBraking = false;
-		_lastDistance = 640;
+		_lastDistance = UPSCALE_X(640);
 		SetSpriteUpdate(&AsCommonCar::suMoveToNextPoint);
 		break;
 	case NM_CAR_ENTER:
@@ -264,12 +268,12 @@ void AsCommonCar::stCarAtHome() {
 
 void AsCommonCar::updateTurnMovement() {
 	if (_turnMoveStatus == 1) {
-		_lastDistance = 640;
+		_lastDistance = UPSCALE_X(640);
 		_isIdle = false;
 		_isBraking = false;
 		SetSpriteUpdate(&AsCommonCar::suMoveToNextPoint);
 	} else if (_turnMoveStatus == 2) {
-		_lastDistance = 640;
+		_lastDistance = UPSCALE_X(640);
 		_isIdle = false;
 		_isBraking = false;
 		SetSpriteUpdate(&AsCommonCar::suMoveToPrevPoint);
@@ -381,7 +385,7 @@ void AsCommonCar::moveToNextPoint() {
 			}
 			_isBraking = false;
 			SetSpriteUpdate(&AsCommonCar::suMoveToNextPoint);
-			_lastDistance = 640;
+			_lastDistance = UPSCALE_X(640);
 		}
 	}
 }
@@ -469,7 +473,7 @@ void AsCommonCar::moveToPrevPoint() {
 			}
 			_isBraking = false;
 			SetSpriteUpdate(&AsCommonCar::suMoveToPrevPoint);
-			_lastDistance = 640;
+			_lastDistance = UPSCALE_X(640);
 		}
 	}
 }
@@ -506,9 +510,9 @@ void AsCommonCar::suMoveToNextPoint() {
 			sendMessage(this, NM_SCENE_LEAVE, 0);
 			return;
 		} else
-			_steps--;
-	} else if (_steps < 11)
-		_steps++;
+			_steps -= UPSCALE_X(1);
+	} else if (_steps < UPSCALE_X(11))
+		_steps += UPSCALE_X(1);
 
 	bool firstTime = true;
 	_ySteps = _steps;
@@ -554,9 +558,9 @@ void AsCommonCar::suMoveToNextPoint() {
 				_newMoveDirection = 1;
 			if (firstTime) {
 				if (pt1.y >= pt2.y)
-					stepsCtr += 7;
+					stepsCtr += UPSCALE_X(7);
 				else {
-					stepsCtr -= 4;
+					stepsCtr -= UPSCALE_X(4);
 					if (stepsCtr < 0)
 						stepsCtr = 0;
 				}
@@ -649,9 +653,9 @@ void AsCommonCar::suMoveToPrevPoint() {
 			sendMessage(this, NM_SCENE_LEAVE, 0);
 			return;
 		} else
-			_steps--;
-	} else if (_steps < 11)
-		_steps++;
+			_steps -= UPSCALE_X(1);
+	} else if (_steps < UPSCALE_X(11))
+		_steps += UPSCALE_X(1);
 
 	bool firstTime = true;
 	_ySteps = _steps;
@@ -699,11 +703,11 @@ void AsCommonCar::suMoveToPrevPoint() {
 				_newMoveDirection = 3;
 			if (firstTime) {
 				if (pt1.y >= pt2.y) {
-					stepsCtr -= 4;
+					stepsCtr -= UPSCALE_X(4);
 					if (stepsCtr < 0)
 						stepsCtr = 0;
 				} else {
-					stepsCtr += 7;
+					stepsCtr += UPSCALE_X(7);
 				}
 				_ySteps = stepsCtr;
 			}
@@ -833,7 +837,7 @@ void Tracks::findTrackPoint(NPoint pt, int &minMatchTrackIndex, int &minMatchDis
 	DataResource &dataResource) {
 	const uint trackCount = size();
 	minMatchTrackIndex = -1;
-	minMatchDistance = 640;
+	minMatchDistance = UPSCALE_X(640);
 	for (uint trackIndex = 0; trackIndex < trackCount; trackIndex++) {
 		NPointArray *pointList = dataResource.getPointArray((*this)[trackIndex]->trackPointsName);
 		for (uint pointIndex = 0; pointIndex < pointList->size(); pointIndex++) {

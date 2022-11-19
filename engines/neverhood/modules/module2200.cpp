@@ -1325,7 +1325,7 @@ Scene2208::Scene2208(NeverhoodEngine *vm, Module *parentModule, int which)
 	_maxRowIndex = 8 + 10 * (3 - (getGlobalVar(V_COLUMN_TEXT_NAME) == calcHash("stLineagex") ? 1 : 0));
 
 	_background = new Background(_vm, 0);
-	_background->createSurface(0, UPSCALE(640, 640));
+	_background->createSurface(0, UPSCALE(640, 528));
 	_background->getSpriteResource().getPosition().y = UPSCALE_Y(480);
 	addBackground(_background);
 	setPalette(0x08100289);
@@ -1338,13 +1338,13 @@ Scene2208::Scene2208(NeverhoodEngine *vm, Module *parentModule, int which)
 	spriteResource.load(0x08100289, true);
 	_backgroundSurface->drawSpriteResourceEx(spriteResource, false, false, 0, 0);
 
-	_topBackgroundSurface = new BaseSurface(_vm, 0, UPSCALE(640, 480), "top background");
+	_topBackgroundSurface = new BaseSurface(_vm, 0, UPSCALE(640, 192), "top background");
 	spriteResource.load(!getGlobalVar(V_COLUMN_BACK_NAME)
 		? kScene2208FileHashes1[getGlobalVar(V_CLICKED_COLUMN_INDEX) % 6]
 		: getGlobalVar(V_COLUMN_BACK_NAME), true);
 	_topBackgroundSurface->drawSpriteResourceEx(spriteResource, false, false, 0, 0);
 
-	_bottomBackgroundSurface = new BaseSurface(_vm, 0, UPSCALE(640, 480), "bottom background");
+	_bottomBackgroundSurface = new BaseSurface(_vm, 0, UPSCALE(640, 192), "bottom background");
 	spriteResource.load(kScene2208FileHashes2[getGlobalVar(V_CLICKED_COLUMN_INDEX) % 6], true);
 	_bottomBackgroundSurface->drawSpriteResourceEx(spriteResource, false, false, 0, 0);
 

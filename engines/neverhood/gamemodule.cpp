@@ -347,7 +347,7 @@ uint32 GameModule::handleMessage(int messageNum, const MessageParam &param, Enti
 void GameModule::startup() {
 #if 1
 	// Logos and intro video // Real game start
-	createModule(2100, 0);
+	createModule(2700, 0);
 #else
 	// DEBUG>>>
 	/*

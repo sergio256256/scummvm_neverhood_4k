@@ -40,7 +40,7 @@ AsCommonCarShadow::AsCommonCarShadow(NeverhoodEngine *vm, AnimatedSprite *asCar,
 	: AnimatedSprite(vm, 1100), _asCar(asCar), _index(index), _animFileHash(0) {
 
 	SetUpdateHandler(&AsCommonCarShadow::update);
-	createShadowSurface(shadowSurface, 211, 147, 100);
+	createShadowSurface(shadowSurface, UPSCALE(211, 147), 100);
 	updateShadow();
 }
 

@@ -27,7 +27,7 @@ namespace Neverhood {
 
 BaseSurface::BaseSurface(NeverhoodEngine *vm, int priority, int16 width, int16 height, Common::String name)
 	: _vm(vm), _priority(priority), _visible(true), _transparent(true),
-	_clipRects(nullptr), _clipRectsCount(0), _version(0), _name(name) {
+	  _clipRects(nullptr), _clipRectsCount(0), _version(0), _name(name), _lastResourceFileHash(0) {
 
 	_drawRect.x = UPSCALE_X(0);
 	_drawRect.y = UPSCALE_Y(0);
@@ -72,6 +72,7 @@ void BaseSurface::drawSpriteResource(SpriteResource &spriteResource) {
 		spriteResource.getDimensions().height <= _drawRect.height) {
 		clear();
 		spriteResource.draw(_surface, false, false);
+		_lastResourceFileHash = spriteResource.getFileHash();
 		++_version;
 	}
 
@@ -88,6 +89,7 @@ void BaseSurface::drawSpriteResourceEx(SpriteResource &spriteResource, bool flip
 		if (_surface) {
 			clear();
 			spriteResource.draw(_surface, flipX, flipY);
+			_lastResourceFileHash = spriteResource.getFileHash();
 			++_version;
 		}
 	}
@@ -102,6 +104,7 @@ void BaseSurface::drawAnimResource(AnimResource &animResource, uint frameIndex, 
 		clear();
 		if (frameIndex < animResource.getFrameCount()) {
 			animResource.draw(frameIndex, _surface, flipX, flipY);
+			_lastResourceFileHash = animResource.getFileHash();
 			++_version;
 		}
 	}
@@ -110,6 +113,7 @@ void BaseSurface::drawAnimResource(AnimResource &animResource, uint frameIndex, 
 void BaseSurface::drawMouseCursorResource(MouseCursorResource &mouseCursorResource, int frameNum) {
 	if (frameNum < 3) {
 		mouseCursorResource.draw(frameNum, _surface);
+		_lastResourceFileHash = mouseCursorResource.getFileHash();
 		++_version;
 	}
 }

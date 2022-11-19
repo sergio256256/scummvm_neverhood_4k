@@ -759,7 +759,7 @@ uint32 AsScene1407Mouse::handleMessage(int messageNum, const MessageParam &param
 		{
 			// Reset the position
 			// Find the nearest hole and go through it, and exit at the first hole
-			int16 distance = 640;
+			int16 distance = UPSCALE_X(640);
 			int matchIndex = 50;
 			for (int index = 0; index < 50; index++)
 				if (kScene1407MouseHoles[index].sectionIndex == _currSectionIndex &&

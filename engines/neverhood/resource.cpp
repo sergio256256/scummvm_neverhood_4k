@@ -399,6 +399,7 @@ void DataResource::load(uint32 fileHash) {
 	const byte *data = nullptr;
 	uint32 dataSize = 0;
 	unload();
+
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeData) {
 		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
@@ -406,6 +407,7 @@ void DataResource::load(uint32 fileHash) {
 		dataSize = _resourceHandle.size();
 	}
 	if (data && dataSize) {
+		_fileHash = fileHash;
 		Common::MemoryReadStream dataS(data, dataSize);
 		uint itemCount = dataS.readUint16LE();
 		uint32 itemStartOffs = 2 + itemCount * 8;
@@ -560,6 +562,7 @@ void DataResource::unload() {
 		delete (*it);
 	_drSubRectLists.clear();
 	_vm->_res->unloadResource(_resourceHandle);
+	_fileHash = 0;
 }
 
 NPoint DataResource::getPoint(uint32 nameHash) {

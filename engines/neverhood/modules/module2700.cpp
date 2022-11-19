@@ -26,14 +26,14 @@
 
 namespace Neverhood {
 
-static const NRect kScene2710ClipRect = { 0, 0, 626, 480 };
+static const NRect kScene2710ClipRect = { UPSCALE(0, 0), UPSCALE(626, 480) };
 
 static const uint32 kScene2710StaticSprites[] = {
 	0x0D2016C0,
 	0
 };
 
-static const NRect kScene2711ClipRect = { 0, 0, 521, 480 };
+static const NRect kScene2711ClipRect = { UPSCALE(0, 0), UPSCALE(521, 480) };
 
 static const uint32 kScene2711FileHashes1[] = {
 	0,
@@ -563,7 +563,7 @@ Scene2701::Scene2701(NeverhoodEngine *vm, Module *parentModule, int which)
 	insertScreenMouse(0x08B08180);
 
 	tempSprite = insertStaticSprite(0x1E086325, 1200);
-	clipRect.set(0, 0, 640, tempSprite->getDrawRect().y2());
+	clipRect.set(UPSCALE(0, 0), UPSCALE_X(640), tempSprite->getDrawRect().y2());
 
 	if (tracks->bgShadowFilename) {
 		_ssTrackShadowBackground = createSprite<SsCommonTrackShadowBackground>(tracks->bgShadowFilename);
@@ -582,6 +582,7 @@ Scene2701::Scene2701(NeverhoodEngine *vm, Module *parentModule, int which)
 	_which2 = tracks->which2;
 	_dataResource.load(tracks->dataResourceFilename);
 	_trackPoints = _dataResource.getPointArray(tracks->trackPointsName);
+	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _which2) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
@@ -712,6 +713,7 @@ Scene2702::Scene2702(NeverhoodEngine *vm, Module *parentModule, int which)
 	}
 
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
+	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _tracks[_currTrackIndex]->which2) {
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
@@ -793,6 +795,7 @@ void Scene2702::moveCarToPoint(NPoint pt) {
 void Scene2702::changeTrack() {
 	_currTrackIndex = _newTrackIndex;
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
+	_asCar->setPathPoints(_trackPoints);
 	if (_isUpperTrack) {
 		if (_currTrackIndex == 0)
 			sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
@@ -841,6 +844,7 @@ Scene2703::Scene2703(NeverhoodEngine *vm, Module *parentModule, int which, uint3
 	_which2 = tracks->which2;
 	_dataResource.load(tracks->dataResourceFilename);
 	_trackPoints = _dataResource.getPointArray(tracks->trackPointsName);
+	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _which2) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
@@ -961,6 +965,7 @@ Scene2704::Scene2704(NeverhoodEngine *vm, Module *parentModule, int which, uint3
 	_which2 = tracks->which2;
 	_dataResource.load(tracks->dataResourceFilename);
 	_trackPoints = _dataResource.getPointArray(tracks->trackPointsName);
+	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _which2) {
 		NPoint testPoint = (*_trackPoints)[_trackPoints->size() - 1];
@@ -1056,6 +1061,7 @@ Scene2706::Scene2706(NeverhoodEngine *vm, Module *parentModule, int which)
 		_currTrackIndex = 0;
 
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
+	_asCar->setPathPoints(_trackPoints);
 
 	if (which == _tracks[_currTrackIndex]->which2) {
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
@@ -1121,6 +1127,7 @@ void Scene2706::moveCarToPoint(NPoint pt) {
 void Scene2706::changeTrack() {
 	_currTrackIndex = _newTrackIndex;
 	_trackPoints = _dataResource.getPointArray(_tracks[_currTrackIndex]->trackPointsName);
+	_asCar->setPathPoints(_trackPoints);
 	if (_currTrackIndex == 0)
 		sendMessage(_asCar, NM_POSITION_CHANGE, _trackPoints->size() - 1);
 	else

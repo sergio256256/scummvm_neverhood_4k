@@ -105,6 +105,10 @@ protected:
 	int16 filterY(int16 y) {
 		return _filterYCb ? (this->*_filterYCb)(y) : y;
 	}
+
+	uint32 getFileHash() const {
+		return _dataResource.getFileHash();
+	}
 };
 
 enum {

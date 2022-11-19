@@ -108,6 +108,7 @@ public:
 	void setTransparent(bool value) { _transparent = value; }
 	Graphics::Surface *getSurface() { return _surface; }
 	const Common::String getName() const { return _name; }
+	uint32 getLastResourceFileHash() const { return _lastResourceFileHash; }
 protected:
 	NeverhoodEngine *_vm;
 	int _priority;
@@ -122,6 +123,7 @@ protected:
 	bool _transparent;
 	// Version changes each time the pixels are touched in any way
 	byte _version;
+	uint32 _lastResourceFileHash;
 };
 
 class ShadowSurface : public BaseSurface {

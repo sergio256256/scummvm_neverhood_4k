@@ -478,7 +478,7 @@ Scene2403::Scene2403(NeverhoodEngine *vm, Module *parentModule, int which)
 	insertScreenMouse(0x506080C8);
 	_asTape = insertSprite<AsScene1201Tape>(this, 2, 1100, UPSCALE(480, 454), 0x9148A011);
 	addCollisionSprite(_asTape);
-	_asLightCord = insertSprite<AsScene2803LightCord>(this, 0xA1095A10, 0x836D3813, 368, 200);
+	_asLightCord = insertSprite<AsScene2803LightCord>(this, 0xA1095A10, 0x836D3813, UPSCALE(368, 200));
 	_asLightCord->setClipRect(UPSCALE(0, 25), UPSCALE(640, 480));
 
 	if (which < 0) {
