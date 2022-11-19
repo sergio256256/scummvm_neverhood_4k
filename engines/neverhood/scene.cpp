@@ -157,12 +157,13 @@ void Scene::printSurfaces(Console *con) {
 						 fileHash);
 	}
 
+	// Also find mouse as it helps a lot
 	for (uint index = 0; index < _entities.size(); index++) {
 		Mouse *mouse = dynamic_cast<Mouse*>(_entities[index]);
 		if (mouse) {
 			uint32 fileHash = mouse->getFileHash();
 			con->debugPrintf("('%s'): file hash %08X\n",
-							 "cursor", fileHash);
+							 "mouse", fileHash);
 		}
 
 	}
