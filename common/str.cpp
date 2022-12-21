@@ -325,9 +325,15 @@ size_t String::rfind(const char *s) const {
 }
 
 size_t String::rfind(char c, size_t pos) const {
-	for (int idx = (int)MIN((size_t)(_size - 1), (size_t)pos); idx >= 0; --idx) {
-		if ((*this)[idx] == c)
-			return idx;
+	if (pos == npos || pos > _size)
+		pos = _size;
+	else
+		++pos;
+
+	while (pos > 0) {
+		--pos;
+		if ((*this)[pos] == c)
+			return pos;
 	}
 
 	return npos;
