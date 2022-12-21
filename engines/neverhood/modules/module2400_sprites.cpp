@@ -301,7 +301,7 @@ AsScene2402TV::AsScene2402TV(NeverhoodEngine *vm, Klaymen *klaymen)
 		int16 frameIndex;
 		if (_klaymen->getX() > UPSCALE_X(320))
 			_currFrameIndex = 29;
-		frameIndex = CLIP<int16>((_klaymen->getX() - _x + UPSCALE_X(150)) / 10, 0, 29);
+		frameIndex = CLIP<int16>((_klaymen->getX() - _x + UPSCALE_X(150)) / UPSCALE_X(10), 0, 29);
 		startAnimation(0x050A0103, frameIndex, -1);
 		_newStickFrameIndex = frameIndex;
 		_countdown1 = 0;
@@ -323,7 +323,7 @@ void AsScene2402TV::upWait() {
 }
 
 void AsScene2402TV::upFocusKlaymen() {
-	int16 frameIndex = CLIP<int16>((_klaymen->getX() - _x + UPSCALE_X(150)) / 10, 0, 29);
+	int16 frameIndex = CLIP<int16>((_klaymen->getX() - _x + UPSCALE_X(150)) / UPSCALE_X(10), 0, 29);
 	if (frameIndex != _currFrameIndex) {
 		if (frameIndex > _currFrameIndex)
 			_currFrameIndex++;

@@ -82,6 +82,13 @@ static const uint32 kScene2725StaticSprites[] = {
 	0
 };
 
+bool TS_ASSERT_EQUALS(int a, int b) {
+	if (a == b)
+		return true;
+
+	return false;
+}
+
 Module2700::Module2700(NeverhoodEngine *vm, Module *parentModule, int which)
 	: Module(vm, parentModule), _soundIndex(0), _radioMusicInitialized(false), _musicFileHash(0) {
 

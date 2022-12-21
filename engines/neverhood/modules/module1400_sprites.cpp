@@ -266,11 +266,11 @@ void AsScene1401BackDoor::stCloseDoorDone() {
 }
 
 static const AsCommonProjectorItem kAsCommonProjectorItems[] = {
-	{{154, 453}, 4,  2,  0, 0, 1},
-	{{104, 391}, 4, -1, -1, 1, 1},
-	{{ 22, 447}, 6, -1, -1, 1, 1},
-	{{112, 406}, 2, -1, -1, 1, 0},
-	{{262, 433}, 1,  1,  0, 0, 0}
+	{UPSCALE(154, 453), 4,  2,  0, 0, 1},
+	{UPSCALE(104, 391), 4, -1, -1, 1, 1},
+	{UPSCALE( 22, 447), 6, -1, -1, 1, 1},
+	{UPSCALE(112, 406), 2, -1, -1, 1, 0},
+	{UPSCALE(262, 433), 1,  1,  0, 0, 0}
 };
 
 AsCommonProjector::AsCommonProjector(NeverhoodEngine *vm, Scene *parentScene, Sprite *klaymen, Sprite *asPipe)
@@ -281,7 +281,7 @@ AsCommonProjector::AsCommonProjector(NeverhoodEngine *vm, Scene *parentScene, Sp
 	startAnimation(0x10E3042B, 0, -1);
 	SetUpdateHandler(&AnimatedSprite::update);
 	SetMessageHandler(&AsCommonProjector::handleMessage);
-	_x = getGlobalVar(V_PROJECTOR_SLOT) * 108 + _asProjectorItem->point.x;
+	_x = getGlobalVar(V_PROJECTOR_SLOT) * UPSCALE_X(108) + _asProjectorItem->point.x;
 	_lockedInSlot = true;
 	moveProjector();
 	setDoDeltaX(1);
@@ -422,18 +422,18 @@ void AsCommonProjector::moveProjector() {
 	_y = _asProjectorItem->point.y;
 
 	if (_asProjectorItem->index1 != -1) {
-		int16 elX = _asProjectorItem->index1 * 108 + _asProjectorItem->point.x;
-		if (elX - 20 < _x && elX + 20 > _x) {
+		int16 elX = _asProjectorItem->index1 * UPSCALE_X(108) + _asProjectorItem->point.x;
+		if (elX - UPSCALE_X(20) < _x && elX + UPSCALE_X(20) > _x) {
 			nowLockedInSlot = true;
-			_y = _asProjectorItem->point.y + 10;
+			_y = _asProjectorItem->point.y + UPSCALE_Y(10);
 		}
 	}
 
 	if (_asProjectorItem->lockSlotIndex != -1) {
-		int16 elX = _asProjectorItem->lockSlotIndex * 108 + _asProjectorItem->point.x;
-		if (elX - 20 < _x && elX + 20 > _x) {
+		int16 elX = _asProjectorItem->lockSlotIndex * UPSCALE_X(108) + _asProjectorItem->point.x;
+		if (elX - UPSCALE_X(20) < _x && elX + UPSCALE_X(20) > _x) {
 			nowLockedInSlot = true;
-			_y = _asProjectorItem->point.y + 10;
+			_y = _asProjectorItem->point.y + UPSCALE_Y(10);
 		}
 	}
 
@@ -464,7 +464,7 @@ void AsCommonProjector::stIdle() {
 }
 
 void AsCommonProjector::stMoving() {
-	_beforeMoveX = getGlobalVar(V_PROJECTOR_SLOT) * 108 + _asProjectorItem->point.x;
+	_beforeMoveX = getGlobalVar(V_PROJECTOR_SLOT) * UPSCALE_X(108) + _asProjectorItem->point.x;
 	startAnimation(0x14A10137, 0, -1);
 	playSound(1, 0xEC008474);
 	SetMessageHandler(&AsCommonProjector::handleMessage);
@@ -513,7 +513,7 @@ void AsCommonProjector::stStopProjecting() {
 }
 
 void AsCommonProjector::stTurnToFront() {
-	_beforeMoveX = getGlobalVar(V_PROJECTOR_SLOT) * 108 + _asProjectorItem->point.x;
+	_beforeMoveX = getGlobalVar(V_PROJECTOR_SLOT) * UPSCALE_X(108) + _asProjectorItem->point.x;
 	startAnimation(0x22CB4A33, 0, -1);
 	SetMessageHandler(&AsCommonProjector::hmAnimation);
 	SetSpriteUpdate(&AsCommonProjector::suMoving);
@@ -601,7 +601,7 @@ void AsScene1402PuzzleBox::stMoveDownSolvedDone() {
 }
 
 static const int16 kScene1407MouseFloorY[] = {
-	106, 150, 191, 230, 267, 308, 350, 395
+	UPSCALE_Y(106), UPSCALE_Y(150), UPSCALE_Y(191), UPSCALE_Y(230), UPSCALE_Y(267), UPSCALE_Y(308), UPSCALE_Y(350), UPSCALE_Y(395)
 };
 
 static const struct {
@@ -821,11 +821,11 @@ void AsScene1407Mouse::stArriveAtHole() {
 	_y = kScene1407MouseFloorY[kScene1407MouseHoles[_nextHoleIndex].floorIndex];
 	if (_nextHoleIndex == 1) {
 		sendMessage(_parentScene, 0x2000, 0);
-		_walkDestX = 512;
+		_walkDestX = UPSCALE_X(512);
 		stWalkToDest();
 		setVisible(true);
 	} else {
-		_walkDestX = _x + 14;
+		_walkDestX = _x + UPSCALE_X(14);
 		stWalkToDest();
 		setVisible(true);
 	}
