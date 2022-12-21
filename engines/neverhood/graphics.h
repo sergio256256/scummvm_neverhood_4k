@@ -162,6 +162,10 @@ void unpackSpriteNormal(const byte *source, int width, int height, byte *dest, i
 void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY);
 int calcDistance(int16 x1, int16 y1, int16 x2, int16 y2);
 
+int getAlphaOffset(int pos, int bytes_per_pixel);
+byte clampByte(int16 val);
+void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel);
+
 } // End of namespace Neverhood
 
 #endif /* NEVERHOOD_GRAPHICS_H */
