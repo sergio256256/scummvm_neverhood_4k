@@ -375,32 +375,6 @@ void Screen::queueBlit(const Graphics::Surface *surface, int16 destX, int16 dest
 
 }
 
-int getAlphaOffset(int pos, int bytes_per_pixel) {
-	return (pos & 0xFFFFFFFC) + bytes_per_pixel - 1;
-}
-
-byte clampByte(int16 val) {
-	return (byte)((val < 0) ? 0 : (val > 255) ? 255 : val);
-}
-
-void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel) {
-	int16 min = 180;
-	int16 max = 200;
-	int16 width = max - min;
-
-	int16 alpha = src[getAlphaOffset(0, bytes_per_pixel)];
-
-	if (alpha >= max) {
-		memcpy(dst, src, bytes_per_pixel);
-	}
-	else if (alpha >= min) {
-		float falpha = (alpha - min) / (float)width;
-		for (int i = 0; i < bytes_per_pixel; ++i) {
-			dst[i] = clampByte(src[i] * falpha + dst[i] * (1.f - falpha));
-		}
-	}
-}
-
 void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &clipRect) {
 
 	const Graphics::Surface *surface = renderItem._surface;
