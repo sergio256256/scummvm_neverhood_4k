@@ -24,10 +24,10 @@
 namespace Neverhood {
 
 static const NPoint kCarShadowOffsets[] = {
-	{-63,  3}, {-48, 40}, {-33, 58},
-	{  0, 65}, { 40, 53}, { 56, 27},
-	{ 63,  0}, {-30, 26}, {  0, 30},
-	{ 26, 25}
+	{UPSCALE(-63,  3)}, {UPSCALE(-48, 40)}, {UPSCALE(-33, 58)},
+	{UPSCALE(  0, 65)}, {UPSCALE( 40, 53)}, {UPSCALE( 56, 27)},
+	{UPSCALE( 63,  0)}, {UPSCALE(-30, 26)}, {UPSCALE(  0, 30)},
+	{UPSCALE( 26, 25)}
 };
 
 SsCommonTrackShadowBackground::SsCommonTrackShadowBackground(NeverhoodEngine *vm, uint32 fileHash)

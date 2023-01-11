@@ -396,8 +396,10 @@ void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &cl
 	if (shadowSurface) {
 		const byte *shadowSource = (const byte*)shadowSurface->getBasePtr(x0, y0);
 		while (height--) {
-			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel)
-				blendColor(dest + xc, shadowSource + xc, bytes_per_pixel);
+			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel) {
+				if (*(source + getAlphaOffset(xc, bytes_per_pixel)) > 0)
+					blendColor(dest + xc, shadowSource + xc, bytes_per_pixel);
+			}
 			source += surface->pitch;
 			shadowSource += shadowSurface->pitch;
 			dest += _backScreen->pitch;
