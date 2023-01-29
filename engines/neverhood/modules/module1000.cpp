@@ -500,7 +500,7 @@ Scene1004::Scene1004(NeverhoodEngine *vm, Module *parentModule, int which)
 	} else {
 		// Klaymen coming down the ladder
 		loadDataResource(0x01900A04);
-		insertKlaymen<KmScene1004>(UPSCALE(_dataResource.getPoint(0x80052A29).x, 27));
+		insertKlaymen<KmScene1004>(_dataResource.getPoint(0x80052A29).x, UPSCALE_Y(27));
 		setMessageList(0x004B7BF0);
 	}
 
