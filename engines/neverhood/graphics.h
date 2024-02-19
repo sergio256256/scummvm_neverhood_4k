@@ -109,6 +109,7 @@ public:
 	Graphics::Surface *getSurface() { return _surface; }
 	const Common::String getName() const { return _name; }
 	uint32 getLastResourceFileHash() const { return _lastResourceFileHash; }
+
 protected:
 	NeverhoodEngine *_vm;
 	int _priority;
@@ -123,6 +124,7 @@ protected:
 	bool _transparent;
 	// Version changes each time the pixels are touched in any way
 	byte _version;
+
 	uint32 _lastResourceFileHash;
 };
 
@@ -159,12 +161,12 @@ protected:
 void parseBitmapResource(const byte *sprite, bool *rle, NDimensions *dimensions, NPoint *position, const byte **palette, const byte **pixels);
 void unpackSpriteRle(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY, byte oldColor = 0, byte newColor = 0);
 void unpackSpriteNormal(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY);
-void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY);
+void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY, const Graphics::RgbOffset *rgbOffset);
 int calcDistance(int16 x1, int16 y1, int16 x2, int16 y2);
 
 int getAlphaOffset(int pos, int bytes_per_pixel);
 byte clampByte(int16 val);
-void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel);
+void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel, const Graphics::RgbOffset *rgb_offset);
 
 } // End of namespace Neverhood
 

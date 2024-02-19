@@ -163,13 +163,13 @@ void ResourceMan::loadUpscaledResource(ResourceHandle &resourceHandle, uint32 fi
 	unloadUpscaledResource(resourceHandle);
 
 	Common::Array<Common::String> fnames;
-	Common::String folder = ConfigData::get()->looseDataFolder;
+	Common::String folder = ConfigData::get()->looseDataFolder + "/images";
 	Common::String fname = Common::String::format("%08X", fileHash);
 
 	if (!isAnimation) {
 		Common::File file;
 
-		fname = folder + "/" + fname + ".png";
+		fname = Common::String::format("%s/%s.png", folder.c_str(), fname.c_str());
 		if (file.exists(fname)) {
 			fnames.push_back(fname);
 		}

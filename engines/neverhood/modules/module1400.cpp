@@ -659,6 +659,9 @@ Scene1404::Scene1404(NeverhoodEngine *vm, Module *parentModule, int which)
 
 	_klaymen->setClipRect(_sprite1->getDrawRect().x, UPSCALE_Y(0), UPSCALE(640, 480));
 
+	int16 offset[] = {0, -15, -15};
+	_rgbOffset->init(&offset[0]);
+	_klaymen->getSurface()->getSurface()->SetRgbOffset(_rgbOffset);
 }
 
 Scene1404::~Scene1404() {

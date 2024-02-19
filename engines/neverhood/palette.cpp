@@ -175,6 +175,10 @@ byte *Palette::data() const {
 	return _palette;
 }
 
+void Palette::setRgbOffset(Graphics::RgbOffset *rgbOffset) {
+	_rgbOffset = rgbOffset;
+}
+
 void Palette::update() {
 	debug(2, "Palette::update() _status = %d", _status);
 	if (_status == 1) {
@@ -197,6 +201,11 @@ void Palette::update() {
 			memcpy(_palette, _basePalette, 256 * 4);
 			_status = 0;
 		}
+	}
+
+	if (_rgbOffset) {
+		fadeColor(_rgbOffset->cur_rgb, _rgbOffset->end_rgb[0], _rgbOffset->end_rgb[1], _rgbOffset->end_rgb[2]);
+		_rgbOffset->updateOffset();
 	}
 }
 

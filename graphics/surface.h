@@ -25,13 +25,13 @@
 #include "common/scummsys.h"
 #include "common/endian.h"
 #include "common/list.h"
+#include "common/util.h"
+#include "graphics/pixelformat.h"
 
 namespace Common {
 struct Rect;
 struct Point;
 }
-
-#include "graphics/pixelformat.h"
 
 namespace Graphics {
 
@@ -59,6 +59,56 @@ enum DitherMethod {
 	kDitherJarvis,
 };
 
+struct RgbOffset {
+	byte start_rgb[3];
+	byte end_rgb[3];
+	byte cur_rgb[3];
+
+	bool from_black;
+
+	int16 offset[3];
+
+	RgbOffset() : start_rgb{0, 0, 0}, end_rgb{0, 0, 0}, cur_rgb{0, 0, 0}, from_black(false), offset{0, 0, 0} {}
+
+	void init(const int16* offset) {
+		memcpy(this->offset, offset, sizeof(this->offset));
+		memset(start_rgb, 0, sizeof(start_rgb));
+		memset(cur_rgb, 0, sizeof(cur_rgb));
+		memset(end_rgb, 0, sizeof(end_rgb));
+		from_black = false;
+	}
+
+	void init_fade_from_black() {
+		for (int i = 0; i < 3; ++i) {
+			start_rgb[i] = 0;
+			cur_rgb[i] = 0;
+			end_rgb[i] = 255;
+		}
+		from_black = true;
+	}
+
+	void init_fade_to_black() {
+		for (int i = 0; i < 3; ++i) {
+			start_rgb[i] = 255;
+			cur_rgb[i] = 255;
+			end_rgb[i] = 0;
+		}
+		from_black = false;
+	}
+
+	void updateOffset() {
+		for (int i = 0; i < 3; ++i) {
+			offset[i] = ((int16)cur_rgb[i] - (int16)start_rgb[i]) + (from_black ? -255 : 0);
+		}
+	}
+
+	void applyTo(byte* rgb) const {
+		for (int i = 0; i < 3; ++i) {
+			rgb[i] = MAX(MIN(rgb[i] + offset[i], 255), 0);
+		}
+	}
+};
+
 /**
  * An arbitrary graphics surface that can be the target (or source) of blit
  * operations, font rendering, etc.
@@ -81,6 +131,8 @@ struct Surface {
 	 */
 	int16 pitch;
 
+	RgbOffset *rgbOffset;
+
 protected:
 	/**
 	 * Pixel data of the surface.
@@ -96,7 +148,7 @@ public:
 	/**
 	 * Construct a simple Surface object.
 	 */
-	Surface() : w(0), h(0), pitch(0), pixels(0), format() {
+	Surface() : w(0), h(0), pitch(0), pixels(0), format(), rgbOffset(nullptr) {
 	}
 
 	/**
@@ -470,6 +522,14 @@ public:
 	 *
 	 */
 	Graphics::Surface *rotoscale(const TransformStruct &transform, bool filtering = false) const;
+
+	void SetRgbOffset(RgbOffset* offset) {
+		rgbOffset = offset;
+	}
+
+	RgbOffset* GetRgbOffset() const {
+		return rgbOffset;
+	}
 
 	/**
 	 * Print surface content on console in pseudographics

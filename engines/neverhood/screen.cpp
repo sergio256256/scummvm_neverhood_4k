@@ -69,7 +69,7 @@ void Screen::update() {
 		renderItem._refresh = true;
 		for (RenderQueue::iterator jt = _prevRenderQueue->begin(); jt != _prevRenderQueue->end(); ++jt) {
 			RenderItem &prevRenderItem = (*jt);
-			if (prevRenderItem == renderItem) {
+			if (prevRenderItem == renderItem && !prevRenderItem._surface->GetRgbOffset() && !renderItem._surface->GetRgbOffset()) {
 				prevRenderItem._refresh = false;
 				renderItem._refresh = false;
 			}
@@ -260,17 +260,15 @@ void Screen::drawSurface3(const Graphics::Surface *surface, int16 x, int16 y, ND
 
 void Screen::drawDoubleSurface2(const Graphics::Surface *surface, NDrawRect &drawRect) {
 
+	drawRect.x = MAX((int16)0, drawRect.x);
+	drawRect.y = MAX((int16)0, drawRect.y);
+
 	const byte *source = (const byte*)surface->getPixels();
 	byte *dest = (byte*)_backScreen->getBasePtr(drawRect.x, drawRect.y);
 
 	for (int16 yc = 0; yc < surface->h; yc++) {
-		byte *row = dest;
-		for (int16 xc = 0; xc < surface->w; xc++) {
-			*row++ = *source;
-			*row++ = *source++;
-		}
-		memcpy(dest + _backScreen->pitch, dest, surface->w * 2);
-		dest += _backScreen->pitch;
+		memcpy(dest, source, surface->w * 4);
+		source += surface->pitch;
 		dest += _backScreen->pitch;
 	}
 
@@ -398,13 +396,13 @@ void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &cl
 		while (height--) {
 			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel) {
 				if (*(source + getAlphaOffset(xc, bytes_per_pixel)) > 0)
-					blendColor(dest + xc, shadowSource + xc, bytes_per_pixel);
+					blendColor(dest + xc, shadowSource + xc, bytes_per_pixel, shadowSurface->GetRgbOffset());
 			}
 			source += surface->pitch;
 			shadowSource += shadowSurface->pitch;
 			dest += _backScreen->pitch;
 		}
-	} else if (!renderItem._transparent) {
+	} else if (!renderItem._transparent && !surface->GetRgbOffset()) {
 		while (height--) {
 			memcpy(dest, source, width * bytes_per_pixel);
 			source += surface->pitch;
@@ -413,12 +411,11 @@ void Screen::blitRenderItem(const RenderItem &renderItem, const Common::Rect &cl
 	} else {
 		while (height--) {
 			for (int xc = 0; xc < width * bytes_per_pixel; xc += bytes_per_pixel)
-				blendColor(dest + xc, source + xc, bytes_per_pixel);
+				blendColor(dest + xc, source + xc, bytes_per_pixel, surface->GetRgbOffset());
 			source += surface->pitch;
 			dest += _backScreen->pitch;
 		}
 	}
-
 }
 
 } // End of namespace Neverhood

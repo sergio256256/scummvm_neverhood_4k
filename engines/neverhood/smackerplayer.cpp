@@ -25,6 +25,7 @@
 #include "neverhood/palette.h"
 #include "neverhood/resourceman.h"
 #include "neverhood/scene.h"
+#include "video/theora_decoder.h"
 
 namespace Neverhood {
 
@@ -83,19 +84,7 @@ void NeverhoodSmackerDecoder::forceSeekToFrame(uint frame) {
 	if (frame >= getFrameCount())
 		error("Can't force Smacker seek to invalid frame %d", frame);
 
-	if (_header.audioInfo[0].hasAudio)
-		error("Can't force Smacker frame seek with audio");
-	if (!rewind())
-		error("Failed to rewind");
-
-	SmackerVideoTrack *videoTrack = (SmackerVideoTrack *)getTrack(0);
-	uint32 offset = 0;
-	for (uint32 i = 0; i < frame; i++) {
-		videoTrack->increaseCurFrame();
-		offset += _frameSizes[i] & ~3;
-	}
-
-	_fileStream->seek(offset, SEEK_CUR);
+	seekToFrame(frame);
 }
 
 // SmackerPlayer
@@ -132,10 +121,17 @@ void SmackerPlayer::open(uint32 fileHash, bool keepLastFrame) {
 
 	_smackerFirst = true;
 
+	Common::String folder = ConfigData::get()->looseDataFolder + "/videos";
+	Common::String fname = Common::String::format("%08X", fileHash);
+	Common::String name = Common::String::format("%s/%s.ogv", folder.c_str(), fname.c_str());
+
+	Common::File *file = new Common::File();
+	file->open(name);
+
 	_stream = _vm->_res->createStream(fileHash);
 
 	_smackerDecoder = new NeverhoodSmackerDecoder();
-	_smackerDecoder->loadStream(_stream);
+	_smackerDecoder->loadStream(file);//_stream);
 
 	_palette = new Palette(_vm);
 	_palette->usePalette();

@@ -93,11 +93,18 @@ Scene1501::Scene1501(NeverhoodEngine *vm, Module *parentModule, uint32 backgroun
 	setPalette();
 	addEntity(_palette);
 	_palette->addBasePalette(backgroundFileHash, 0, 256, 0);
+
+	_rgbOffset->init_fade_from_black();
+
+	_palette->setRgbOffset(_rgbOffset);
 	_palette->startFadeToPalette(12);
 
 	if (soundFileHash != 0)
 		playSound(0, soundFileHash);
 
+
+	Graphics::Surface *surface = getBackground()->getSurface()->getSurface();
+	surface->SetRgbOffset(_rgbOffset);
 }
 
 void Scene1501::update() {
@@ -110,6 +117,7 @@ void Scene1501::update() {
 		}
 	} else if ((_countdown2 != 0 && (--_countdown2 == 0)) || (_countdown2 == 0 && !isSoundPlaying(0)) || _skip) {
 		_countdown1 = 12;
+		_rgbOffset->init_fade_to_black();
 		_palette->startFadeToBlack(11);
 	}
 
@@ -118,6 +126,7 @@ void Scene1501::update() {
 
 	if (_countdown3 == 0 && _skip && _countdown1 == 0) {
 		_countdown1 = 12;
+		_rgbOffset->init_fade_to_black();
 		_palette->startFadeToBlack(11);
 	}
 

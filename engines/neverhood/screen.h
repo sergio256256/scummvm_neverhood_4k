@@ -27,6 +27,7 @@
 #include "neverhood/neverhood.h"
 #include "neverhood/microtiles.h"
 #include "neverhood/graphics.h"
+#include "video/theora_decoder.h"
 
 namespace Video {
 	class SmackerDecoder;
@@ -84,7 +85,7 @@ public:
 	void drawDoubleSurface2(const Graphics::Surface *surface, NDrawRect &drawRect);
 	void drawUnk(const Graphics::Surface *surface, NDrawRect &drawRect, NDrawRect &sysRect, NRect &clipRect, bool transparent, byte version);
 	void drawSurfaceClipRects(const Graphics::Surface *surface, NDrawRect &drawRect, NRect *clipRects, uint clipRectsCount, bool transparent, byte version);
-	void setSmackerDecoder(Video::SmackerDecoder *smackerDecoder) { _smackerDecoder = smackerDecoder; }
+	void setSmackerDecoder(Video::TheoraDecoder *smackerDecoder) { _smackerDecoder = smackerDecoder; }
 	void queueBlit(const Graphics::Surface *surface, int16 destX, int16 destY, NRect &ddRect, bool transparent, byte version,
 		const Graphics::Surface *shadowSurface = NULL);
 	void blitRenderItem(const RenderItem &renderItem, const Common::Rect &clipRect);
@@ -92,7 +93,7 @@ protected:
 	NeverhoodEngine *_vm;
 	MicroTileArray *_microTiles;
 	Graphics::Surface *_backScreen;
-	Video::SmackerDecoder *_smackerDecoder, *_savedSmackerDecoder;
+	Video::TheoraDecoder *_smackerDecoder, *_savedSmackerDecoder;
 	int32 _ticks;
 	int32 _frameDelay, _savedFrameDelay;
 	byte *_paletteData;

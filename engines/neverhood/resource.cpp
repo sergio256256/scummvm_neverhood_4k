@@ -41,7 +41,7 @@ void SpriteResource::draw(Graphics::Surface *destSurface, bool flipX, bool flipY
 		byte *dest = (byte*)destSurface->getPixels();
 		const int destPitch = destSurface->pitch;
 		if (_resourceHandle.upscaledData(0))
-			unpackSpriteUpscaled(_pixels, _dimensions.width, _dimensions.height, dest, destPitch, flipX, flipY);
+			unpackSpriteUpscaled(_pixels, _dimensions.width, _dimensions.height, dest, destPitch, flipX, flipY, destSurface->GetRgbOffset());
 		else if (_rle)
 			unpackSpriteRle(_pixels, _dimensions.width, _dimensions.height, dest, destPitch, flipX, flipY);
 		else
@@ -139,7 +139,7 @@ void AnimResource::draw(uint frameIndex, Graphics::Surface *destSurface, bool fl
 	_height = frameInfo.drawOffset.height;
 
 	if (_resourceHandle.upscaledData(frameIndex))
-		unpackSpriteUpscaled(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY);
+		unpackSpriteUpscaled(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY, destSurface->GetRgbOffset());
 	else if (_replEnabled && _replOldColor != _replNewColor)
 		unpackSpriteRle(_currSpriteData, _width, _height, dest, destPitch, flipX, flipY, _replOldColor, _replNewColor);
 	else

@@ -25,6 +25,7 @@
 #include "video/smk_decoder.h"
 #include "neverhood/neverhood.h"
 #include "neverhood/entity.h"
+#include "video/theora_decoder.h"
 
 namespace Neverhood {
 
@@ -47,7 +48,7 @@ public:
 	void draw() override;
 };
 
-class NeverhoodSmackerDecoder : public Video::SmackerDecoder {
+class NeverhoodSmackerDecoder : public Video::TheoraDecoder {
 public:
 	void forceSeekToFrame(uint frame);
 };

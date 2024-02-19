@@ -345,31 +345,37 @@ byte clampByte(int16 val) {
 											  : val);
 }
 
-void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel) {
+void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel, const Graphics::RgbOffset* rgb_offset) {
 	int16 min = 0;
 	int16 max = 255;
 	int16 width = max - min;
 
+	byte src_pixel[4];
+	memcpy(src_pixel, src, bytes_per_pixel);
+
+	if (rgb_offset) {
+		rgb_offset->applyTo(&src_pixel[0]);
+	}
+
 	int16 dst_alpha = dst[getAlphaOffset(0, bytes_per_pixel)];
 
 	if (dst_alpha == 0) {
-		memcpy(dst, src, bytes_per_pixel);
+		memcpy(dst, src_pixel, bytes_per_pixel);
 		return;
 	}
 
-	int16 src_alpha = src[getAlphaOffset(0, bytes_per_pixel)];
-
+	int16 src_alpha = src_pixel[getAlphaOffset(0, bytes_per_pixel)];
 	if (src_alpha >= max) {
-		memcpy(dst, src, bytes_per_pixel);
+		memcpy(dst, src_pixel, bytes_per_pixel);
 	} else if (src_alpha >= min) {
 		float falpha = (src_alpha - min) / (float)width;
 		for (int i = 0; i < bytes_per_pixel; ++i) {
-			dst[i] = clampByte(src[i] * falpha + dst[i] * (1.f - falpha));
+			dst[i] = clampByte(src_pixel[i] * falpha + dst[i] * (1.f - falpha));
 		}
 	}
 }
 
-void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY) {
+void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest, int destPitch, bool flipX, bool flipY, const Graphics::RgbOffset* rgbOffset) {
 
 	const int bytesPerPixel = 4;
 	const int sourcePitch = width * bytesPerPixel;
@@ -384,7 +390,7 @@ void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest,
 	if (!flipX) {
 		while (height--) {
 			for (int xc = 0; xc < width * bytesPerPixel; xc += bytesPerPixel)
-				blendColor(dest + xc, source + xc, bytesPerPixel);
+				blendColor(dest + xc, source + xc, bytesPerPixel, rgbOffset);
 			source += sourcePitch;
 			dest += destPitch;
 		}
@@ -392,7 +398,7 @@ void unpackSpriteUpscaled(const byte *source, int width, int height, byte *dest,
 		while (height-- > 0) {
 			int xd = (width - 1) * bytesPerPixel;
 			for (int xs = 0; xs < width * bytesPerPixel; xs += bytesPerPixel, xd -= bytesPerPixel)
-				blendColor(dest + xd, source + xs, bytesPerPixel);
+				blendColor(dest + xd, source + xs, bytesPerPixel, rgbOffset);
 			source += sourcePitch;
 			dest += destPitch;
 		}

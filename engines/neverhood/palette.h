@@ -53,6 +53,8 @@ public:
 	void copyToBasePalette(byte *palette);
 	byte *data() const;
 
+	void setRgbOffset(Graphics::RgbOffset *rgbOffset);
+
 protected:
 	int _status;
 	byte *_palette;
@@ -63,6 +65,8 @@ protected:
 	void update();
 	void fadeColor(byte *rgb, byte toR, byte toG, byte toB);
 	int calculateFadeStep(int counter);
+
+	struct Graphics::RgbOffset *_rgbOffset = nullptr;
 };
 
 } // End of namespace Neverhood

@@ -23,6 +23,7 @@
 #include "neverhood/scene.h"
 #include "neverhood/smackerplayer.h"
 #include "diskplayerscene.h"
+#include "graphics/surface.h"
 
 namespace Neverhood {
 
@@ -56,6 +57,7 @@ Scene::Scene(NeverhoodEngine *vm, Module *parentModule)
 	_messageListIndex = 0;
 
 	_backgroundFileHash = _cursorFileHash = 0;
+	_rgbOffset = new Graphics::RgbOffset();
 
 	SetUpdateHandler(&Scene::update);
 	SetMessageHandler(&Scene::handleMessage);

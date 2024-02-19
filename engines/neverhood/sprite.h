@@ -80,6 +80,7 @@ public:
 	void setClipRect(int16 x1, int16 y1, int16 x2, int16 y2);
 	void setClipRect(NRect& clipRect);
 	void setClipRect(NDrawRect& drawRect);
+
 protected:
 	void (Sprite::*_spriteUpdateCb)();
 	Common::String _spriteUpdateCbName; // For debugging purposes
@@ -94,6 +95,7 @@ protected:
 	NDrawRect _collisionBoundsOffset;
 	uint16 _flags;
 	DataResource _dataResource;
+
 	void createSurface(int surfacePriority, int16 width, int16 height);
 	void handleSpriteUpdate() {
 		if (_spriteUpdateCb)

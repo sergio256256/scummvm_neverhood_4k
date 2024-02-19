@@ -56,6 +56,7 @@ public:
 	Background *addBackground(Background *background);
 	void setBackground(uint32 fileHash);
 	void changeBackground(uint32 fileHash);
+	Background *getBackground() { return _background; }
 	void setBackgroundY(int16 y) { _background->getSurface()->getDrawRect().y = y; }
 	int16 getBackgroundY() { return _background->getSurface()->getDrawRect().y; }
 	void setPalette(uint32 fileHash = 0);
@@ -176,6 +177,7 @@ protected:
 	Klaymen *_klaymen;
 	Background *_background;
 	Palette *_palette;
+	struct Graphics::RgbOffset *_rgbOffset;
 	SmackerPlayer *_smackerPlayer;
 
 	MessageList *_messageList;

@@ -36,7 +36,6 @@ Background::Background(NeverhoodEngine *vm, uint32 fileHash, int objectPriority,
 	_spriteResource.load(fileHash);
 	createSurface(surfacePriority, _spriteResource.getDimensions().width, _spriteResource.getDimensions().height);
 	_surface->drawSpriteResource(_spriteResource);
-
 }
 
 Background::~Background() {
