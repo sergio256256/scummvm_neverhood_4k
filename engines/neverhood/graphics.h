@@ -95,6 +95,7 @@ public:
 	void drawAnimResource(AnimResource &animResource, uint frameIndex, bool flipX, bool flipY, int16 width, int16 height);
 	void drawMouseCursorResource(MouseCursorResource &mouseCursorResource, int frameNum);
 	void copyFrom(Graphics::Surface *sourceSurface, int16 x, int16 y, NDrawRect &sourceRect);
+	void copyFromWithAlpha(Graphics::Surface *sourceSurface, int16 x, int16 y, NDrawRect &sourceRect);
 	int getPriority() const { return _priority; }
 	void setPriority(int priority) { _priority = priority; }
 	NDrawRect& getDrawRect() { return _drawRect; }
@@ -166,7 +167,7 @@ int calcDistance(int16 x1, int16 y1, int16 x2, int16 y2);
 
 int getAlphaOffset(int pos, int bytes_per_pixel);
 byte clampByte(int16 val);
-void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel, const Graphics::RgbOffset *rgb_offset);
+void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel, const Graphics::RgbOffset *rgb_offset = nullptr);
 
 } // End of namespace Neverhood
 

@@ -132,7 +132,7 @@ void BaseSurface::copyFrom(Graphics::Surface *sourceSurface, int16 x, int16 y, N
 	byte *dest = (byte*)_surface->getBasePtr(x, y);
 	int height = sourceRect.height;
 	while (height--) {
-		for (int xc = 0; xc < sourceRect.width; xc++)
+		for (int xc = 0; xc < sourceRect.width * sourceSurface->format.bytesPerPixel; xc++)
 			if (source[xc] != 0)
 				dest[xc] = source[xc];
 		source += sourceSurface->pitch;
@@ -140,6 +140,30 @@ void BaseSurface::copyFrom(Graphics::Surface *sourceSurface, int16 x, int16 y, N
 	}
 	++_version;
 }
+void BaseSurface::copyFromWithAlpha(Graphics::Surface *sourceSurface, int16 x, int16 y, NDrawRect &sourceRect) {
+	// Copy a rectangle from sourceSurface, 0 is the transparent color
+	// Clipping is performed against the right/bottom border since x, y will always be >= 0
+
+	const int bytesPerPixel = sourceSurface->format.bytesPerPixel;
+
+	if (x + sourceRect.width > _surface->w)
+		sourceRect.width = _surface->w - x - 1;
+
+	if (y + sourceRect.height > _surface->h)
+		sourceRect.height = _surface->h - y - 1;
+
+	byte *source = (byte *)sourceSurface->getBasePtr(sourceRect.x, sourceRect.y);
+	byte *dest = (byte *)_surface->getBasePtr(x, y);
+	int height = sourceRect.height;
+	while (height--) {
+		for (int xc = 0; xc < sourceRect.width * bytesPerPixel; xc += bytesPerPixel)
+			blendColor(dest + xc, source + xc, bytesPerPixel);
+		source += sourceSurface->pitch;
+		dest += _surface->pitch;
+	}
+	++_version;
+}
+
 
 // ShadowSurface
 
@@ -185,7 +209,7 @@ void FontSurface::drawChar(BaseSurface *destSurface, int16 x, int16 y, byte chr)
 	sourceRect.y = (chr / _charsPerRow) * _charHeight;
 	sourceRect.width = _charWidth;
 	sourceRect.height = _charHeight;
-	destSurface->copyFrom(_surface, x, y, sourceRect);
+	destSurface->copyFromWithAlpha(_surface, x, y, sourceRect);
 }
 
 void FontSurface::drawString(BaseSurface *destSurface, int16 x, int16 y, const byte *string, int stringLen) {
@@ -206,12 +230,13 @@ int16 FontSurface::getStringWidth(const byte *string, int stringLen) {
 
 FontSurface *FontSurface::createFontSurface(NeverhoodEngine *vm, uint32 fileHash) {
 	FontSurface *fontSurface;
-	DataResource fontData(vm);
+ 	DataResource fontData(vm);
 	SpriteResource fontSprite(vm);
 	fontData.load(calcHash("asRecFont"));
 	uint16 numRows = fontData.getPoint(calcHash("meNumRows")).x;
 	uint16 firstChar = fontData.getPoint(calcHash("meFirstChar")).x;
-	uint16 charWidth = fontData.getPoint(calcHash("meCharWidth")).x;
+	const uint num_channels = 4;
+	uint16 charWidth = fontData.getPoint(calcHash("meCharWidth")).x;// * num_channels;
 	uint16 charHeight = fontData.getPoint(calcHash("meCharHeight")).x;
 	NPointArray *tracking = fontData.getPointArray(calcHash("meTracking"));
 	fontSprite.load(fileHash, true);
@@ -345,7 +370,7 @@ byte clampByte(int16 val) {
 											  : val);
 }
 
-void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel, const Graphics::RgbOffset* rgb_offset) {
+void blendColor(byte *dst, const byte *src, int16 bytes_per_pixel, const Graphics::RgbOffset *rgb_offset /* = nullptr*/) {
 	int16 min = 0;
 	int16 max = 255;
 	int16 width = max - min;

@@ -70,8 +70,8 @@ struct RgbOffset {
 
 	RgbOffset() : start_rgb{0, 0, 0}, end_rgb{0, 0, 0}, cur_rgb{0, 0, 0}, from_black(false), offset{0, 0, 0} {}
 
-	void init(const int16* offset) {
-		memcpy(this->offset, offset, sizeof(this->offset));
+	void init(const int16* in_offset) {
+		memcpy(this->offset, in_offset, sizeof(this->offset));
 		memset(start_rgb, 0, sizeof(start_rgb));
 		memset(cur_rgb, 0, sizeof(cur_rgb));
 		memset(end_rgb, 0, sizeof(end_rgb));
